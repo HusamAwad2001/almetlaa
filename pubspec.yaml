@@ -24,7 +24,7 @@ dependencies:
   google_fonts: ^6.2.1
   url_launcher: ^6.3.1
   flutter_svg: ^2.0.17
-  intl: ^0.20.2
+  # intl: ^0.20.2
   image_picker: ^1.1.2
   cached_network_image: ^3.4.1
   flutter_countdown_timer: ^4.1.0
@@ -35,6 +35,7 @@ dependencies:
   pdf: ^3.11.3
   pdfx: ^2.8.0
   pretty_dio_logger: ^1.4.0
+  better_player_plus: ^1.0.8
 
 dev_dependencies:
 

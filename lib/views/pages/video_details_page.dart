@@ -1,6 +1,7 @@
 import 'package:almetlaa/controller/home_controller.dart';
 import 'package:almetlaa/controller/video_details_controller.dart';
 import 'package:almetlaa/values/constants.dart';
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -27,14 +28,13 @@ class VideoDetailsPage extends GetView<HomeController> {
         builder: (controller) {
           return Column(
             children: [
-              // BetterPlayer.network(
-              //   controller.item['video'],
-              //   betterPlayerConfiguration: BetterPlayerConfiguration(
-              //     placeholder: Image.network(controller.item['image']),
-              //     autoPlay: false,
-              //   ),
-              // ),
-              const Text('BetterPlayer.network'),
+              BetterPlayer.network(
+                controller.item['video'],
+                betterPlayerConfiguration: BetterPlayerConfiguration(
+                  placeholder: Image.network(controller.item['image']),
+                  autoPlay: true,
+                ),
+              ),
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(

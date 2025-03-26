@@ -1,3 +1,4 @@
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
@@ -48,14 +49,13 @@ class VideoDialog {
             color: Colors.black,
             child: Column(
               children: [
-                // BetterPlayer.network(
-                //   item['video'],
-                //   betterPlayerConfiguration: BetterPlayerConfiguration(
-                //       placeholder: Image.network(item['image']),
-                //       autoPlay: true
-                //   ),
-                // ),
-                const Text('BetterPlayer.network'),
+                BetterPlayer.network(
+                  item['video'],
+                  betterPlayerConfiguration: BetterPlayerConfiguration(
+                    placeholder: Image.network(item['image']),
+                    autoPlay: true,
+                  ),
+                ),
                 Container(
                   width: double.infinity,
                   height: 1,
