@@ -17,7 +17,10 @@ class NewsPage extends GetView<NewsController> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("الاخبار",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "الاخبار",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
       ),
@@ -26,10 +29,10 @@ class NewsPage extends GetView<NewsController> {
           children: [
             30.ph,
             TextField(
-              onSubmitted: (v){
-                if(v.isEmpty){
+              onSubmitted: (v) {
+                if (v.isEmpty) {
                   controller.getNews();
-                }else{
+                } else {
                   controller.searchNews(v);
                 }
               },
@@ -50,13 +53,13 @@ class NewsPage extends GetView<NewsController> {
                 contentPadding: EdgeInsets.zero,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(9.r),
-                  borderSide: const BorderSide(
-                      width: 1, color: Color(0xFFF0F0F0)),
+                  borderSide:
+                      const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(9.r),
-                  borderSide: const BorderSide(
-                      width: 1, color: Color(0xFFF0F0F0)),
+                  borderSide:
+                      const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                 ),
                 filled: true,
                 fillColor: const Color(0xFFF5F5F5),
@@ -66,82 +69,90 @@ class NewsPage extends GetView<NewsController> {
             GetBuilder<NewsController>(
               init: NewsController(),
               builder: (controller) {
-                return controller.loadingNews? const NewsShimmer() : controller.news.isEmpty? const Text("لا يوجد بيانات").paddingOnly(top: Get.height/3.5) : AlignedGridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    mainAxisSpacing: 25.h,
-                    crossAxisSpacing: 25.w,
-                    shrinkWrap: true,
-                    itemCount: controller.news.length,
-                    crossAxisCount: 2,
-                    itemBuilder: (_, index) {
-                      final item = controller.news[index];
-                      return InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.newsDetailsPage, arguments: item);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF000000).withOpacity(0.25),
-                                spreadRadius: 0,
-                                blurRadius: 3,
-                                offset: const Offset(0, 1), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20.r),
-                                  topRight: Radius.circular(20.r),
-                                ),
-                                child: Image.network(
-                                  item['image'],
-                                  width: double.infinity,
-                                  height: 117.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              7.ph,
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  item['title'],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.bold,
+                return controller.loadingNews
+                    ? const NewsShimmer()
+                    : controller.news.isEmpty
+                        ? const Text("لا يوجد بيانات")
+                            .paddingOnly(top: Get.height / 3.5)
+                        : AlignedGridView.count(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            mainAxisSpacing: 25.h,
+                            crossAxisSpacing: 25.w,
+                            shrinkWrap: true,
+                            itemCount: controller.news.length,
+                            crossAxisCount: 2,
+                            itemBuilder: (_, index) {
+                              final item = controller.news[index];
+                              return InkWell(
+                                onTap: () {
+                                  Get.toNamed(Routes.newsDetailsPage,
+                                      arguments: item);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20.r)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF000000)
+                                            .withOpacity(0.25),
+                                        spreadRadius: 0,
+                                        blurRadius: 3,
+                                        offset: const Offset(0, 1),
+                                      ),
+                                    ],
                                   ),
-                                ).paddingOnly(left: 6.w, right: 10.w),
-                              ),
-                              5.ph,
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  item['description'],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 8.sp,
-                                    fontWeight: FontWeight.w300,
-                                    color: const Color(0xFF999797),
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.r),
+                                          topRight: Radius.circular(20.r),
+                                        ),
+                                        child: Image.network(
+                                          item['image'],
+                                          width: double.infinity,
+                                          height: 117.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      7.ph,
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          item['title'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 10.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ).paddingOnly(left: 6.w, right: 10.w),
+                                      ),
+                                      5.ph,
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          item['description'],
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 8.sp,
+                                            fontWeight: FontWeight.w300,
+                                            color: const Color(0xFF999797),
+                                          ),
+                                        ).paddingOnly(left: 6.w, right: 10.w),
+                                      ),
+                                      10.ph,
+                                    ],
                                   ),
-                                ).paddingOnly(left: 6.w, right: 10.w),
-                              ),
-                              10.ph,
-                            ],
-                          ),
-                        ),
-                      );
-                      // return HomeNewsWidget(item: controller.news[index]);
-                    },
-                );
+                                ),
+                              );
+                              // return HomeNewsWidget(item: controller.news[index]);
+                            },
+                          );
               },
             ),
             20.ph,

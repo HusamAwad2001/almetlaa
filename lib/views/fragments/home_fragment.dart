@@ -3,9 +3,7 @@ import '../../core/global.dart';
 import '../../routes/routes.dart';
 import '../../values/constants.dart';
 import '../../views/dialogs/call_dialog.dart';
-import '../../views/widgets/home_category_widget.dart';
 import '../../views/widgets/home_news_widget.dart';
-import '../../views/widgets/home_service_widget.dart';
 import '../../views/widgets/home_video_widget.dart';
 import '../../views/widgets/shimmer/slider_shimmer.dart';
 import '../../views/widgets/snack.dart';
@@ -22,403 +20,527 @@ class HomeFragment extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: controller.appbarEnabled
-          ? AppBar(
-              backgroundColor: Constants.primaryColor,
-              toolbarHeight: 50,
-              elevation: 1,
-              title: Image.asset(
-                "assets/images/logo.png",
-                height: 45,
-              ),
-              centerTitle: true,
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    CallDialog().dialog();
-                  },
-                  icon: const Icon(Icons.call),
-                  color: Colors.white,
-                ),
-                Global.token == ""
-                    ? const SizedBox()
-                    : IconButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.notificationsPage);
-                        },
-                        icon: const Icon(Icons.notifications_active),
-                        color: Colors.white,
+    return GetBuilder<HomeController>(
+      builder: (_) {
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(60),
+            child: const _AppBarWidget(),
+          ),
+          body: SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            controller: controller.scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                20.ph,
+                const _SliderWidget(),
+                30.ph,
+                const _ServicesWidget(),
+                22.ph,
+                const _NewsWidget(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "الفيديو",
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.start,
+                    ).paddingOnly(
+                      right: 20.w,
+                      top: 18.h,
+                      bottom: 10.h,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.videosPage);
+                      },
+                      child: Text(
+                        "المزيد",
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: const Color(0xFF999797),
+                        ),
+                      ),
+                    ).paddingOnly(
+                      top: 18.h,
+                      bottom: 10.h,
+                    ),
+                  ],
+                ),
+                AlignedGridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 20,
+                  shrinkWrap: true,
+                  itemCount: controller.videos.length,
+                  crossAxisCount: 2,
+                  itemBuilder: (_, index) {
+                    return HomeVideoWidget(
+                      item: controller.videos[index],
+                      fullWidth: false,
+                      onTap: () {
+                        Get.toNamed(
+                          Routes.videoDetailsPage,
+                          arguments: [
+                            controller.videos[index],
+                            controller.videos
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ).paddingOnly(left: 20, right: 20),
+                20.ph,
               ],
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: Constants.primaryColor,
-                statusBarBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.light,
-              ),
-            )
-          : AppBar(
-              backgroundColor: Constants.primaryColor,
-              toolbarHeight: 0,
-              elevation: 0,
-              systemOverlayStyle: const SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarBrightness: Brightness.dark,
-                statusBarIconBrightness: Brightness.light,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+Widget _buildModernServiceItem(
+  BuildContext context, {
+  required IconData icon,
+  required String title,
+  required String route,
+}) {
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+      borderRadius: BorderRadius.circular(12),
+      onTap: () {
+        if (Global.token == "") {
+          Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
+        } else {
+          Get.toNamed(route);
+        }
+      },
+      splashColor: Constants.primaryColor.withValues(alpha: 0.2),
+      highlightColor: Constants.primaryColor.withValues(alpha: 0.1),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: Constants.primaryColor.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Constants.primaryColor.withValues(alpha: 0.3),
+                width: 1.5,
               ),
             ),
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        controller: controller.scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            controller.sliderImages.isEmpty
-                ? const SliderShimmer()
-                : carousel_slider.CarouselSlider(
+            child: Icon(
+              icon,
+              size: 26,
+              color: Constants.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _AppBarWidget extends StatelessWidget {
+  const _AppBarWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Constants.primaryColor,
+      elevation: 4,
+      leadingWidth: 0,
+      // title: Padding(
+      //   padding: const EdgeInsets.only(top: 8.0),
+      //   child: Image.asset(
+      //     "assets/images/baiti_logo.png",
+      //     height: 40,
+      //   ),
+      // ),
+      title: Text(
+        'معرض بيتي للبناء',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 22.sp,
+        ),
+      ),
+      centerTitle: false,
+      actions: [
+        IconButton(
+          onPressed: () {
+            CallDialog().dialog();
+          },
+          icon: const Icon(Icons.call_outlined),
+          tooltip: 'اتصل بنا',
+          color: Colors.white,
+        ),
+        if (Global.token != "")
+          IconButton(
+            onPressed: () {
+              Get.toNamed(Routes.notificationsPage);
+            },
+            icon: const Icon(Icons.notifications_active_outlined),
+            tooltip: 'الإشعارات',
+            color: Colors.white,
+          ),
+        const SizedBox(width: 8),
+      ],
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20),
+        ),
+      ),
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Constants.primaryColor,
+        statusBarBrightness: Brightness.dark,
+        statusBarIconBrightness: Brightness.light,
+      ),
+    );
+  }
+}
+
+class _SliderWidget extends StatelessWidget {
+  const _SliderWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        return controller.sliderImages.isEmpty
+            ? const SliderShimmer()
+            : Column(
+                children: [
+                  carousel_slider.CarouselSlider(
                     options: carousel_slider.CarouselOptions(
-                        height: 350,
-                        viewportFraction: 1,
-                        autoPlay:
-                            controller.sliderImages.length == 1 ? false : true,
-                        scrollPhysics: controller.sliderImages.length == 1
-                            ? const NeverScrollableScrollPhysics()
-                            : const AlwaysScrollableScrollPhysics(),
-                        onPageChanged: (i, r) {
-                          controller.currentPos = i;
-                          controller.update();
-                        }),
+                      height: 220.h,
+                      // viewportFraction: 0.92,
+                      autoPlay: controller.sliderImages.length > 1,
+                      enlargeCenterPage: true,
+                      enableInfiniteScroll: controller.sliderImages.length > 1,
+                      scrollPhysics: controller.sliderImages.length == 1
+                          ? const NeverScrollableScrollPhysics()
+                          : const BouncingScrollPhysics(),
+                      onPageChanged: (index, reason) {
+                        controller.currentPos = index;
+                        controller.update();
+                      },
+                    ),
                     items: controller.sliderImages.map((i) {
-                      return Builder(
-                        builder: (context) {
-                          return InkWell(
-                            onTap: () {
-                              if (i['url'] != null) {
-                                launchUrl(Uri.parse(i['url']));
-                              }
-                            },
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                              child: Image.network(
-                                i['image'],
-                                height: 350,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
+                      return GestureDetector(
+                        onTap: () {
+                          if (i['url'] != null) {
+                            launchUrl(Uri.parse(i['url']));
+                          }
                         },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 6),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 10,
+                                offset: const Offset(0, 5),
+                              )
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(
+                                  i['image'],
+                                  fit: BoxFit.cover,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.bottomCenter,
+                                      end: Alignment.topCenter,
+                                      colors: [
+                                        Colors.black.withOpacity(0.5),
+                                        Colors.transparent,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     }).toList(),
                   ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: controller.sliderImages
-                  .map(
-                    (e) => Container(
-                      width: 8.w,
-                      height: 8.h,
-                      margin: EdgeInsets.symmetric(
-                        vertical: 10.h,
-                        horizontal: 2.w,
-                      ),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color:
-                            controller.sliderImages[controller.currentPos] == e
+                  const SizedBox(height: 10),
+                  if (controller.sliderImages.length > 1)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        controller.sliderImages.length,
+                        (index) => AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                          ),
+                          height: 8,
+                          width: controller.currentPos == index ? 20 : 8,
+                          decoration: BoxDecoration(
+                            color: controller.currentPos == index
                                 ? Constants.primaryColor
-                                : const Color(0xFFD9D9D9),
+                                : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
                       ),
                     ),
-                  )
-                  .toList(),
-            ),
-            29.ph,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 11.png",
-                  title: "الرعاية السكنية",
-                  url: "https://www.pahw.gov.kw",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 12.png",
-                  title: "بلدية الكويت",
-                  url: "https://www.baladia.gov.kw",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 13.png",
-                  title: "جريدة الانباء",
-                  url: "https://www.alanba.com.kw/newspaper/",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 14.png",
-                  title: "اسمنت الكويت",
-                  url: "https://www.kcrm-kw.com",
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
-            20.ph,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 15.png",
-                  title: "بنك الائتمان",
-                  url: "https://www.kcb.gov.kw/",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 16.png",
-                  title: "هويتي",
-                  url: "https://hawyti.paci.gov.kw/",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 17.png",
-                  title: "التجارة و الصناعة",
-                  url: "https://www.moci.gov.kw/",
-                ),
-                10.pw,
-                const HomeCategoryWidget(
-                  image: "assets/images/PAHW-Logo-Icon_1 18.png",
-                  title: "الكهرباء و الماء",
-                  url: "https://www.mew.gov.kw/",
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
-            Text(
-              "الخدمات",
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+                ],
+              );
+      },
+    );
+  }
+}
+
+class _ServicesWidget extends StatelessWidget {
+  const _ServicesWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "الخدمات",
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.start,
+        ).paddingOnly(right: 20.w, bottom: 10.h),
+        Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                childAspectRatio: 0.85,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                children: [
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.receipt_long_outlined,
+                    title: "فواتيري",
+                    route: Routes.constructionBillsPage,
+                  ),
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.swap_horiz_outlined,
+                    title: "البدل",
+                    route: Routes.allowancePage,
+                  ),
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.business_outlined,
+                    title: "الشركات",
+                    route: Routes.categoriesPage,
+                  ),
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.location_city_outlined,
+                    title: "التوزيعات",
+                    route: Routes.regionsPage,
+                  ),
+                ],
               ),
-              textAlign: TextAlign.start,
-            ).paddingOnly(right: 20.w, top: 36.h, bottom: 25.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                HomeServiceWidget(
-                  image: "assets/images/bill3.png",
-                  title: "فواتيري",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.constructionBillsPage);
-                    }
-                  },
-                ),
-                HomeServiceWidget(
-                  image: "assets/images/bill2.png",
-                  title: "البدل",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.allowancePage);
-                    }
-                  },
-                ),
-                // HomeServiceWidget(
-                //   image: "assets/images/bill1.png",
-                //   title: "بانوراما",
-                //   onTap: () {
-                //     Snack().show(type: false, message: "جاري تطوير هذا القسم و سوف يكون متاح قريبا");
-                //     return;
-                //     if(Global.token==""){
-                //       Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
-                //     }else{
-                //       Get.toNamed(Routes.panoramaPage);
-                //     }
-                //   },
-                // ),
-                HomeServiceWidget(
-                  image: "assets/images/bill.png",
-                  title: "الشركات",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.categoriesPage);
-                    }
-                  },
-                ),
-                HomeServiceWidget(
-                  image: "assets/images/bill4.png",
-                  title: "التوزيعات",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.regionsPage);
-                    }
-                  },
-                ),
-              ],
             ),
-            12.ph,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                HomeServiceWidget(
-                  image: "assets/images/bill5.png",
-                  title: "الفوائض",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.surplusesPage);
-                    }
-                  },
-                ),
-                HomeServiceWidget(
-                  image: "assets/images/bill6.png",
-                  title: "الأثاث",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.aRPage);
-                    }
-                  },
-                ),
-                HomeServiceWidget(
-                  image: "assets/images/bill7.png",
-                  title: "الفعاليات",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.eventsPage);
-                    }
-                  },
-                ),
-                HomeServiceWidget(
-                  image: "assets/images/posts.png",
-                  title: "الواجهات",
-                  onTap: () {
-                    if (Global.token == "") {
-                      Snack().show(
-                          type: false, message: "الرجاء تسجيل الدخول اولا");
-                    } else {
-                      Get.toNamed(Routes.postPage);
-                    }
-                  },
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "الأخبار",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                childAspectRatio: 0.85,
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                children: [
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.attach_money_outlined,
+                    title: "الفوائض",
+                    route: Routes.surplusesPage,
                   ),
-                  textAlign: TextAlign.start,
-                ).paddingOnly(right: 20.w, top: 36.h, bottom: 10.h),
-                TextButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.newsPage);
-                  },
-                  child: Text(
-                    "المزيد",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: const Color(0xFF999797),
-                    ),
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.chair_outlined,
+                    title: "الأثاث",
+                    route: Routes.aRPage,
                   ),
-                ).paddingOnly(top: 36.h, bottom: 10.h),
-              ],
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: controller.news
-                    .map((e) => InkWell(
-                          onTap: () {
-                            Get.toNamed(Routes.newsDetailsPage, arguments: e);
-                          },
-                          child: HomeNewsWidget(item: e),
-                        ))
-                    .toList(),
-              ).paddingOnly(left: 10, right: 10, bottom: 5.h),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "الفيديو",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.event_outlined,
+                    title: "الفعاليات",
+                    route: Routes.eventsPage,
                   ),
-                  textAlign: TextAlign.start,
-                ).paddingOnly(
-                  right: 20.w,
-                  top: 18.h,
-                  bottom: 10.h,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.videosPage);
-                  },
-                  child: Text(
-                    "المزيد",
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: const Color(0xFF999797),
-                    ),
+                  _buildModernServiceItem(
+                    context,
+                    icon: Icons.article_outlined,
+                    title: "الواجهات",
+                    route: Routes.postPage,
                   ),
-                ).paddingOnly(
-                  top: 18.h,
-                  bottom: 10.h,
-                ),
-              ],
-            ),
-            AlignedGridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              shrinkWrap: true,
-              itemCount: controller.videos.length,
-              crossAxisCount: 2,
-              itemBuilder: (_, index) {
-                return HomeVideoWidget(
-                  item: controller.videos[index],
-                  fullWidth: false,
-                  onTap: () {
-                    Get.toNamed(
-                      Routes.videoDetailsPage,
-                      arguments: [controller.videos[index], controller.videos],
-                    );
-                  },
-                );
-              },
-            ).paddingOnly(left: 20, right: 20),
-            const SizedBox(
-              height: 150,
+                ],
+              ),
             ),
           ],
         ),
-      ),
+      ],
+    );
+  }
+}
+
+// class _NewsWidget extends GetView<HomeController> {
+//   const _NewsWidget();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetBuilder<HomeController>(
+//       builder: (_) {
+//         return Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 Text(
+//                   "الأخبار",
+//                   style: TextStyle(
+//                     fontSize: 18.sp,
+//                     fontWeight: FontWeight.bold,
+//                   ),
+//                   textAlign: TextAlign.start,
+//                 ).paddingOnly(right: 20.w),
+//                 TextButton(
+//                   onPressed: () {
+//                     Get.toNamed(Routes.newsPage);
+//                   },
+//                   child: Text(
+//                     "المزيد",
+//                     style: TextStyle(
+//                       fontSize: 12.sp,
+//                       color: const Color(0xFF999797),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: controller.news
+//                     .map((e) => InkWell(
+//                           onTap: () {
+//                             Get.toNamed(Routes.newsDetailsPage, arguments: e);
+//                           },
+//                           child: HomeNewsWidget(item: e),
+//                         ))
+//                     .toList(),
+//               ).paddingOnly(left: 10, right: 10, bottom: 5.h),
+//             ),
+//           ],
+//         );
+//       },
+//     );
+//   }
+// }
+
+class _NewsWidget extends GetView<HomeController> {
+  const _NewsWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<HomeController>(
+      builder: (_) {
+        if (controller.news.isEmpty) return const SizedBox();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "الأخبار",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      backgroundColor: const Color(0xFFF5F5F5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      Get.toNamed(Routes.newsPage);
+                    },
+                    child: Text(
+                      "المزيد",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 160.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                itemCount: controller.news.length,
+                separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                itemBuilder: (context, index) {
+                  final news = controller.news[index];
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed(Routes.newsDetailsPage, arguments: news);
+                    },
+                    borderRadius: BorderRadius.circular(16),
+                    child: HomeNewsWidget(item: news),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
