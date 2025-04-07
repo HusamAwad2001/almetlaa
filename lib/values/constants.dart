@@ -10,6 +10,9 @@ class Constants {
   static const String baseURL =
       // "https://dolphin-app-792st.ondigitalocean.app/api/v1";
       "https://almitlae.onrender.com/api/v1";
-  static const Color primaryColor = Color(0xFFdba626);
-  static const Color darkPrimaryColor = Color(0xFFc99724);
+  //e56d51 (Baiti color)
+  static const Color primaryColor = Color(0xFFe56d51);
+  static const Color darkPrimaryColor = Color(0xFFc94424);
+  // static const Color primaryColor = Color(0xFFdba626);
+  // static const Color darkPrimaryColor = Color(0xFFc99724);
 }
