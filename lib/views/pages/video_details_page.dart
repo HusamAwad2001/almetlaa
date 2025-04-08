@@ -1,6 +1,6 @@
-import 'package:almetlaa/controller/home_controller.dart';
-import 'package:almetlaa/controller/video_details_controller.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../controller/home_controller.dart';
+import '../../controller/video_details_controller.dart';
+import '../../values/constants.dart';
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import '../widgets/home_video_widget.dart';
 
 class VideoDetailsPage extends GetView<HomeController> {
-  const VideoDetailsPage({Key? key}) : super(key: key);
+  const VideoDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class VideoDetailsPage extends GetView<HomeController> {
                 controller.item['video'],
                 betterPlayerConfiguration: BetterPlayerConfiguration(
                   placeholder: Image.network(controller.item['image']),
-                  autoPlay: true,
+                  autoPlay: false,
                 ),
               ),
               Align(

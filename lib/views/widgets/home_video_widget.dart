@@ -1,16 +1,15 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/dialogs/video_dialog.dart';
+import '../../views/dialogs/video_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeVideoWidget extends StatelessWidget {
   const HomeVideoWidget({
-    Key? key,
+    super.key,
     required this.item,
     required this.fullWidth,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Map item;
   final bool fullWidth;
@@ -19,9 +18,10 @@ class HomeVideoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap ?? () {
-        VideoDialog().dialog(item);
-      },
+      onTap: onTap ??
+          () {
+            VideoDialog().dialog(item);
+          },
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -45,16 +45,16 @@ class HomeVideoWidget extends StatelessWidget {
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
                 child: fullWidth
                     ? Image.network(
-                  item['image'],
-                  fit: BoxFit.cover,
-                  height: 126.h,
-                  width: double.infinity,
-                )
+                        item['image'],
+                        fit: BoxFit.cover,
+                        height: 126.h,
+                        width: double.infinity,
+                      )
                     : Image.network(
-                  item['image'],
-                  fit: BoxFit.cover,
-                  height: 126.h,
-                ),
+                        item['image'],
+                        fit: BoxFit.cover,
+                        height: 126.h,
+                      ),
               ),
             ),
             Positioned.fill(
@@ -72,7 +72,7 @@ class HomeVideoWidget extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         Colors.transparent,
-                        Constants.primaryColor.withOpacity(0.75),
+                        Colors.black.withOpacity(0.85),
                       ],
                       stops: const [0.0, 1.0],
                       begin: FractionalOffset.topCenter,
@@ -83,9 +83,10 @@ class HomeVideoWidget extends StatelessWidget {
                   child: Text(
                     item['title'],
                     style: TextStyle(
-                      fontSize: 10.sp,
+                      fontSize: 13.sp,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
+                      height: 1.3,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

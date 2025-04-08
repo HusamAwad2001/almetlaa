@@ -1,71 +1,75 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class HomeNewsWidget extends StatelessWidget {
-  const HomeNewsWidget({Key? key, required this.item}) : super(key: key);
+  const HomeNewsWidget({super.key, required this.item});
 
   final Map item;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
+      width: 165.w,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(20.r)),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF000000).withOpacity(0.25),
-              spreadRadius: 0,
-              blurRadius: 3,
-              offset: const Offset(0, 1), // changes position of shadow
-            ),
-          ]),
-      margin: EdgeInsets.only(left: 10.w, right: 10.w),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          width: 1,
+          color: const Color(0xffD9D9D9),
+        ),
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r),
-              topRight: Radius.circular(20.r),
-            ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
             child: Image.network(
               item['image'],
               width: double.infinity,
-              height: 117.h,
+              height: 110.h,
               fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Container(
+                height: 110.h,
+                color: Colors.grey[200],
+                alignment: Alignment.center,
+                child:
+                    Icon(Icons.broken_image, size: 30.sp, color: Colors.grey),
+              ),
             ),
           ),
-          7.ph,
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              item['title'],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.bold,
-              ),
-            ).paddingOnly(left: 6.w, right: 10.w),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item['title'],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+                4.ph,
+                Text(
+                  item['description'],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 10.sp,
+                    color: const Color(0xFF777777),
+                    fontWeight: FontWeight.w400,
+                    height: 1.3,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+              ],
+            ),
           ),
-          5.ph,
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              item['description'],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 10.sp,
-                fontWeight: FontWeight.w300,
-                color: const Color(0xFF999797),
-              ),
-            ).paddingOnly(left: 6.w, right: 10.w),
-          ),
-          10.ph,
         ],
       ),
     );

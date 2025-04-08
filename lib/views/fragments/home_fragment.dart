@@ -39,37 +39,58 @@ class HomeFragment extends GetView<HomeController> {
                 const _ServicesWidget(),
                 22.ph,
                 const _NewsWidget(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "الفيديو",
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.start,
-                    ).paddingOnly(
-                      right: 20.w,
-                      top: 18.h,
-                      bottom: 10.h,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Get.toNamed(Routes.videosPage);
-                      },
-                      child: Text(
-                        "المزيد",
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "الفيديو",
                         style: TextStyle(
-                          fontSize: 12.sp,
-                          color: const Color(0xFF999797),
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.start,
+                      ),
+                      // TextButton(
+                      //   onPressed: () {
+                      //     Get.toNamed(Routes.videosPage);
+                      //   },
+                      //   child: Text(
+                      //     "المزيد",
+                      //     style: TextStyle(
+                      //       fontSize: 12.sp,
+                      //       color: const Color(0xFF999797),
+                      //     ),
+                      //   ),
+                      // ).paddingOnly(
+                      //   top: 18.h,
+                      //   bottom: 10.h,
+                      // ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.symmetric(horizontal: 12.w),
+                          backgroundColor: const Color(0xFFF5F5F5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.toNamed(Routes.videosPage);
+                        },
+                        child: Text(
+                          "المزيد",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
-                    ).paddingOnly(
-                      top: 18.h,
-                      bottom: 10.h,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 AlignedGridView.count(
                   physics: const NeverScrollableScrollPhysics(),
@@ -103,59 +124,6 @@ class HomeFragment extends GetView<HomeController> {
       },
     );
   }
-}
-
-Widget _buildModernServiceItem(
-  BuildContext context, {
-  required IconData icon,
-  required String title,
-  required String route,
-}) {
-  return Material(
-    color: Colors.transparent,
-    child: InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: () {
-        if (Global.token == "") {
-          Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
-        } else {
-          Get.toNamed(route);
-        }
-      },
-      splashColor: Constants.primaryColor.withValues(alpha: 0.2),
-      highlightColor: Constants.primaryColor.withValues(alpha: 0.1),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: Constants.primaryColor.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Constants.primaryColor.withValues(alpha: 0.3),
-                width: 1.5,
-              ),
-            ),
-            child: Icon(
-              icon,
-              size: 26,
-              color: Constants.primaryColor,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-        ],
-      ),
-    ),
-  );
 }
 
 class _AppBarWidget extends StatelessWidget {
@@ -347,26 +315,22 @@ class _ServicesWidget extends StatelessWidget {
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 children: [
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.receipt_long_outlined,
                     title: "فواتيري",
                     route: Routes.constructionBillsPage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.swap_horiz_outlined,
                     title: "البدل",
                     route: Routes.allowancePage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.business_outlined,
                     title: "الشركات",
                     route: Routes.categoriesPage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.location_city_outlined,
                     title: "التوزيعات",
                     route: Routes.regionsPage,
@@ -384,26 +348,22 @@ class _ServicesWidget extends StatelessWidget {
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
                 children: [
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.attach_money_outlined,
                     title: "الفوائض",
                     route: Routes.surplusesPage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.chair_outlined,
                     title: "الأثاث",
                     route: Routes.aRPage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.event_outlined,
                     title: "الفعاليات",
                     route: Routes.eventsPage,
                   ),
-                  _buildModernServiceItem(
-                    context,
+                  _ServiceItem(
                     icon: Icons.article_outlined,
                     title: "الواجهات",
                     route: Routes.postPage,
@@ -418,60 +378,65 @@ class _ServicesWidget extends StatelessWidget {
   }
 }
 
-// class _NewsWidget extends GetView<HomeController> {
-//   const _NewsWidget();
+class _ServiceItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String route;
+  const _ServiceItem({
+    required this.icon,
+    required this.title,
+    required this.route,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetBuilder<HomeController>(
-//       builder: (_) {
-//         return Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               children: [
-//                 Text(
-//                   "الأخبار",
-//                   style: TextStyle(
-//                     fontSize: 18.sp,
-//                     fontWeight: FontWeight.bold,
-//                   ),
-//                   textAlign: TextAlign.start,
-//                 ).paddingOnly(right: 20.w),
-//                 TextButton(
-//                   onPressed: () {
-//                     Get.toNamed(Routes.newsPage);
-//                   },
-//                   child: Text(
-//                     "المزيد",
-//                     style: TextStyle(
-//                       fontSize: 12.sp,
-//                       color: const Color(0xFF999797),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             SingleChildScrollView(
-//               scrollDirection: Axis.horizontal,
-//               child: Row(
-//                 children: controller.news
-//                     .map((e) => InkWell(
-//                           onTap: () {
-//                             Get.toNamed(Routes.newsDetailsPage, arguments: e);
-//                           },
-//                           child: HomeNewsWidget(item: e),
-//                         ))
-//                     .toList(),
-//               ).paddingOnly(left: 10, right: 10, bottom: 5.h),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: () {
+          if (Global.token == "") {
+            Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
+          } else {
+            Get.toNamed(route);
+          }
+        },
+        splashColor: Constants.primaryColor.withValues(alpha: 0.2),
+        highlightColor: Constants.primaryColor.withValues(alpha: 0.1),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: Constants.primaryColor.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Constants.primaryColor.withValues(alpha: 0.3),
+                  width: 1.5,
+                ),
+              ),
+              child: Icon(
+                icon,
+                size: 26,
+                color: Constants.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class _NewsWidget extends GetView<HomeController> {
   const _NewsWidget();
@@ -480,66 +445,69 @@ class _NewsWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (_) {
-        if (controller.news.isEmpty) return const SizedBox();
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return controller.news.isEmpty || controller.loadingNews
+            ? const SizedBox.shrink()
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "الأخبار",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 8.h,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "الأخبار",
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w),
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          onPressed: () {
+                            Get.toNamed(Routes.newsPage);
+                          },
+                          child: Text(
+                            "المزيد",
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      backgroundColor: const Color(0xFFF5F5F5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    onPressed: () {
-                      Get.toNamed(Routes.newsPage);
-                    },
-                    child: Text(
-                      "المزيد",
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: Colors.black87,
-                      ),
+                  SizedBox(
+                    height: 200.h,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      itemCount: controller.news.length,
+                      separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                      itemBuilder: (context, index) {
+                        final news = controller.news[index];
+                        return GestureDetector(
+                          onTap: () => Get.toNamed(
+                            Routes.newsDetailsPage,
+                            arguments: news,
+                          ),
+                          child: HomeNewsWidget(item: news),
+                        );
+                      },
                     ),
                   ),
                 ],
-              ),
-            ),
-            SizedBox(
-              height: 160.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                itemCount: controller.news.length,
-                separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                itemBuilder: (context, index) {
-                  final news = controller.news[index];
-                  return InkWell(
-                    onTap: () {
-                      Get.toNamed(Routes.newsDetailsPage, arguments: news);
-                    },
-                    borderRadius: BorderRadius.circular(16),
-                    child: HomeNewsWidget(item: news),
-                  );
-                },
-              ),
-            ),
-          ],
-        );
+              );
       },
     );
   }
