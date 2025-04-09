@@ -141,7 +141,10 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
                     itemCount: _channel!.videos!.length,
                     itemBuilder: (BuildContext context, int index) {
                       Video video = _channel!.videos![index];
-                      return _buildVideo(video);
+                      return _VideoWidget(
+                        video: video,
+                        videos: _channel?.videos ?? [],
+                      );
                     },
                   ),
                 )
@@ -154,8 +157,16 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
                 ),
     );
   }
+}
 
-  _buildVideo(Video video) {
+class _VideoWidget extends StatelessWidget {
+  final Video video;
+  final List<Video> videos;
+
+  const _VideoWidget({required this.video, required this.videos});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (video.id != null) {
@@ -164,7 +175,7 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
             MaterialPageRoute(
               builder: (_) => VideoPlayerScreen(
                 id: video.id!,
-                videos: _channel?.videos ?? [],
+                videos: videos,
               ),
             ),
           );
