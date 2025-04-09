@@ -1,6 +1,7 @@
-import 'package:almetlaa/core/storage.dart';
-import 'package:almetlaa/routes/pages.dart';
-import 'package:almetlaa/routes/routes.dart';
+import '../../core/storage.dart';
+import '../../routes/pages.dart';
+import '../../routes/routes.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,8 +33,12 @@ class MyApp extends StatelessWidget {
           title: 'المطلاع',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
-            primarySwatch: Colors.blue,
+            primaryColor: Constants.primaryColor,
+            // primarySwatch: Colors.blue,
             fontFamily: GoogleFonts.almarai().fontFamily,
+            progressIndicatorTheme: const ProgressIndicatorThemeData(
+              color: Constants.primaryColor,
+            ),
           ),
           initialRoute: Routes.splashPage,
           getPages: Pages.getPages(),

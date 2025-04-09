@@ -1,10 +1,11 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../values/constants.dart';
 
 class CategoryWidget extends StatelessWidget {
-  const CategoryWidget({Key? key, required this.item, required this.onTap}) : super(key: key);
+  const CategoryWidget({super.key, required this.item, required this.onTap});
 
   final Map item;
   final Function() onTap;
@@ -34,16 +35,22 @@ class CategoryWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(height: 15.h,),
-            Image.network(item['image'],height: 40.h,),
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 15.h,
+            ),
+            AppImage(imageUrl: item['image'], height: 40.h),
+            SizedBox(
+              height: 10.h,
+            ),
             Text(
               item['name'],
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 8.sp, color: Constants.primaryColor),
             ),
-            SizedBox(height: 15.h,),
+            SizedBox(
+              height: 15.h,
+            ),
           ],
         ),
       ),

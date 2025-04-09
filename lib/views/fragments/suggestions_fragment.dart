@@ -14,7 +14,10 @@ class SuggestionsFragment extends GetView<SuggestionsController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("اقتراحاتكم",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "اقتراحاتكم",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
@@ -61,20 +64,24 @@ class SuggestionsFragment extends GetView<SuggestionsController> {
                 child: ElevatedButton(
                   onPressed: () => controller.validate(),
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10.r),
                         ),
                       ),
                     ),
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                       Constants.primaryColor,
                     ),
                   ),
                   child: const Text(
                     "إرسال",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ).paddingOnly(top: 20.h, bottom: 20.h),
                 ),
               ),

@@ -13,7 +13,7 @@ class NewsDetailsPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: GetBuilder<NewsDetailsController>(
         init: NewsDetailsController(),
-        builder: (controller){
+        builder: (controller) {
           return Column(
             children: [
               Container(
@@ -86,7 +86,7 @@ class NewsDetailsPage extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
-                      'assets/images/logo.png',
+                      'assets/images/baiti_logo.png',
                     ).paddingOnly(bottom: 5.h),
                   ),
                 ],

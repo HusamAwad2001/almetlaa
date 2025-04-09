@@ -1,12 +1,13 @@
 import 'package:almetlaa/controller/allowance_controller.dart';
 import 'package:almetlaa/values/constants.dart';
+import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AllowanceDetailsPage extends StatelessWidget {
-  const AllowanceDetailsPage({Key? key}) : super(key: key);
+  const AllowanceDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,10 @@ class AllowanceDetailsPage extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Constants.primaryColor,
             title: FittedBox(
-              child: Text(item['title'],style: const TextStyle(color: Colors.white),),
+              child: Text(
+                item['title'],
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
             iconTheme: const IconThemeData(color: Colors.white),
             centerTitle: true,
@@ -39,11 +43,10 @@ class AllowanceDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // 27.ph,
-              Image.network(
-                item['image'],
+              AppImage(
+                imageUrl: (item['image']),
                 width: Get.width,
                 height: 415.h,
-                // fit: BoxFit.fitHeight,
               ),
               Text(
                 item['title'],

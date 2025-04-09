@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
+
 import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,17 +26,20 @@ class HomeNewsWidget extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-            child: Image.network(
-              item['image'],
+            child: AppImage(
+              imageUrl: item['image'],
               width: double.infinity,
               height: 110.h,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
+              errorWidget: (_, __, ___) => Container(
                 height: 110.h,
                 color: Colors.grey[200],
                 alignment: Alignment.center,
-                child:
-                    Icon(Icons.broken_image, size: 30.sp, color: Colors.grey),
+                child: Icon(
+                  Icons.broken_image,
+                  size: 30.sp,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),

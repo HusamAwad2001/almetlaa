@@ -1,7 +1,6 @@
-import 'dart:developer';
-
-import 'package:almetlaa/core/global.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../core/global.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,10 +22,8 @@ class SurplusesDetailsPage extends GetView<SurplusesDetailsController> {
           return Stack(
             clipBehavior: Clip.none,
             children: [
-              Image.network(
-                // 'assets/images/surpluses_image.png',
-                // Get.arguments['image'],
-                controller.arguments['image'],
+              AppImage(
+                imageUrl: controller.arguments['image'],
                 width: Get.width,
                 height: 308.h,
                 fit: BoxFit.cover,
@@ -281,17 +278,26 @@ class SurplusesDetailsPage extends GetView<SurplusesDetailsController> {
                                         ),
                                         child: ListTile(
                                           contentPadding: EdgeInsets.zero,
-                                          leading:controller.listProposals[index]
-                                          ['user']['image']==null? CircleAvatar(
-                                            radius: 33.r,
-                                            backgroundColor: const Color(0xFFbdc3c7),
-                                            child: const Icon(Icons.perm_identity,color: Colors.white,),
-                                          ) : CircleAvatar(
-                                            radius: 33.r,
-                                            backgroundImage: NetworkImage(
-                                                controller.listProposals[index]
-                                                ['user']['image']),
-                                          ),
+                                          leading: controller
+                                                          .listProposals[index]
+                                                      ['user']['image'] ==
+                                                  null
+                                              ? CircleAvatar(
+                                                  radius: 33.r,
+                                                  backgroundColor:
+                                                      const Color(0xFFbdc3c7),
+                                                  child: const Icon(
+                                                    Icons.perm_identity,
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : CircleAvatar(
+                                                  radius: 33.r,
+                                                  backgroundImage: NetworkImage(
+                                                      controller.listProposals[
+                                                              index]['user']
+                                                          ['image']),
+                                                ),
                                           title: Text(
                                             controller.listProposals[index]
                                                 ['user']['name'],
@@ -373,55 +379,58 @@ class SurplusesDetailsPage extends GetView<SurplusesDetailsController> {
               controller.loadingProposals
                   ? const SizedBox()
                   : CountdownTimer(
-                endTime: DateTime.now().millisecondsSinceEpoch +
-                    1000 *
-                        int.parse(controller.arguments['remainingTime']
-                            .toString()),
-                widgetBuilder: (_, time) {
-                  if (time == null) {
-                    return const SizedBox();
-                  }
-                  return
-                    Global.user['id']==controller.arguments['user']['_id']? const SizedBox() :
-                    Positioned(
-                    left: 130.w,
-                    right: 130.w,
-                    bottom: 23.h,
-                    child: SizedBox(
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            buildDefaultDialog();
-                          },
-                          icon: Image.asset(
-                            'assets/images/bid1.png',
-                            width: 43.w,
-                            height: 43.h,
-                            fit: BoxFit.cover,
-                          ),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(11.r),
-                              ),
-                            ),
-                            backgroundColor: MaterialStateProperty.all(
-                              Constants.primaryColor,
-                            ),
-                          ),
-                          label: const Text(
-                            "مزايدة",
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ).paddingOnly(top: 23, bottom: 23),
-                        ),
-                      ),
+                      endTime: DateTime.now().millisecondsSinceEpoch +
+                          1000 *
+                              int.parse(controller.arguments['remainingTime']
+                                  .toString()),
+                      widgetBuilder: (_, time) {
+                        if (time == null) {
+                          return const SizedBox();
+                        }
+                        return Global.user['id'] ==
+                                controller.arguments['user']['_id']
+                            ? const SizedBox()
+                            : Positioned(
+                                left: 130.w,
+                                right: 130.w,
+                                bottom: 23.h,
+                                child: SizedBox(
+                                  child: Directionality(
+                                    textDirection: TextDirection.ltr,
+                                    child: ElevatedButton.icon(
+                                      onPressed: () {
+                                        buildDefaultDialog();
+                                      },
+                                      icon: Image.asset(
+                                        'assets/images/bid1.png',
+                                        width: 43.w,
+                                        height: 43.h,
+                                        fit: BoxFit.cover,
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: WidgetStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(11.r),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                          Constants.primaryColor,
+                                        ),
+                                      ),
+                                      label: const Text(
+                                        "مزايدة",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ).paddingOnly(top: 23, bottom: 23),
+                                    ),
+                                  ),
+                                ),
+                              );
+                      },
+                      endWidget: const Text(""),
                     ),
-                  );
-                },
-                endWidget: const Text(""),
-              ),
             ],
           );
         },
@@ -447,12 +456,12 @@ class SurplusesDetailsPage extends GetView<SurplusesDetailsController> {
         ElevatedButton(
           onPressed: () => controller.validate(),
           style: ButtonStyle(
-            shape: MaterialStateProperty.all(
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.r),
               ),
             ),
-            backgroundColor: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(
               Constants.primaryColor,
             ),
           ),

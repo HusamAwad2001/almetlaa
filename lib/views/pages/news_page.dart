@@ -1,5 +1,6 @@
 import 'package:almetlaa/controller/news_controller.dart';
 import 'package:almetlaa/values/constants.dart';
+import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:almetlaa/views/widgets/shimmer/news_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -111,11 +112,10 @@ class NewsPage extends GetView<NewsController> {
                                           topLeft: Radius.circular(20.r),
                                           topRight: Radius.circular(20.r),
                                         ),
-                                        child: Image.network(
-                                          item['image'],
+                                        child: AppImage(
+                                          imageUrl: item['image'],
                                           width: double.infinity,
                                           height: 117.h,
-                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                       7.ph,

@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
+
 import '../../views/dialogs/video_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,14 +46,14 @@ class HomeVideoWidget extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(20)),
                 child: fullWidth
-                    ? Image.network(
-                        item['image'],
+                    ? AppImage(
+                        imageUrl: item['image'],
                         fit: BoxFit.cover,
                         height: 126.h,
                         width: double.infinity,
                       )
-                    : Image.network(
-                        item['image'],
+                    : AppImage(
+                        imageUrl: item['image'],
                         fit: BoxFit.cover,
                         height: 126.h,
                       ),

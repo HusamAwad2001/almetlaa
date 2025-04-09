@@ -1,3 +1,5 @@
+import 'package:shimmer/shimmer.dart';
+
 import '../../controller/home_controller.dart';
 import '../../core/global.dart';
 import '../../routes/routes.dart';
@@ -14,6 +16,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../widgets/app_image.dart';
 
 class HomeFragment extends GetView<HomeController> {
   const HomeFragment({super.key});
@@ -39,83 +43,8 @@ class HomeFragment extends GetView<HomeController> {
                 const _ServicesWidget(),
                 22.ph,
                 const _NewsWidget(),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16.w,
-                    vertical: 8.h,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "الفيديو",
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     Get.toNamed(Routes.videosPage);
-                      //   },
-                      //   child: Text(
-                      //     "المزيد",
-                      //     style: TextStyle(
-                      //       fontSize: 12.sp,
-                      //       color: const Color(0xFF999797),
-                      //     ),
-                      //   ),
-                      // ).paddingOnly(
-                      //   top: 18.h,
-                      //   bottom: 10.h,
-                      // ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          backgroundColor: const Color(0xFFF5F5F5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          Get.toNamed(Routes.videosPage);
-                        },
-                        child: Text(
-                          "المزيد",
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                AlignedGridView.count(
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  shrinkWrap: true,
-                  itemCount: controller.videos.length,
-                  crossAxisCount: 2,
-                  itemBuilder: (_, index) {
-                    return HomeVideoWidget(
-                      item: controller.videos[index],
-                      fullWidth: false,
-                      onTap: () {
-                        Get.toNamed(
-                          Routes.videoDetailsPage,
-                          arguments: [
-                            controller.videos[index],
-                            controller.videos
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ).paddingOnly(left: 20, right: 20),
+                22.ph,
+                const _VideosWidget(),
                 20.ph,
               ],
             ),
@@ -135,20 +64,22 @@ class _AppBarWidget extends StatelessWidget {
       backgroundColor: Constants.primaryColor,
       elevation: 4,
       leadingWidth: 0,
-      // title: Padding(
-      //   padding: const EdgeInsets.only(top: 8.0),
-      //   child: Image.asset(
-      //     "assets/images/baiti_logo.png",
-      //     height: 40,
-      //   ),
-      // ),
-      title: Text(
-        'معرض بيتي للبناء',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize: 22.sp,
-        ),
+      title: Row(
+        children: [
+          Image.asset(
+            "assets/images/baiti_logo.png",
+            height: 40,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            'بيتي',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 22.sp,
+            ),
+          ),
+        ],
       ),
       centerTitle: false,
       actions: [
@@ -235,8 +166,8 @@ class _SliderWidget extends StatelessWidget {
                             child: Stack(
                               fit: StackFit.expand,
                               children: [
-                                Image.network(
-                                  i['image'],
+                                AppImage(
+                                  imageUrl: i['image'],
                                   fit: BoxFit.cover,
                                 ),
                                 Container(
@@ -445,10 +376,135 @@ class _NewsWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (_) {
-        return controller.news.isEmpty || controller.loadingNews
-            ? const SizedBox.shrink()
+        if (controller.loadingNews) {
+          return const _NewsShimmer();
+        }
+        if (controller.news.isEmpty) {
+          return const SizedBox.shrink();
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "الأخبار",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w),
+                      backgroundColor: const Color(0xFFF5F5F5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      Get.toNamed(Routes.newsPage);
+                    },
+                    child: Text(
+                      "المزيد",
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 200.h,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                itemCount: controller.news.length,
+                separatorBuilder: (_, __) => SizedBox(width: 12.w),
+                itemBuilder: (context, index) {
+                  final news = controller.news[index];
+                  return GestureDetector(
+                    onTap: () => Get.toNamed(
+                      Routes.newsDetailsPage,
+                      arguments: news,
+                    ),
+                    child: HomeNewsWidget(item: news),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _NewsShimmer extends StatelessWidget {
+  const _NewsShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              width: 100.w,
+              height: 20.h,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 200.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            itemCount: 4,
+            separatorBuilder: (_, __) => SizedBox(width: 12.w),
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade100,
+                child: Container(
+                  width: 160.w,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _VideosWidget extends StatelessWidget {
+  const _VideosWidget();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        return controller.loadingVideos
+            ? const _VideosShimmer()
             : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
@@ -459,12 +515,28 @@ class _NewsWidget extends GetView<HomeController> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "الأخبار",
+                          "الفيديو",
                           style: TextStyle(
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.start,
                         ),
+                        // TextButton(
+                        //   onPressed: () {
+                        //     Get.toNamed(Routes.videosPage);
+                        //   },
+                        //   child: Text(
+                        //     "المزيد",
+                        //     style: TextStyle(
+                        //       fontSize: 12.sp,
+                        //       color: const Color(0xFF999797),
+                        //     ),
+                        //   ),
+                        // ).paddingOnly(
+                        //   top: 18.h,
+                        //   bottom: 10.h,
+                        // ),
                         TextButton(
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -474,7 +546,7 @@ class _NewsWidget extends GetView<HomeController> {
                             ),
                           ),
                           onPressed: () {
-                            Get.toNamed(Routes.newsPage);
+                            Get.toNamed(Routes.videosPage);
                           },
                           child: Text(
                             "المزيد",
@@ -487,28 +559,80 @@ class _NewsWidget extends GetView<HomeController> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 200.h,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      itemCount: controller.news.length,
-                      separatorBuilder: (_, __) => SizedBox(width: 12.w),
-                      itemBuilder: (context, index) {
-                        final news = controller.news[index];
-                        return GestureDetector(
-                          onTap: () => Get.toNamed(
-                            Routes.newsDetailsPage,
-                            arguments: news,
-                          ),
-                          child: HomeNewsWidget(item: news),
-                        );
-                      },
-                    ),
-                  ),
+                  AlignedGridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    shrinkWrap: true,
+                    itemCount: controller.videos.length,
+                    crossAxisCount: 2,
+                    itemBuilder: (_, index) {
+                      return HomeVideoWidget(
+                        item: controller.videos[index],
+                        fullWidth: false,
+                        onTap: () {
+                          Get.toNamed(
+                            Routes.videoDetailsPage,
+                            arguments: [
+                              controller.videos[index],
+                              controller.videos
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ).paddingOnly(left: 20, right: 20),
                 ],
               );
       },
+    );
+  }
+}
+
+class _VideosShimmer extends StatelessWidget {
+  const _VideosShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          child: Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.grey.shade100,
+            child: Container(
+              width: 100.w,
+              height: 20.h,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        AlignedGridView.count(
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          shrinkWrap: true,
+          itemCount: 4,
+          crossAxisCount: 2,
+          itemBuilder: (_, __) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                height: 160.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

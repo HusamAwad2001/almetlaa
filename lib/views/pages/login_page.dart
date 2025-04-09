@@ -46,7 +46,7 @@ class LoginPage extends StatelessWidget {
                                 blurRadius: 3)
                           ]),
                       child: Image.asset(
-                        "assets/images/logo.png",
+                        "assets/images/baiti_logo.png",
                         width: 150,
                         height: 150,
                       ).paddingOnly(bottom: 40),

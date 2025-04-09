@@ -10,7 +10,7 @@ import '../../core/global.dart';
 import '../widgets/spinner_widget.dart';
 
 class InternetPage extends StatelessWidget {
-  const InternetPage({Key? key}) : super(key: key);
+  const InternetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class InternetPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: Image.asset(
-          'assets/images/logo.png',
+          'assets/images/baiti_logo.png',
           height: 30,
         ),
       ),
@@ -31,8 +31,8 @@ class InternetPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(
-                    'assets/images/logo.png',
-                    color: Constants.primaryColor,
+                    'assets/images/baiti_logo.png',
+                    // color: Constants.primaryColor,
                     width: 200,
                   ),
                   20.ph,
@@ -62,9 +62,11 @@ class InternetPage extends StatelessWidget {
                                   await InternetAddress.lookup('google.com');
                               if (result.isNotEmpty &&
                                   result[0].rawAddress.isNotEmpty) {
-                                Get.offAllNamed(Global.token == ""
-                                    ? Routes.loginPage
-                                    : Routes.homePage);
+                                if (Global.token == "") {
+                                  Get.offAllNamed(Routes.loginPage);
+                                } else {
+                                  Get.back();
+                                }
                               }
                             } on SocketException catch (_) {
                               controller.loading = false;

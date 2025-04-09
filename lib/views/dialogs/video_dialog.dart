@@ -1,3 +1,4 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -52,7 +53,7 @@ class VideoDialog {
                 BetterPlayer.network(
                   item['video'],
                   betterPlayerConfiguration: BetterPlayerConfiguration(
-                    placeholder: Image.network(item['image']),
+                    placeholder: AppImage(imageUrl: item['image']),
                     autoPlay: true,
                   ),
                 ),

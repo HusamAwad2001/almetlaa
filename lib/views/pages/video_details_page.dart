@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
+
 import '../../controller/home_controller.dart';
 import '../../controller/video_details_controller.dart';
 import '../../values/constants.dart';
@@ -31,7 +33,7 @@ class VideoDetailsPage extends GetView<HomeController> {
               BetterPlayer.network(
                 controller.item['video'],
                 betterPlayerConfiguration: BetterPlayerConfiguration(
-                  placeholder: Image.network(controller.item['image']),
+                  placeholder: AppImage(imageUrl: controller.item['image']),
                   autoPlay: false,
                 ),
               ),
@@ -74,7 +76,7 @@ class VideoDetailsPage extends GetView<HomeController> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
-                      'assets/images/logo.png',
+                      'assets/images/baiti_logo.png',
                     ).paddingOnly(bottom: 5.h),
                   ),
                 ],

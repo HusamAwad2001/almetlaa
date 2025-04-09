@@ -1,5 +1,6 @@
 import 'package:almetlaa/controller/surpluses_controller.dart';
 import 'package:almetlaa/values/constants.dart';
+import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,8 @@ import 'package:get/get.dart';
 import '../../routes/routes.dart';
 
 class SurplusItemWidget extends StatelessWidget {
-  const SurplusItemWidget({super.key, required this.item, required this.controller});
+  const SurplusItemWidget(
+      {super.key, required this.item, required this.controller});
 
   final Map item;
   final SurplusesController controller;
@@ -40,12 +42,10 @@ class SurplusItemWidget extends StatelessWidget {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                Image.network(
-                  // 'assets/images/surpluses_image.png',
-                  item['image'],
+                AppImage(
+                  imageUrl: item['image'],
                   width: Get.width,
                   height: 143.h,
-                  fit: BoxFit.cover,
                 ),
                 Positioned(
                   left: 9.w,
@@ -92,7 +92,8 @@ class SurplusItemWidget extends StatelessWidget {
                       children: [
                         CountdownTimer(
                           endTime: DateTime.now().millisecondsSinceEpoch +
-                              1000 * int.parse(item['remainingTime'].toString()),
+                              1000 *
+                                  int.parse(item['remainingTime'].toString()),
                           textStyle: const TextStyle(
                             fontSize: 12,
                             color: Colors.black,
@@ -114,23 +115,23 @@ class SurplusItemWidget extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    time.days==0?
-                                    Text(
-                                      '${time.hours == null ? "00" : time.hours.toString().padLeft(2, '0')}:${time.min == null ? "00" : time.min.toString().padLeft(2, '0')}:${time.sec == null ? "00" : time.sec.toString().padLeft(2, '0')}',
-                                      style: TextStyle(
-                                        color: Constants.primaryColor,
-                                        fontSize: 15.sp,
-                                        letterSpacing: -0.24,
-                                      ),
-                                    ) :
-                                    Text(
-                                      '${time.days!+1} أيام',
-                                      style: TextStyle(
-                                        color: Constants.primaryColor,
-                                        fontSize: 15.sp,
-                                        letterSpacing: -0.24,
-                                      ),
-                                    ),
+                                    time.days == 0
+                                        ? Text(
+                                            '${time.hours == null ? "00" : time.hours.toString().padLeft(2, '0')}:${time.min == null ? "00" : time.min.toString().padLeft(2, '0')}:${time.sec == null ? "00" : time.sec.toString().padLeft(2, '0')}',
+                                            style: TextStyle(
+                                              color: Constants.primaryColor,
+                                              fontSize: 15.sp,
+                                              letterSpacing: -0.24,
+                                            ),
+                                          )
+                                        : Text(
+                                            '${time.days! + 1} أيام',
+                                            style: TextStyle(
+                                              color: Constants.primaryColor,
+                                              fontSize: 15.sp,
+                                              letterSpacing: -0.24,
+                                            ),
+                                          ),
                                     6.pw,
                                     Icon(
                                       Icons.timer_sharp,

@@ -7,7 +7,7 @@ import '../../controller/questions_controller.dart';
 import '../widgets/shimmer/questions_shimmer.dart';
 
 class QuestionsFragment extends StatelessWidget {
-  const QuestionsFragment({Key? key}) : super(key: key);
+  const QuestionsFragment({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +37,7 @@ class QuestionsFragment extends StatelessWidget {
                     )
                   : ListView.separated(
                       padding: EdgeInsets.only(
-                        left: 20.w,
-                        right: 20.w,
-                        top: 20.h,
-                        bottom: 200.h
-                      ),
+                          left: 20.w, right: 20.w, top: 20.h, bottom: 200.h),
                       itemCount: controller.questions.length,
                       separatorBuilder: (context, index) => 10.ph,
                       itemBuilder: (context, index) {
@@ -85,9 +81,10 @@ class QuestionsFragment extends StatelessWidget {
                             Text(
                               controller.questions[index]['answer'],
                               style: TextStyle(
-                                fontSize: 11.sp,
+                                fontSize: 14.sp,
                                 height: 2.h,
-                                color: const Color(0xFF4A4A4A),
+                                fontWeight: FontWeight.w400,
+                                color: const Color(0xFF545454),
                               ),
                             ),
                           ],
