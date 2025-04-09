@@ -26,11 +26,18 @@ class API {
       ));
   }
 
-  void get(
-      {required String url, required Function(ApiResponse) onResponse}) async {
+  Future<void> get({
+    String? baseURL,
+    required String url,
+    required Function(ApiResponse) onResponse,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     noInternet = false;
     try {
-      var response = await _dio().get("$baseURL$url");
+      var response = await _dio().get(
+        "${baseURL ?? this.baseURL}$url",
+        queryParameters: queryParameters,
+      );
       ApiResponse apiResponse = ApiResponse(
           statusCode: response.statusCode ?? 0,
           message: handleMessage(response.statusCode ?? 0),

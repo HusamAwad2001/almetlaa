@@ -44,8 +44,8 @@ class HomeFragment extends GetView<HomeController> {
                 22.ph,
                 const _NewsWidget(),
                 22.ph,
-                const _VideosWidget(),
-                20.ph,
+                // const _VideosWidget(),
+                // 20.ph,
               ],
             ),
           ),
@@ -495,6 +495,7 @@ class _NewsShimmer extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _VideosWidget extends StatelessWidget {
   const _VideosWidget();
 

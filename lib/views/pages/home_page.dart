@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/fragments/videos_channel_fragment.dart';
+
 import '../../controller/home_controller.dart';
 import '../../values/constants.dart';
 import '../../views/fragments/home_fragment.dart';
@@ -21,6 +23,7 @@ class HomePage extends StatelessWidget {
             index: controller.selectedPage,
             children: [
               const HomeFragment(),
+              const VideosChannelFragment(),
               const SuggestionsFragment(),
               const QuestionsFragment(),
               const ProfileFragment(),
@@ -76,6 +79,14 @@ class HomePage extends StatelessWidget {
                         color: Colors.white,
                       ),
                       label: 'الرئيسية',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.video_collection_outlined),
+                      selectedIcon: Icon(
+                        Icons.video_collection,
+                        color: Colors.white,
+                      ),
+                      label: 'الفيديوهات',
                     ),
                     NavigationDestination(
                       icon: Icon(Icons.health_and_safety_outlined),
