@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:almetlaa/views/widgets/snack.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../core/global.dart';
@@ -55,7 +54,8 @@ class SurplusesDetailsController extends GetxController {
             socket.on('${arguments['_id']}', (data) {
               print('-----------------------------');
               log(data.toString());
-              print(arguments['_id'] + "socket======>" + data['data'].toString());
+              print(
+                  arguments['_id'] + "socket======>" + data['data'].toString());
               listProposals.add(data['data']);
               update();
             });
