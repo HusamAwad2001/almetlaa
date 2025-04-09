@@ -76,7 +76,7 @@ class _AppBarWidget extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 22.sp,
+              fontSize: 20.sp,
             ),
           ),
         ],

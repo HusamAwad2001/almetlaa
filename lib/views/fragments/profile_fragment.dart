@@ -17,9 +17,13 @@ class ProfileFragment extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text(
+        title: Text(
           "حسابي",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            fontSize: 20.sp,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),

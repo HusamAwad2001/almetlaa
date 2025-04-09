@@ -8,7 +8,7 @@ class APIService {
 
   static final APIService instance = APIService._instantiate();
 
-  String apiKey = '';
+  String apiKey = 'AIzaSyDRl98VUYN7f6gQzIzRalAW-SK3KRVLfFE';
   final String channelId = 'UCxQPt13KP_y4LKy7xuriDnA';
 
   final String _baseUrl = 'www.googleapis.com';
