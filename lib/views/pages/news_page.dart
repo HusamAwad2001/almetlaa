@@ -116,6 +116,13 @@ class NewsPage extends GetView<NewsController> {
                                           imageUrl: item['image'],
                                           width: double.infinity,
                                           height: 117.h,
+                                          errorWidget: (_, __, ___) {
+                                            return Image.asset(
+                                              'assets/images/baiti_logo.png',
+                                              height: 117.h,
+                                              // color: Constants.primaryColor,
+                                            );
+                                          },
                                         ),
                                       ),
                                       7.ph,
