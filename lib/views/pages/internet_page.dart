@@ -62,11 +62,11 @@ class InternetPage extends StatelessWidget {
                                   await InternetAddress.lookup('google.com');
                               if (result.isNotEmpty &&
                                   result[0].rawAddress.isNotEmpty) {
-                                if (Global.token == "") {
-                                  Get.offAllNamed(Routes.loginPage);
-                                } else {
-                                  Get.back();
-                                }
+                                Get.offAllNamed(
+                                  Global.token == ""
+                                      ? Routes.loginPage
+                                      : Routes.homePage,
+                                );
                               }
                             } on SocketException catch (_) {
                               controller.loading = false;

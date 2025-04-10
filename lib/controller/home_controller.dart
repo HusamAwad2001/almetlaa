@@ -19,14 +19,14 @@ class HomeController extends GetxController {
     });
     getSlider();
     getNews();
-    getVideos();
+    // getVideos();
     super.onInit();
   }
 
   List sliderImages = [];
   int currentPos = 0;
   bool loadingSlider = true;
-  getSlider() {
+  Future getSlider() async {
     API().get(
         url: '/images?limit=100',
         onResponse: (response) {
@@ -43,7 +43,7 @@ class HomeController extends GetxController {
   List news = [];
   bool loadingNews = true;
   int newsLimit = 6;
-  getNews() {
+  Future getNews() async {
     API().get(
         url: '/news',
         onResponse: (response) {
@@ -61,7 +61,7 @@ class HomeController extends GetxController {
   List videos = [];
   bool loadingVideos = true;
   int videoLimit = 6;
-  getVideos() {
+  Future getVideos() async {
     API().get(
         url: '/video',
         onResponse: (response) {

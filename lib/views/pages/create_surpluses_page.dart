@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import '../widgets/text_field_widget.dart';
 
 class CreateSurplusesPage extends StatelessWidget {
-  const CreateSurplusesPage({Key? key}) : super(key: key);
+  const CreateSurplusesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,8 @@ class CreateSurplusesPage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text('إضافة فوائض'),
+        title: const Text('إضافة فوائض', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
       ),

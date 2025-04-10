@@ -8,7 +8,7 @@ import '../../controller/allowance_controller.dart';
 import '../widgets/text_field_widget.dart';
 
 class CreateExchangePage extends StatelessWidget {
-  const CreateExchangePage({Key? key}) : super(key: key);
+  const CreateExchangePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,11 @@ class CreateExchangePage extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text('إضافة بدل'),
+        title: const Text(
+          'إضافة بدل',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
       ),

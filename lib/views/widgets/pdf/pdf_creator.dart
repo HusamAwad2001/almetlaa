@@ -7,13 +7,12 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class PdfGenerator {
-
   static createPdf(var listMyBills) async {
     String path = (await getApplicationDocumentsDirectory()).path;
-    File file = File("${path}/almetlae.pdf");
+    File file = File("$path/baiti.pdf");
 
     pw.Document pdf = pw.Document();
-    pw.Page page=await _createPage(listMyBills);
+    pw.Page page = await _createPage(listMyBills);
     pdf.addPage(page);
 
     Uint8List bytes = await pdf.save();
@@ -21,7 +20,7 @@ class PdfGenerator {
     await OpenFile.open(file.path);
   }
 
-  static Future<pw.Page> _createPage(var listMyBills) async{
+  static Future<pw.Page> _createPage(var listMyBills) async {
     var font = await rootBundle.load("assets/fonts/amarai.ttf");
     return pw.Page(
       textDirection: pw.TextDirection.rtl,
@@ -44,7 +43,6 @@ class PdfGenerator {
             children: [
               pw.TableRow(
                 children: [
-
                   pw.Center(
                     child: pw.Padding(
                       padding: pw.EdgeInsets.symmetric(vertical: 14.h),
@@ -53,12 +51,10 @@ class PdfGenerator {
                         style: pw.TextStyle(
                             fontSize: 15.sp,
                             fontWeight: pw.FontWeight.bold,
-                            font: pw.Font.ttf(font)
-                        ),
+                            font: pw.Font.ttf(font)),
                       ),
                     ),
                   ),
-
                   pw.Center(
                     child: pw.Padding(
                       padding: pw.EdgeInsets.symmetric(vertical: 14.h),
@@ -67,12 +63,10 @@ class PdfGenerator {
                         style: pw.TextStyle(
                             fontSize: 15.sp,
                             fontWeight: pw.FontWeight.bold,
-                            font: pw.Font.ttf(font)
-                        ),
+                            font: pw.Font.ttf(font)),
                       ),
                     ),
                   ),
-
                   pw.Center(
                     child: pw.Padding(
                       padding: pw.EdgeInsets.symmetric(vertical: 14.h),
@@ -81,12 +75,10 @@ class PdfGenerator {
                         style: pw.TextStyle(
                             fontSize: 15.sp,
                             fontWeight: pw.FontWeight.bold,
-                            font: pw.Font.ttf(font)
-                        ),
+                            font: pw.Font.ttf(font)),
                       ),
                     ),
                   ),
-
                 ],
               ),
               ...listMyBills.asMap().entries.map((e) {
@@ -97,7 +89,6 @@ class PdfGenerator {
                     color: index.isEven ? PdfColor.fromHex('C2DDFF') : null,
                   ),
                   children: [
-
                     pw.Container(
                       width: double.infinity,
                       alignment: pw.Alignment.center,
@@ -110,7 +101,6 @@ class PdfGenerator {
                         style: pw.TextStyle(fontSize: 13.sp),
                       ),
                     ),
-
                     pw.Container(
                       width: double.infinity,
                       alignment: pw.Alignment.center,
@@ -120,10 +110,10 @@ class PdfGenerator {
                         '${item['amount'].toString()} د.ك',
                         maxLines: 1,
                         overflow: pw.TextOverflow.clip,
-                        style: pw.TextStyle(fontSize: 13.sp,font: pw.Font.ttf(font)),
+                        style: pw.TextStyle(
+                            fontSize: 13.sp, font: pw.Font.ttf(font)),
                       ),
                     ),
-
                     pw.Container(
                       width: double.infinity,
                       alignment: pw.Alignment.center,
@@ -137,7 +127,6 @@ class PdfGenerator {
                         style: pw.TextStyle(fontSize: 13.sp),
                       ),
                     ),
-
                   ],
                 );
               }).toList(),
@@ -148,12 +137,14 @@ class PdfGenerator {
     );
   }
 
-  static createGeneralPdf({required String total,required List listAllBills}) async {
+  static createGeneralPdf(
+      {required String total, required List listAllBills}) async {
     String path = (await getApplicationDocumentsDirectory()).path;
-    File file = File("${path}/almetlae.pdf");
+    File file = File("$path/baiti.pdf");
 
     pw.Document pdf = pw.Document();
-    pw.Page page=await _createGeneralPage(total: total,listAllBills: listAllBills);
+    pw.Page page =
+        await _createGeneralPage(total: total, listAllBills: listAllBills);
     pdf.addPage(page);
 
     Uint8List bytes = await pdf.save();
@@ -161,7 +152,8 @@ class PdfGenerator {
     await OpenFile.open(file.path);
   }
 
-  static Future<pw.Page> _createGeneralPage({required String total,required List listAllBills}) async{
+  static Future<pw.Page> _createGeneralPage(
+      {required String total, required List listAllBills}) async {
     var font = await rootBundle.load("assets/fonts/amarai.ttf");
     return pw.Page(
       textDirection: pw.TextDirection.rtl,
@@ -184,7 +176,6 @@ class PdfGenerator {
             children: [
               pw.TableRow(
                 children: [
-
                   pw.Container(
                     width: double.infinity,
                     alignment: pw.Alignment.center,
@@ -197,7 +188,6 @@ class PdfGenerator {
                       style: pw.TextStyle(fontSize: 13.sp),
                     ),
                   ),
-
                   pw.Center(
                     child: pw.Padding(
                       padding: pw.EdgeInsets.symmetric(vertical: 14.h),
@@ -206,8 +196,7 @@ class PdfGenerator {
                         style: pw.TextStyle(
                             fontSize: 15.sp,
                             fontWeight: pw.FontWeight.bold,
-                            font: pw.Font.ttf(font)
-                        ),
+                            font: pw.Font.ttf(font)),
                       ),
                     ),
                   ),
@@ -230,7 +219,8 @@ class PdfGenerator {
                         '${item['total'].toString()} د.ك',
                         maxLines: 1,
                         overflow: pw.TextOverflow.clip,
-                        style: pw.TextStyle(fontSize: 13.sp,font: pw.Font.ttf(font)),
+                        style: pw.TextStyle(
+                            fontSize: 13.sp, font: pw.Font.ttf(font)),
                       ),
                     ),
                     pw.Container(
@@ -247,7 +237,7 @@ class PdfGenerator {
                     ),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         );

@@ -1,10 +1,11 @@
-import 'package:almetlaa/controller/post_controller.dart';
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/app_image.dart';
-import 'package:almetlaa/views/widgets/shimmer/posts_shimmer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../controller/post_controller.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/app_image.dart';
+import '../../views/widgets/shimmer/posts_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../widgets/text_field_widget.dart';
@@ -72,7 +73,7 @@ class PostPage extends GetView<PostController> {
                   separatorBuilder: (_, __) => 29.ph,
                   itemBuilder: (_, index) {
                     return Container(
-                      // height: 300.h,
+                      key: UniqueKey(),
                       width: double.infinity,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -94,28 +95,32 @@ class PostPage extends GetView<PostController> {
                                     body: Stack(
                                       alignment: Alignment.topLeft,
                                       children: [
-                                        InkWell(
-                                          onTap: () => Get.back(),
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: 28.w, top: 59.w),
-                                            padding: EdgeInsets.all(10.w),
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xff646464),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: const Icon(
-                                              Icons.close,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
                                         Center(
                                           child: Hero(
                                             tag: Get.arguments,
                                             child: AppImage(
                                               imageUrl: Get.arguments,
                                               width: double.infinity,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 28.w,
+                                          top: 59.w,
+                                          child: InkWell(
+                                            onTap: () => Get.back(),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            child: Container(
+                                              padding: EdgeInsets.all(10.w),
+                                              decoration: const BoxDecoration(
+                                                color: Color(0xff646464),
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: const Icon(
+                                                Icons.close,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -231,12 +236,10 @@ class PostPage extends GetView<PostController> {
           controller.imageController.clear();
           controller.imageFile?.delete();
           Get.bottomSheet(
-              Column(
+            SafeArea(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
                   InkWell(
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
@@ -259,18 +262,18 @@ class PostPage extends GetView<PostController> {
                   const SizedBox(
                     height: 20,
                   ),
+                  20.ph,
                   FloatingActionButton(
                     onPressed: () => controller.post(),
                     backgroundColor: Constants.primaryColor,
-                    child: const Icon(Icons.add),
-                  ),
-                  const SizedBox(
-                    height: 20,
+                    child: const Icon(Icons.add, color: Colors.white),
                   ),
                 ],
-              ),
-              isScrollControlled: true,
-              backgroundColor: Colors.white);
+              ).paddingAll(20.w),
+            ),
+            isScrollControlled: true,
+            backgroundColor: Colors.white,
+          );
         },
         backgroundColor: Constants.primaryColor,
         child: const Icon(

@@ -17,7 +17,10 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: Text(Get.arguments.toString(),style: const TextStyle(color: Colors.white),),
+        title: Text(
+          Get.arguments.toString(),
+          style: const TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -181,7 +184,7 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                                       ),
                                     ],
                                   );
-                                }).toList(),
+                                }),
                               ],
                             ),
                           ),
@@ -194,13 +197,13 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                                     CreateBatchDialog.show();
                                   },
                                   style: ButtonStyle(
-                                    shape: MaterialStateProperty.all(
+                                    shape: WidgetStateProperty.all(
                                       RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.r),
                                       ),
                                     ),
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                       Constants.primaryColor,
                                     ),
                                   ),
@@ -215,16 +218,17 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    PdfGenerator.createPdf(controller.listMyBills);
+                                    PdfGenerator.createPdf(
+                                        controller.listMyBills);
                                   },
                                   style: ButtonStyle(
-                                    shape: MaterialStateProperty.all(
+                                    shape: WidgetStateProperty.all(
                                       RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(10.r),
                                       ),
                                     ),
-                                    backgroundColor: MaterialStateProperty.all(
+                                    backgroundColor: WidgetStateProperty.all(
                                       Constants.primaryColor,
                                     ),
                                   ),
@@ -260,12 +264,12 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                             Get.toNamed(Routes.createBatchPage);
                           },
                           style: ButtonStyle(
-                            shape: MaterialStateProperty.all(
+                            shape: WidgetStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
                             ),
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                               Constants.primaryColor,
                             ),
                           ),
@@ -285,87 +289,90 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
 
   displayBottomInfoSheet(dynamic item) {
     Get.bottomSheet(
-      SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                8.ph,
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(15.r),
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  child: SizedBox(
-                    width: 250.w,
-                    height: 250.h,
-                    child: CachedNetworkImage(
+      SafeArea(
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  8.ph,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.r),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: SizedBox(
                       width: 250.w,
                       height: 250.h,
-                      fit: BoxFit.cover,
-                      imageUrl: item['image'],
-                      fadeInCurve: Curves.easeIn,
-                      fadeOutCurve: Curves.easeOut,
-                      placeholder: (context, url) {
-                        return const Center(child: CircularProgressIndicator());
-                      },
-                      errorWidget: (context, url, error) {
-                        return const Icon(
-                          Icons.error,
-                        );
-                      },
+                      child: CachedNetworkImage(
+                        width: 250.w,
+                        height: 250.h,
+                        fit: BoxFit.cover,
+                        imageUrl: item['image'],
+                        fadeInCurve: Curves.easeIn,
+                        fadeOutCurve: Curves.easeOut,
+                        placeholder: (context, url) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        },
+                        errorWidget: (context, url, error) {
+                          return const Icon(
+                            Icons.error,
+                          );
+                        },
+                      ),
                     ),
                   ),
-                ),
-                8.ph,
-                ListTile(
-                  title: const Text(
-                    'نوع الدفعة',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  8.ph,
+                  ListTile(
+                    title: const Text(
+                      'نوع الدفعة',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    subtitle: Text(
+                      item['batchType'],
+                    ).paddingOnly(top: 7.h),
                   ),
-                  subtitle: Text(
-                    item['batchType'],
-                  ).paddingOnly(top: 7.h),
-                ),
-                ListTile(
-                  title: const Text(
-                    'المبلغ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  ListTile(
+                    title: const Text(
+                      'المبلغ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    subtitle:
+                        Text(item['amount'].toString()).paddingOnly(top: 7.h),
                   ),
-                  subtitle:
-                      Text(item['amount'].toString()).paddingOnly(top: 7.h),
-                ),
-                ListTile(
-                  title: const Text(
-                    'التاريخ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                  ListTile(
+                    title: const Text(
+                      'التاريخ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    subtitle: Text(
+                      item['date'],
+                    ).paddingOnly(top: 7.h),
                   ),
-                  subtitle: Text(
-                    item['date'],
-                  ).paddingOnly(top: 7.h),
-                ),
-              ],
-            ),
-            Positioned(
-              top: 10.h,
-              left: 10.h,
-              child: CircleAvatar(
-                radius: 20.r,
-                backgroundColor: Colors.grey,
-                child: IconButton(
-                  onPressed: () => Get.back(),
-                  icon: Icon(Icons.close, size: 20.w, color: Colors.white),
+                ],
+              ),
+              Positioned(
+                top: 10.h,
+                left: 10.h,
+                child: CircleAvatar(
+                  radius: 20.r,
+                  backgroundColor: Colors.grey,
+                  child: IconButton(
+                    onPressed: () => Get.back(),
+                    icon: Icon(Icons.close, size: 20.w, color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       backgroundColor: Colors.white,
@@ -435,13 +442,13 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
 
   buttonStyle(Color backgroundColor) {
     return ButtonStyle(
-      shape: MaterialStateProperty.all(
+      shape: WidgetStateProperty.all(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),
       ),
-      minimumSize: MaterialStateProperty.all(Size(100.w, 00.h)),
-      backgroundColor: MaterialStateProperty.all(backgroundColor),
+      minimumSize: WidgetStateProperty.all(Size(100.w, 00.h)),
+      backgroundColor: WidgetStateProperty.all(backgroundColor),
     );
   }
 }

@@ -38,6 +38,7 @@ class SurplusItemWidget extends StatelessWidget {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               clipBehavior: Clip.none,
@@ -181,44 +182,11 @@ class SurplusItemWidget extends StatelessWidget {
               ],
             ),
             30.ph,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  item['name'],
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    letterSpacing: -0.24,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 40.w,
-                    height: 40.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          offset: const Offset(0, 4),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/images/share.png',
-                      width: 20.w,
-                      color: Constants.primaryColor,
-                    ),
-                  ),
-                ),
-              ],
+            Text(
+              item['name'],
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 16.sp),
             ).paddingOnly(right: 17.w, left: 10.w, bottom: 10.w),
           ],
         ),

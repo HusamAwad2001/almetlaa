@@ -70,7 +70,7 @@ class EventsPage extends GetView<EventsController> {
                 return controller.loadingEvents
                     ? const VideosShimmer()
                     : controller.events.isEmpty
-                        ? const Text("لا يوجد بيانات")
+                        ? const Text("لا يوجد فعاليات")
                             .paddingOnly(top: Get.height / 3.5)
                         : ListView.separated(
                             shrinkWrap: true,
@@ -92,8 +92,7 @@ class EventsPage extends GetView<EventsController> {
                                           .withOpacity(0.25),
                                       spreadRadius: 0,
                                       blurRadius: 2,
-                                      offset: const Offset(
-                                          0, 2), // changes position of shadow
+                                      offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
@@ -105,6 +104,8 @@ class EventsPage extends GetView<EventsController> {
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(20)),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           child: AppImage(
@@ -117,7 +118,13 @@ class EventsPage extends GetView<EventsController> {
                                           height: 1,
                                           color: Colors.black12,
                                         ),
-                                        Text(item['name']).paddingAll(10)
+                                        Text(
+                                          item['name'],
+                                          style: TextStyle(
+                                            fontSize: 15.sp,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ).paddingAll(10)
                                       ],
                                     ),
                                   ),

@@ -31,22 +31,31 @@ class HomeFragment extends GetView<HomeController> {
             preferredSize: const Size.fromHeight(60),
             child: const _AppBarWidget(),
           ),
-          body: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            controller: controller.scrollController,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                20.ph,
-                const _SliderWidget(),
-                30.ph,
-                const _ServicesWidget(),
-                22.ph,
-                const _NewsWidget(),
-                22.ph,
-                // const _VideosWidget(),
-                // 20.ph,
-              ],
+          body: RefreshIndicator(
+            onRefresh: () {
+              return Future.wait([
+                controller.getSlider(),
+                controller.getNews(),
+                controller.getVideos(),
+              ]);
+            },
+            child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              controller: controller.scrollController,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  20.ph,
+                  const _SliderWidget(),
+                  30.ph,
+                  const _ServicesWidget(),
+                  22.ph,
+                  const _NewsWidget(),
+                  22.ph,
+                  // const _VideosWidget(),
+                  // 20.ph,
+                ],
+              ),
             ),
           ),
         );

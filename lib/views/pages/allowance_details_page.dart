@@ -27,17 +27,17 @@ class AllowanceDetailsPage extends StatelessWidget {
             iconTheme: const IconThemeData(color: Colors.white),
             centerTitle: true,
             elevation: 0,
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Image.asset(
-                  'assets/images/share.png',
-                  color: Colors.white,
-                  width: 25.w,
-                  height: 25.h,
-                ),
-              )
-            ],
+            // actions: [
+            //   IconButton(
+            //     onPressed: () {},
+            //     icon: Image.asset(
+            //       'assets/images/share.png',
+            //       color: Colors.white,
+            //       width: 25.w,
+            //       height: 25.h,
+            //     ),
+            //   )
+            // ],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
