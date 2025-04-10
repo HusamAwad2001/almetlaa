@@ -235,41 +235,120 @@ class PostPage extends GetView<PostController> {
         onPressed: () {
           controller.imageController.clear();
           controller.imageFile?.delete();
+          // Get.bottomSheet(
+          //   SafeArea(
+          //     child: Column(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         InkWell(
+          //           onTap: () {
+          //             FocusManager.instance.primaryFocus?.unfocus();
+          //             controller.pickImage();
+          //           },
+          //           child: TextFieldWidget(
+          //             controller: controller.imageController,
+          //             label: 'صورة الواجهة',
+          //             enabled: false,
+          //             radius: 10.r,
+          //             labelColor: const Color(0xFFB0B0B0),
+          //             hintFontWeight: FontWeight.bold,
+          //             suffixIcon: Container(
+          //               padding: EdgeInsets.all(15.w),
+          //               child:
+          //                   SvgPicture.asset('assets/images/select_image.svg'),
+          //             ),
+          //           ),
+          //         ),
+          //         const SizedBox(
+          //           height: 20,
+          //         ),
+          //         20.ph,
+          //         FloatingActionButton(
+          //           onPressed: () => controller.post(),
+          //           backgroundColor: Constants.primaryColor,
+          //           child: const Icon(Icons.add, color: Colors.white),
+          //         ),
+          //       ],
+          //     ).paddingAll(20.w),
+          //   ),
+          //   isScrollControlled: true,
+          //   backgroundColor: Colors.white,
+          // );
           Get.bottomSheet(
             SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      controller.pickImage();
-                    },
-                    child: TextFieldWidget(
-                      controller: controller.imageController,
-                      label: 'صورة الواجهة',
-                      enabled: false,
-                      radius: 10.r,
-                      labelColor: const Color(0xFFB0B0B0),
-                      hintFontWeight: FontWeight.bold,
-                      suffixIcon: Container(
-                        padding: EdgeInsets.all(15.w),
-                        child:
-                            SvgPicture.asset('assets/images/select_image.svg'),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          controller.pickImage();
+                        },
+                        child: TextFieldWidget(
+                          controller: controller.imageController,
+                          label: 'صورة الواجهة',
+                          enabled: false,
+                          radius: 10.r,
+                          labelColor: const Color(0xFFB0B0B0),
+                          hintFontWeight: FontWeight.bold,
+                          suffixIcon: Padding(
+                            padding: EdgeInsets.all(15.w),
+                            child: SvgPicture.asset(
+                              'assets/images/select_image.svg',
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      25.ph,
+                      // Align(
+                      //   alignment: Alignment.center,
+                      //   child: FloatingActionButton(
+                      //     onPressed: controller.post,
+                      //     backgroundColor: Constants.primaryColor,
+                      //     child: const Icon(Icons.add, color: Colors.white),
+                      //   ),
+                      // ),
+                      ElevatedButton.icon(
+                        onPressed: controller.post,
+                        icon: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        label: const Text(
+                          "إضافة",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontFamily: 'amarai',
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50.h),
+                          backgroundColor: Constants.primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 15.h),
+                          textStyle: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  20.ph,
-                  FloatingActionButton(
-                    onPressed: () => controller.post(),
-                    backgroundColor: Constants.primaryColor,
-                    child: const Icon(Icons.add, color: Colors.white),
-                  ),
-                ],
-              ).paddingAll(20.w),
+                ),
+              ),
             ),
             isScrollControlled: true,
             backgroundColor: Colors.white,
