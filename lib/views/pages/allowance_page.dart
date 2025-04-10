@@ -9,7 +9,7 @@ import '../../routes/routes.dart';
 import '../widgets/shimmer/allowance_shimmer.dart';
 
 class AllowancePage extends StatelessWidget {
-  const AllowancePage({Key? key}) : super(key: key);
+  const AllowancePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +95,7 @@ class AllowancePage extends StatelessWidget {
                         'assets/images/${controller.isGrid ? 'list' : 'grid'}.png',
                         width: 25.w,
                         height: 25.h,
+                        color: Constants.darkPrimaryColor,
                       ),
                     ),
                   ),
@@ -119,7 +120,7 @@ class AllowancePage extends StatelessWidget {
 }
 
 class ListViewItem extends StatelessWidget {
-  const ListViewItem({Key? key}) : super(key: key);
+  const ListViewItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +164,7 @@ class ListViewItem extends StatelessWidget {
                                 'assets/images/transfer.png',
                                 width: 60.w,
                                 height: 60.h,
+                                color: Constants.darkPrimaryColor,
                               ).paddingAll(30.w),
                               Expanded(
                                 child: Column(
@@ -176,17 +178,17 @@ class ListViewItem extends StatelessWidget {
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontSize: 15.sp,
+                                        fontSize: 18.sp,
                                         letterSpacing: -0.24,
                                       ),
                                     ),
                                     9.ph,
                                     Text(
                                       item['description'],
-                                      maxLines: 1,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: 14.sp,
                                         letterSpacing: -0.24,
                                         color: const Color(0xFF989898),
                                       ),
@@ -198,7 +200,7 @@ class ListViewItem extends StatelessWidget {
                                       textAlign: TextAlign.left,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                        fontSize: 10.sp,
+                                        fontSize: 14.sp,
                                         letterSpacing: -0.24,
                                         color: const Color(0xFF989898),
                                       ),
@@ -218,7 +220,7 @@ class ListViewItem extends StatelessWidget {
 }
 
 class GridViewItem extends StatelessWidget {
-  const GridViewItem({Key? key}) : super(key: key);
+  const GridViewItem({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -266,6 +268,7 @@ class GridViewItem extends StatelessWidget {
                                 'assets/images/transfer.png',
                                 width: 60.w,
                                 height: 60.h,
+                                color: Constants.darkPrimaryColor,
                               ).paddingOnly(
                                   top: 16.h,
                                   bottom: 8.h,
@@ -276,7 +279,7 @@ class GridViewItem extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: 16.sp,
                                   letterSpacing: -0.24,
                                 ),
                               ).paddingSymmetric(horizontal: 16.w),
@@ -286,7 +289,7 @@ class GridViewItem extends StatelessWidget {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: 14.sp,
                                   letterSpacing: -0.24,
                                   color: const Color(0xFF989898),
                                 ),
@@ -298,7 +301,7 @@ class GridViewItem extends StatelessWidget {
                                 textAlign: TextAlign.left,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                  fontSize: 10.sp,
+                                  fontSize: 12.sp,
                                   letterSpacing: -0.24,
                                   color: const Color(0xFF989898),
                                 ),
