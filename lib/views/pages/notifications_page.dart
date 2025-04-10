@@ -1,5 +1,5 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/shimmer/notifications_shimmer.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/shimmer/notifications_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,22 +15,28 @@ class NotificationsPage extends StatelessWidget {
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("الإشعارات",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "الإشعارات",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
         actions: [
           GetBuilder<NotificationsController>(
             builder: (controller) {
-              return controller.loadingNotifications||controller.notifications.isEmpty? const SizedBox() : TextButton(
-                child: Text(
-                  'مسح الكل',
-                  style: TextStyle(color: Colors.white, fontSize: 13.sp),
-                ),
-                onPressed: () {
-                  controller.deleteAll();
-                },
-              );
+              return controller.loadingNotifications ||
+                      controller.notifications.isEmpty
+                  ? const SizedBox()
+                  : TextButton(
+                      child: Text(
+                        'مسح الكل',
+                        style: TextStyle(color: Colors.white, fontSize: 13.sp),
+                      ),
+                      onPressed: () {
+                        controller.deleteAll();
+                      },
+                    );
             },
           )
         ],
@@ -43,7 +49,8 @@ class NotificationsPage extends StatelessWidget {
               : controller.notifications.isEmpty
                   ? const Center(child: Text('لا يوجد إشعارات'))
                   : ListView.separated(
-                      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 15.h, horizontal: 15.w),
                       itemCount: controller.notifications.length,
                       separatorBuilder: (context, index) => 10.ph,
                       itemBuilder: (context, index) {
@@ -59,7 +66,8 @@ class NotificationsPage extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item['title'], style: TextStyle(fontSize: 14.sp)),
+                                    Text(item['title'],
+                                        style: TextStyle(fontSize: 14.sp)),
                                     5.ph,
                                     Text(
                                       item['message'],
@@ -73,16 +81,21 @@ class NotificationsPage extends StatelessWidget {
                                     ),
                                     5.ph,
                                     Text(
-                                      item['createdAt'].toString().substring(0, 10),
-                                      style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                                      item['createdAt']
+                                          .toString()
+                                          .substring(0, 10),
+                                      style: TextStyle(
+                                          fontSize: 10.sp, color: Colors.grey),
                                     ),
                                   ],
                                 ),
                               ),
                               10.pw,
                               GestureDetector(
-                                onTap: () => controller.deleteNotification(item['_id'], index),
-                                child: Icon(Icons.close, color: Colors.grey, size: 20.w),
+                                onTap: () => controller.deleteNotification(
+                                    item['_id'], index),
+                                child: Icon(Icons.close,
+                                    color: Colors.grey, size: 20.w),
                               ),
                             ],
                           ).paddingAll(15),

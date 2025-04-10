@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:almetlaa/routes/routes.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../routes/routes.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

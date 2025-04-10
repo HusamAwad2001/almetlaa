@@ -1,6 +1,6 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/loading_dialog.dart';
-import 'package:almetlaa/views/widgets/snack.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/loading_dialog.dart';
+import '../../views/widgets/snack.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

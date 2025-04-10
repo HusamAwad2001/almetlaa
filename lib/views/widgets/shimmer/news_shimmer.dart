@@ -1,4 +1,4 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewsShimmer extends StatelessWidget {
-  const NewsShimmer({Key? key}) : super(key: key);
+  const NewsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +25,17 @@ class NewsShimmer extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
-              border: Border.all(color: Colors.grey,width: 0.5),
+              border: Border.all(color: Colors.grey, width: 0.5),
             ),
             child: Column(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.r),
-                      topRight: Radius.circular(20.r),
-                    ),
-                    color: Colors.grey
-                  ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
+                      ),
+                      color: Colors.grey),
                   width: double.infinity,
                   height: 117.h,
                 ),

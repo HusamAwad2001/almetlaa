@@ -1,10 +1,10 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 class QuestionsShimmer extends StatelessWidget {
-  const QuestionsShimmer({Key? key}) : super(key: key);
+  const QuestionsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,9 +42,7 @@ class HomeServiceWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             14.ph,
-            Expanded(child: Image.asset(
-              image
-            )),
+            Expanded(child: Image.asset(image)),
             11.ph,
             Text(
               title,

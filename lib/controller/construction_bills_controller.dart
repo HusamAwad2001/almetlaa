@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:almetlaa/views/widgets/loading_dialog.dart';
-import 'package:almetlaa/views/widgets/snack.dart';
+import '../../views/widgets/loading_dialog.dart';
+import '../../views/widgets/snack.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +48,7 @@ class ConstructionBillsController extends GetxController {
   bool loadingMyBills = true;
 
   getMyBills(String id) {
-    loadingMyBills=true;
+    loadingMyBills = true;
     update();
     API().get(
       url: '/bills/mybills?item=$id',

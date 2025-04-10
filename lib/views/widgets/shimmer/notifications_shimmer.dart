@@ -1,11 +1,11 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NotificationsShimmer extends StatelessWidget {
-  const NotificationsShimmer({Key? key}) : super(key: key);
+  const NotificationsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,8 @@ class NotificationsShimmer extends StatelessWidget {
         itemBuilder: (context, index) {
           return DecoratedBox(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: Colors.grey,width: 1)
-            ),
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: Colors.grey, width: 1)),
             child: Row(
               children: [
                 Expanded(

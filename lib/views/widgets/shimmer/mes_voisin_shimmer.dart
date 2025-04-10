@@ -1,11 +1,11 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MesVoisinShimmer extends StatelessWidget {
-  const MesVoisinShimmer({Key? key}) : super(key: key);
+  const MesVoisinShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/app_image.dart';
+import '../../views/widgets/app_image.dart';
 
 import '../../values/constants.dart';
 import 'package:flutter/material.dart';

@@ -1,11 +1,11 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class VideosShimmer extends StatelessWidget {
-  const VideosShimmer({Key? key}) : super(key: key);
+  const VideosShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class VideosShimmer extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
-              border: Border.all(color: Colors.grey,width: 0.5),
+              border: Border.all(color: Colors.grey, width: 0.5),
             ),
             margin: EdgeInsets.only(bottom: 5.h),
             child: Stack(
@@ -30,10 +30,8 @@ class VideosShimmer extends StatelessWidget {
                   height: 207.h,
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(20)),
-                    color: Colors.grey
-                  ),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.grey),
                 ),
                 Positioned.fill(
                   child: Align(

@@ -1,5 +1,5 @@
-import 'package:almetlaa/controller/register_controller.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../controller/register_controller.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,10 @@ class RegisterPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("حساب جديد",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "حساب جديد",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         leading: InkWell(

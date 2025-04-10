@@ -1,11 +1,12 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeCategoryWidget extends StatelessWidget {
-  const HomeCategoryWidget({Key? key, required this.image, required this.title, required this.url})
+  const HomeCategoryWidget(
+      {Key? key, required this.image, required this.title, required this.url})
       : super(key: key);
 
   final String image;

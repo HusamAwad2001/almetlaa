@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/app_image.dart';
+import '../../views/widgets/app_image.dart';
 
 import '../../controller/home_controller.dart';
 import '../../controller/video_details_controller.dart';

@@ -1,5 +1,5 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/text_field_widget.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

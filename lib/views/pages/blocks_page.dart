@@ -1,6 +1,6 @@
-import 'package:almetlaa/controller/blocks_controller.dart';
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/app_image.dart';
+import '../../controller/blocks_controller.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

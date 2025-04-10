@@ -1,5 +1,5 @@
-import 'package:almetlaa/routes/routes.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../routes/routes.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +15,10 @@ class RegionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("المناطق",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "المناطق",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -51,11 +54,13 @@ class RegionsPage extends StatelessWidget {
                   contentPadding: EdgeInsets.zero,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(9.r),
-                    borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(9.r),
-                    borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                   ),
                   filled: true,
                   fillColor: const Color(0xFFF5F5F5),
@@ -63,9 +68,11 @@ class RegionsPage extends StatelessWidget {
               ),
               30.ph,
               controller.loadingRegions
-                  ? const Expanded(child: Center(child: CircularProgressIndicator()))
+                  ? const Expanded(
+                      child: Center(child: CircularProgressIndicator()))
                   : controller.listAllRegions.isEmpty
-                      ? const Expanded(child: Center(child: Text('لا يوجد مناطق')))
+                      ? const Expanded(
+                          child: Center(child: Text('لا يوجد مناطق')))
                       : Expanded(
                           child: controller.loadingRegions
                               ? const Center(child: CircularProgressIndicator())
@@ -82,7 +89,8 @@ class RegionsPage extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 14.h),
                                         color: Constants.primaryColor,
                                         child: Row(
                                           children: [
@@ -138,21 +146,24 @@ class _RegionListView extends StatelessWidget {
                   arguments: item['_id'],
                 );
               },
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
-                Text(
-                  item['name'] ?? "",
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: const Color(0xFF292D32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    item['name'] ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: const Color(0xFF292D32),
+                    ),
                   ),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 20.w,
-                )
-              ],).paddingAll(15),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20.w,
+                  )
+                ],
+              ).paddingAll(15),
             ),
             const Divider(
               height: 1,

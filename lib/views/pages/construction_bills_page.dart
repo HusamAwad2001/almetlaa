@@ -1,4 +1,4 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,10 @@ class ConstructionBillsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("فواتيري",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "فواتيري",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -111,9 +114,8 @@ class ConstructionBillsPage extends StatelessWidget {
                           : ElevatedButton(
                               onPressed: () {
                                 PdfGenerator.createGeneralPdf(
-                                  total: "${controller.totalAmount}د.ك",
-                                  listAllBills: controller.listAllBills
-                                );
+                                    total: "${controller.totalAmount}د.ك",
+                                    listAllBills: controller.listAllBills);
                               },
                               style: ButtonStyle(
                                 shape: MaterialStateProperty.all(

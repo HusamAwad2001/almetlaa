@@ -1,6 +1,6 @@
-import 'package:almetlaa/controller/surpluses_controller.dart';
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/surpluse_item_widget.dart';
+import '../../controller/surpluses_controller.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/surpluse_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,7 +17,10 @@ class SurplusesPage extends GetView<SurplusesController> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("الفوائض",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "الفوائض",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -58,11 +61,13 @@ class SurplusesPage extends GetView<SurplusesController> {
                   contentPadding: EdgeInsets.zero,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(9.r),
-                    borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(9.r),
-                    borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                    borderSide:
+                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
                   ),
                   filled: true,
                   fillColor: const Color(0xFFF5F5F5),
@@ -73,27 +78,29 @@ class SurplusesPage extends GetView<SurplusesController> {
                 top: 30.h,
               ),
               controller.loadingSurpluses
-                  ? const Expanded(child: SurplusesShimmer()) :
-              Expanded(
-                child: GetBuilder<SurplusesController>(
-                  builder: (_) {
-                    return controller.listSurpluses.isEmpty
-                        ? const Center(child: Text('لا يوجد بيانات'))
-                        : ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 31.w, vertical: 24.h),
-                      itemCount: controller.listSurpluses.length,
-                      separatorBuilder: (context, index) => 15.ph,
-                      itemBuilder: (context, index) {
-                        controller.listSurpluses.reversed;
-                        final item = controller.listSurpluses[index];
-                        return SurplusItemWidget(item: item, controller: controller);
-                      },
-                    );
-                  },
-                ),
-              ),
+                  ? const Expanded(child: SurplusesShimmer())
+                  : Expanded(
+                      child: GetBuilder<SurplusesController>(
+                        builder: (_) {
+                          return controller.listSurpluses.isEmpty
+                              ? const Center(child: Text('لا يوجد بيانات'))
+                              : ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 31.w, vertical: 24.h),
+                                  itemCount: controller.listSurpluses.length,
+                                  separatorBuilder: (context, index) => 15.ph,
+                                  itemBuilder: (context, index) {
+                                    controller.listSurpluses.reversed;
+                                    final item =
+                                        controller.listSurpluses[index];
+                                    return SurplusItemWidget(
+                                        item: item, controller: controller);
+                                  },
+                                );
+                        },
+                      ),
+                    ),
             ],
           );
         },

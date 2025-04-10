@@ -1,4 +1,4 @@
-import 'package:almetlaa/core/storage.dart';
+import '../../core/storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../routes/routes.dart';

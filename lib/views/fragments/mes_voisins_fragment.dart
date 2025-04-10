@@ -1,6 +1,6 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/snack.dart';
-import 'package:almetlaa/views/widgets/text_field_widget.dart';
+import '../../values/constants.dart';
+import '../../views/widgets/snack.dart';
+import '../../views/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +16,10 @@ class MesVoisinsFragment extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("جيراني",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "جيراني",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -123,7 +126,10 @@ class MesVoisinsFragment extends StatelessWidget {
                             vertical: 15.h,
                           ),
                         ),
-                        child: const Text('أضف عنوان جديد',style: TextStyle(color: Colors.white),),
+                        child: const Text(
+                          'أضف عنوان جديد',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     )
                   : controller.loadingRegions
@@ -267,7 +273,7 @@ class MesVoisinsFragment extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontSize: 13.sp,
                                                     color:
-                                                    Constants.primaryColor,
+                                                        Constants.primaryColor,
                                                   ),
                                                 ),
                                               ],
@@ -289,7 +295,7 @@ class MesVoisinsFragment extends StatelessWidget {
                                                   style: TextStyle(
                                                     fontSize: 12.sp,
                                                     color:
-                                                    Constants.primaryColor,
+                                                        Constants.primaryColor,
                                                   ),
                                                 ),
                                               ],

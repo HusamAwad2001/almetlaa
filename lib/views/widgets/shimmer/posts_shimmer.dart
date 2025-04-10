@@ -1,11 +1,11 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PostsShimmer extends StatelessWidget {
-  const PostsShimmer({Key? key}) : super(key: key);
+  const PostsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class PostsShimmer extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.r)),
-              border: Border.all(color: Colors.grey,width:1),
+              border: Border.all(color: Colors.grey, width: 1),
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(20)),
@@ -44,7 +44,9 @@ class PostsShimmer extends StatelessWidget {
                         children: [
                           Text('━━━━━━', style: TextStyle(fontSize: 14.sp)),
                           5.ph,
-                          Text("━━━━", style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+                          Text("━━━━",
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: Colors.grey)),
                         ],
                       ),
                       const Spacer(),
@@ -53,7 +55,14 @@ class PostsShimmer extends StatelessWidget {
                         children: [
                           Text("0", style: TextStyle(fontSize: 16.sp)),
                           5.pw,
-                          IconButton(onPressed: (){}, icon: const Icon(Icons.favorite,color: Color(0xFFe74c3c),),constraints: const BoxConstraints(),)
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.favorite,
+                              color: Color(0xFFe74c3c),
+                            ),
+                            constraints: const BoxConstraints(),
+                          )
                         ],
                       ),
                     ],

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:almetlaa/core/global.dart';
+import '../../core/global.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;

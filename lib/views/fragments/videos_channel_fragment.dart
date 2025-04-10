@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/pages/video_details_screen.dart';
+import '../../views/pages/video_details_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../values/constants.dart';

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AllowanceShimmer extends StatelessWidget {
-  const AllowanceShimmer({Key? key}) : super(key: key);
+  const AllowanceShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,46 +32,46 @@ class AllowanceShimmer extends StatelessWidget {
                   height: 60.h,
                 ).paddingAll(30.w),
                 Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      "━━━━━━━━━",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 15.sp,
-                        letterSpacing: -0.24,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        "━━━━━━━━━",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 15.sp,
+                          letterSpacing: -0.24,
+                        ),
                       ),
-                    ),
-                    9.ph,
-                    Text(
-                      "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-                      maxLines: 1,
-                      // textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        letterSpacing: -0.24,
-                        color: const Color(0xFF989898),
+                      9.ph,
+                      Text(
+                        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+                        maxLines: 1,
+                        // textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          letterSpacing: -0.24,
+                          color: const Color(0xFF989898),
+                        ),
                       ),
-                    ),
-                    6.ph,
-                    Text(
-                      "━━━━━━━━",
-                      maxLines: 1,
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 10.sp,
-                        letterSpacing: -0.24,
-                        color: const Color(0xFF989898),
+                      6.ph,
+                      Text(
+                        "━━━━━━━━",
+                        maxLines: 1,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                          letterSpacing: -0.24,
+                          color: const Color(0xFF989898),
+                        ),
                       ),
-                    ),
-                  ],
-                ).paddingOnly(left: 20.w),
+                    ],
+                  ).paddingOnly(left: 20.w),
                 ),
               ],
             ),

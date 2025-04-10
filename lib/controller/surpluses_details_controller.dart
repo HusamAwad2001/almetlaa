@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:almetlaa/views/widgets/snack.dart';
+import '../../views/widgets/snack.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:socket_io_client/socket_io_client.dart' as io;

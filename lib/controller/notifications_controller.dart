@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:almetlaa/views/widgets/loading_dialog.dart';
+import '../../views/widgets/loading_dialog.dart';
 import 'package:get/get.dart';
 
 import '../utils/api.dart';

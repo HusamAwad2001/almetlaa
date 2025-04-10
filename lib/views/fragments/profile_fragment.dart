@@ -1,7 +1,7 @@
-import 'package:almetlaa/core/global.dart';
-import 'package:almetlaa/core/storage.dart';
-import 'package:almetlaa/routes/routes.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../core/global.dart';
+import '../../core/storage.dart';
+import '../../routes/routes.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

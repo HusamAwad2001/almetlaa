@@ -1,4 +1,4 @@
-import 'package:almetlaa/values/constants.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,7 +16,10 @@ class AllowancePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text("البدل",style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "البدل",
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -60,11 +63,13 @@ class AllowancePage extends StatelessWidget {
                         contentPadding: EdgeInsets.zero,
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(9.r),
-                          borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xFFF0F0F0)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(9.r),
-                          borderSide: const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
+                          borderSide: const BorderSide(
+                              width: 1, color: Color(0xFFF0F0F0)),
                         ),
                         filled: true,
                         fillColor: const Color(0xFFF5F5F5),
@@ -101,7 +106,9 @@ class AllowancePage extends StatelessWidget {
               ),
               31.ph,
               Expanded(
-                child: controller.isGrid ? const GridViewItem() : const ListViewItem(),
+                child: controller.isGrid
+                    ? const GridViewItem()
+                    : const ListViewItem(),
               ),
             ],
           );
@@ -143,7 +150,8 @@ class ListViewItem extends StatelessWidget {
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(0, 1),
-                                color: const Color(0xFF585858).withOpacity(0.25),
+                                color:
+                                    const Color(0xFF585858).withOpacity(0.25),
                                 blurRadius: 5,
                               ),
                             ],
@@ -159,7 +167,8 @@ class ListViewItem extends StatelessWidget {
                               Expanded(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
@@ -244,7 +253,8 @@ class GridViewItem extends StatelessWidget {
                             boxShadow: [
                               BoxShadow(
                                 offset: const Offset(0, 1),
-                                color: const Color(0xFF585858).withOpacity(0.25),
+                                color:
+                                    const Color(0xFF585858).withOpacity(0.25),
                                 blurRadius: 5,
                               ),
                             ],
@@ -256,7 +266,11 @@ class GridViewItem extends StatelessWidget {
                                 'assets/images/transfer.png',
                                 width: 60.w,
                                 height: 60.h,
-                              ).paddingOnly(top: 16.h, bottom: 8.h, right: 55.w, left: 55.w),
+                              ).paddingOnly(
+                                  top: 16.h,
+                                  bottom: 8.h,
+                                  right: 55.w,
+                                  left: 55.w),
                               Text(
                                 item['title'],
                                 maxLines: 1,

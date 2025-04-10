@@ -1,5 +1,5 @@
-import 'package:almetlaa/controller/news_details_controller.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../controller/news_details_controller.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';

@@ -1,5 +1,5 @@
-import 'package:almetlaa/controller/companies_controller.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../controller/companies_controller.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -23,7 +23,7 @@ class CompaniesPage extends StatelessWidget {
           builder: (controller) {
             return Text(
               controller.category['name'],
-              style: TextStyle(fontSize: 20.sp,color: Colors.white),
+              style: TextStyle(fontSize: 20.sp, color: Colors.white),
             );
           },
         ),

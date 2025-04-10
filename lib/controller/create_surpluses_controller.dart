@@ -1,6 +1,6 @@
 // import 'dart:io';
 //
-// import 'package:almetlaa/utils/api.dart';
+// import '../../utils/api.dart';
 // import 'package:dio/dio.dart' as dio;
 // import 'package:flutter/cupertino.dart';
 // import 'package:get/get.dart';

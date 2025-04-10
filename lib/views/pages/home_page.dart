@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/fragments/videos_channel_fragment.dart';
+import '../../views/fragments/videos_channel_fragment.dart';
 
 import '../../controller/home_controller.dart';
 import '../../values/constants.dart';

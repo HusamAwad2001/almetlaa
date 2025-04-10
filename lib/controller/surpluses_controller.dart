@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:almetlaa/utils/api.dart';
+import '../../utils/api.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -11,7 +11,6 @@ import '../views/widgets/loading_dialog.dart';
 import '../views/widgets/snack.dart';
 
 class SurplusesController extends GetxController {
-
   @override
   void onInit() {
     getAllSurpluses();
@@ -39,13 +38,13 @@ class SurplusesController extends GetxController {
     );
   }
 
-  searchSurpluses(String search){
-    loadingSurpluses=true;
+  searchSurpluses(String search) {
+    loadingSurpluses = true;
     update();
     API().get(
         url: '/surplusGoods?limit=100&search=$search',
         onResponse: (response) {
-          loadingSurpluses=false;
+          loadingSurpluses = false;
           if (response.statusCode == 200) {
             if (response.data['success']) {
               listSurpluses = response.data['data'];
@@ -71,7 +70,7 @@ class SurplusesController extends GetxController {
         filename: 'image',
       ),
       'price': int.parse(priceController.text),
-      'biddingPeriod': int.parse(biddingPeriodController.text)*24*60,
+      'biddingPeriod': int.parse(biddingPeriodController.text) * 24 * 60,
     });
     LoadingDialog().dialog();
     API().post(
@@ -82,7 +81,7 @@ class SurplusesController extends GetxController {
           if (response.data['success']) {
             print('response.data');
             print(response.data['data']);
-            listSurpluses=[response.data['data'],...listSurpluses];
+            listSurpluses = [response.data['data'], ...listSurpluses];
             Get.back();
             Get.back();
             Snack().show(type: true, message: 'تمت الإضافة');

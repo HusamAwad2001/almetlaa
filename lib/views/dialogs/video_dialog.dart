@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/app_image.dart';
+import '../../views/widgets/app_image.dart';
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_share/flutter_share.dart';

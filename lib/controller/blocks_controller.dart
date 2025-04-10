@@ -1,5 +1,5 @@
-import 'package:almetlaa/views/widgets/loading_dialog.dart';
-import 'package:almetlaa/views/widgets/snack.dart';
+import '../../views/widgets/loading_dialog.dart';
+import '../../views/widgets/snack.dart';
 import 'package:get/get.dart';
 
 import '../utils/api.dart';

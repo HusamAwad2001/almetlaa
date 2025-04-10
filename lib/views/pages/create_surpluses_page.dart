@@ -1,5 +1,5 @@
-import 'package:almetlaa/controller/surpluses_controller.dart';
-import 'package:almetlaa/values/constants.dart';
+import '../../controller/surpluses_controller.dart';
+import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

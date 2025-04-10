@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/app_image.dart';
+import '../../views/widgets/app_image.dart';
 
 import '../../views/dialogs/video_dialog.dart';
 import 'package:flutter/material.dart';
