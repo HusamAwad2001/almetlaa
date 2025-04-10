@@ -7,6 +7,7 @@ class AppImage extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final BorderRadius? borderRadius;
+  final Color? color;
   final Widget Function(BuildContext, String, Object)? errorWidget;
 
   const AppImage({
@@ -17,11 +18,13 @@ class AppImage extends StatelessWidget {
     this.fit = BoxFit.cover,
     this.borderRadius,
     this.errorWidget,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     final image = CachedNetworkImage(
+      color: color,
       imageUrl: imageUrl,
       width: width,
       height: height,

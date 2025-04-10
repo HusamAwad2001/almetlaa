@@ -10,7 +10,7 @@ import '../../values/constants.dart';
 import '../widgets/shimmer/categories_shimmer.dart';
 
 class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({Key? key}) : super(key: key);
+  const CategoriesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CategoriesPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: const Text(
-          "التصنيفات",
+          "الشركات",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
