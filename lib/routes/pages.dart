@@ -1,17 +1,16 @@
-import 'package:almetlaa/views/pages/ar_page.dart';
-import 'package:almetlaa/views/pages/blocks_page.dart';
-import 'package:almetlaa/views/pages/regions_page.dart';
-import 'package:almetlaa/views/pages/categories_page.dart';
-import 'package:almetlaa/views/pages/companies_page.dart';
-import 'package:almetlaa/views/pages/home_page.dart';
-import 'package:almetlaa/views/pages/internet_page.dart';
-import 'package:almetlaa/views/pages/login_page.dart';
-import 'package:almetlaa/views/pages/news_details_page.dart';
-import 'package:almetlaa/views/pages/news_page.dart';
-import 'package:almetlaa/views/pages/panorama_page.dart';
-import 'package:almetlaa/views/pages/register_page.dart';
-import 'package:almetlaa/views/pages/splash_page.dart';
-import 'package:almetlaa/views/pages/videos_page.dart';
+import '../../views/pages/ar_page.dart';
+import '../../views/pages/blocks_page.dart';
+import '../../views/pages/regions_page.dart';
+import '../../views/pages/categories_page.dart';
+import '../../views/pages/companies_page.dart';
+import '../../views/pages/home_page.dart';
+import '../../views/pages/internet_page.dart';
+import '../../views/pages/login_page.dart';
+import '../../views/pages/news_details_page.dart';
+import '../../views/pages/news_page.dart';
+import '../../views/pages/register_page.dart';
+import '../../views/pages/splash_page.dart';
+import '../../views/pages/videos_page.dart';
 import 'package:get/get.dart';
 import '../../../routes/routes.dart';
 import '../views/pages/allowance_details_page.dart';
@@ -88,10 +87,10 @@ class Pages {
         name: Routes.aRPage,
         page: () => const ARPage(),
       ),
-      GetPage(
-        name: Routes.panoramaPage,
-        page: () => const PanoramaPage(),
-      ),
+      // GetPage(
+      //   name: Routes.panoramaPage,
+      //   page: () => const PanoramaPage(),
+      // ),
       GetPage(
         name: Routes.constructionMaterialPricesPage,
         page: () => const ConstructionMaterialPricesPage(),

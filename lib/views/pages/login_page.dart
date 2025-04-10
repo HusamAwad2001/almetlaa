@@ -36,15 +36,17 @@ class LoginPage extends StatelessWidget {
                   children: [
                     Container(
                       decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Constants.primaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color(0xFFD9D9D9),
-                                offset: Offset(0, 0),
-                                spreadRadius: 3,
-                                blurRadius: 3)
-                          ]),
+                        shape: BoxShape.circle,
+                        color: Constants.primaryColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0xFFD9D9D9),
+                            offset: Offset(0, 0),
+                            spreadRadius: 3,
+                            blurRadius: 3,
+                          ),
+                        ],
+                      ),
                       child: Image.asset(
                         "assets/images/baiti_logo.png",
                         width: 150,

@@ -2,7 +2,7 @@ import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:panorama/panorama.dart';
+// import 'package:panorama/panorama.dart';
 import '../../values/constants.dart';
 
 class PanoramaPage extends StatelessWidget {
@@ -36,9 +36,10 @@ class PanoramaPage extends StatelessWidget {
                         title: const Text("360"),
                       ),
                       body: Center(
-                        child: Panorama(
-                          animSpeed: 1.0,
-                          sensorControl: SensorControl.Orientation,
+                        // Replaced Panorama widget with a simple Image widget
+                        child: InteractiveViewer(
+                          minScale: 0.1,
+                          maxScale: 4.0,
                           child: Image.network(
                               'https://t4.ftcdn.net/jpg/03/58/04/63/360_F_358046307_Tdl06yGjgJJvY4GNKNsPO0XZDwD95cLO.jpg'),
                         ),

@@ -1,7 +1,7 @@
 import 'package:almetlaa/views/widgets/app_image.dart';
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
+// import 'package:flutter_share/flutter_share.dart';
 import 'package:get/get.dart';
 
 class VideoDialog {
@@ -21,11 +21,11 @@ class VideoDialog {
                 margin: const EdgeInsets.all(10),
                 child: IconButton(
                   onPressed: () async {
-                    await FlutterShare.share(
-                      title: 'المطلاع',
-                      text: item['title'],
-                      linkUrl: item['video'],
-                    );
+                    // await FlutterShare.share(
+                    //   title: 'المطلاع',
+                    //   text: item['title'],
+                    //   linkUrl: item['video'],
+                    // );
                   },
                   icon: const Icon(Icons.share),
                   color: Colors.white,

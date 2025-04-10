@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           locale: const Locale("ar"),
-          title: 'المطلاع',
+          title: 'بيتي',
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             primaryColor: Constants.primaryColor,
