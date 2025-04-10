@@ -79,10 +79,35 @@ class CreateSurplusesPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              FloatingActionButton(
-                onPressed: () => controller.validate(),
-                backgroundColor: Constants.primaryColor,
-                child: const Icon(Icons.add),
+              ElevatedButton.icon(
+                onPressed: controller.validate,
+                icon: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                label: const Text(
+                  "إضافة",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    fontFamily: 'amarai',
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50.h),
+                  backgroundColor: Constants.primaryColor,
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 15.h),
+                  textStyle: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                ),
               ),
             ],
           );
