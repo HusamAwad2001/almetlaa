@@ -16,7 +16,7 @@ class RegionsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: const Text(
-          "المناطق",
+          "التوزيعات",
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -69,10 +69,17 @@ class RegionsPage extends StatelessWidget {
               30.ph,
               controller.loadingRegions
                   ? const Expanded(
-                      child: Center(child: CircularProgressIndicator()))
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   : controller.listAllRegions.isEmpty
                       ? const Expanded(
-                          child: Center(child: Text('لا يوجد مناطق')))
+                          child: Center(
+                            child: Text(
+                              'لا يوجد توزيعات',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        )
                       : Expanded(
                           child: controller.loadingRegions
                               ? const Center(child: CircularProgressIndicator())
@@ -91,7 +98,14 @@ class RegionsPage extends StatelessWidget {
                                       Container(
                                         padding: EdgeInsets.symmetric(
                                             vertical: 14.h),
-                                        color: Constants.primaryColor,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          color: Constants.primaryColor,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(15.r),
+                                            topRight: Radius.circular(15.r),
+                                          ),
+                                        ),
                                         child: Row(
                                           children: [
                                             20.pw,
