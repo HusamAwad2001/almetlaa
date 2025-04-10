@@ -1,4 +1,4 @@
-package com.example.almetlaa
+package com.baiti
 
 import io.flutter.embedding.android.FlutterActivity
 
