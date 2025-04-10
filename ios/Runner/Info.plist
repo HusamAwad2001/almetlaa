@@ -45,6 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
+	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow access to photos to upload labor bills from photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

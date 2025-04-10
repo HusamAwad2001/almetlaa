@@ -35,7 +35,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   //create a function to remove the selected video from videos = widget.videos.where((video) => video.id != _selectedVideo.id).toList();
   void removeSelectedVideo() {
     isLoading = true;
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 250), () {
       setState(() {
         isLoading = false;
         videos = widget.videos
