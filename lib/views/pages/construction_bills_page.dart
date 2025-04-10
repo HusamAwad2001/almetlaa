@@ -8,11 +8,12 @@ import '../../routes/routes.dart';
 import '../widgets/pdf/pdf_creator.dart';
 
 class ConstructionBillsPage extends StatelessWidget {
-  const ConstructionBillsPage({Key? key}) : super(key: key);
+  const ConstructionBillsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: const Text(
@@ -29,112 +30,139 @@ class ConstructionBillsPage extends StatelessWidget {
           return controller.loadingBills
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(width: Get.width),
-                      45.ph,
-                      Container(
-                        width: 250.w,
-                        padding: EdgeInsets.symmetric(vertical: 27.h),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFFA5A5A5).withOpacity(0.25),
-                              blurRadius: 8,
-                              offset: const Offset(0, 1),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        25.ph,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16.r),
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 0.5,
                             ),
-                          ],
-                        ),
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              'إجمالي المدفوعات',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w700,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.2),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
                               ),
-                            ),
-                            15.ph,
-                            Row(
+                            ],
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 24.h, horizontal: 20.w),
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
-                                  controller.totalAmount.toString(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Constants.primaryColor,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.account_balance_wallet_rounded,
+                                        color: Constants.primaryColor,
+                                        size: 28.sp),
+                                    8.pw,
+                                    Text(
+                                      'إجمالي المدفوعات',
+                                      style: TextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey.shade800,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  ' د.ك',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                16.ph,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      controller.totalAmount.toString(),
+                                      style: TextStyle(
+                                        color: Constants.primaryColor,
+                                        fontSize: 26.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    4.pw,
+                                    Padding(
+                                      padding: EdgeInsets.only(bottom: 2.h),
+                                      child: Text(
+                                        'د.ك',
+                                        style: TextStyle(
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.grey.shade700,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      45.ph,
-                      controller.listAllBills.isEmpty
-                          ? const Center(child: Text('لا يوجد بنود'))
-                          : ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.listAllBills.length,
-                              separatorBuilder: (context, index) => 20.ph,
-                              itemBuilder: (context, index) {
-                                final item = controller.listAllBills[index];
-                                return _ItemBill(
-                                  title: item['name'],
-                                  price: item['total'].toString(),
-                                  onTap: () {
-                                    Get.toNamed(
-                                      Routes.contractBillsPage,
-                                      arguments: item['name'],
-                                    );
-                                    controller.getMyBills(item['_id']);
-                                  },
-                                );
-                              },
-                            ),
-                      60.ph,
-                      controller.listAllBills.isEmpty
-                          ? const SizedBox()
-                          : ElevatedButton(
-                              onPressed: () {
-                                PdfGenerator.createGeneralPdf(
-                                    total: "${controller.totalAmount}د.ك",
-                                    listAllBills: controller.listAllBills);
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                  ),
-                                ),
-                                backgroundColor: MaterialStateProperty.all(
-                                  Constants.primaryColor,
-                                ),
+                        30.ph,
+                        if (controller.listAllBills.isEmpty)
+                          const Center(child: Text('لا يوجد بنود'))
+                        else
+                          ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: controller.listAllBills.length,
+                            separatorBuilder: (_, __) => 16.ph,
+                            itemBuilder: (context, index) {
+                              final item = controller.listAllBills[index];
+                              return _ItemBill(
+                                title: item['name'],
+                                price: item['total'].toString(),
+                                onTap: () {
+                                  Get.toNamed(
+                                    Routes.contractBillsPage,
+                                    arguments: item['name'],
+                                  );
+                                  controller.getMyBills(item['_id']);
+                                },
+                              );
+                            },
+                          ),
+                        40.ph,
+                        if (controller.listAllBills.isNotEmpty)
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              PdfGenerator.createGeneralPdf(
+                                total: "${controller.totalAmount} د.ك",
+                                listAllBills: controller.listAllBills,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Constants.primaryColor,
+                              padding: EdgeInsets.symmetric(vertical: 14.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
-                              child: const Text(
-                                "تنزيل ملف PDF",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ).paddingOnly(top: 20.h, bottom: 20.h),
                             ),
-                      20.ph,
-                    ],
+                            icon: Icon(
+                              Icons.picture_as_pdf_outlined,
+                              size: 24.w,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              "تنزيل ملف PDF",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        20.ph,
+                      ],
+                    ),
                   ),
                 );
         },
@@ -149,58 +177,41 @@ class _ItemBill extends StatelessWidget {
   final Function() onTap;
 
   const _ItemBill({
-    Key? key,
     required this.title,
     required this.price,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20.w),
-        padding: EdgeInsets.all(23.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15.r),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF616161).withOpacity(0.25),
-              blurRadius: 4,
-            ),
-          ],
-        ),
-        alignment: Alignment.center,
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            FittedBox(
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                ),
-              ),
-            ),
-            const Spacer(),
-            FittedBox(
-              child: Text(
-                '$price دينار',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  color: const Color(0xFF3BB900),
-                ),
-              ),
-            ),
-            95.pw,
-            Icon(Icons.arrow_forward_ios, size: 15.w),
-          ],
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w600,
         ),
       ),
+      subtitle: Text(
+        '$price د.ك',
+        style: TextStyle(
+          fontSize: 16.sp,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+        ),
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 18.w,
+        color: Colors.grey,
+      ),
+      onTap: onTap,
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.r),
+        side: const BorderSide(color: Colors.grey, width: 0.5),
+      ),
+      tileColor: Colors.white,
     );
   }
 }
