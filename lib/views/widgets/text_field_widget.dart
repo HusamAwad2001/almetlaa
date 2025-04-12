@@ -5,19 +5,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../values/constants.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  const TextFieldWidget(
-      {super.key,
-      this.enabled,
-      this.suffixIcon,
-      this.hintFontWeight,
-      this.radius,
-      this.labelColor,
-      this.maxLines,
-      this.inputFormatters,
-      required this.label,
-      this.isPassword = false,
-      this.textInputType = TextInputType.text,
-      required this.controller});
+  const TextFieldWidget({
+    super.key,
+    this.enabled,
+    this.suffixIcon,
+    this.hintFontWeight,
+    this.radius,
+    this.labelColor,
+    this.maxLines,
+    this.inputFormatters,
+    required this.label,
+    this.isPassword = false,
+    this.textInputType = TextInputType.text,
+    this.textDirection,
+    this.onChange,
+    this.prefixIcon,
+    required this.controller,
+  });
 
   final String label;
   final bool isPassword;
@@ -30,6 +34,9 @@ class TextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
+  final TextDirection? textDirection;
+  final Function(String)? onChange;
+  final Widget? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +53,17 @@ class TextFieldWidget extends StatelessWidget {
       child: TextField(
         textInputAction: TextInputAction.done,
         keyboardType: textInputType,
+        textDirection: textDirection,
         style: const TextStyle(color: Constants.primaryColor),
         cursorColor: labelColor ?? Constants.primaryColor,
         controller: controller,
         obscureText: isPassword,
         textAlign: TextAlign.start,
         maxLines: maxLines ?? 1,
+        onChanged: onChange,
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
+          prefixIcon: prefixIcon,
           suffixIcon: suffixIcon ?? const SizedBox(),
           enabled: enabled ?? true,
           filled: true,

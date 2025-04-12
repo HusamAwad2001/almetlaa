@@ -105,10 +105,45 @@ class ProfileFragment extends StatelessWidget {
               children: [
                 ElevatedButton.icon(
                   onPressed: () async {
-                    // Global.token = "";
-                    // Global.user = {};
-                    // await Storage.instance.erase();
-                    Get.offAllNamed(Routes.loginPage);
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text("تأكيد الخروج"),
+                        content: const Text("هل أنت متأكد من تسجيل الخروج؟"),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Get.back(result: false),
+                            child: const Text(
+                              "إلغاء",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'amarai',
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => Get.back(result: true),
+                            child: const Text(
+                              "تسجيل الخروج",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'amarai',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) {
+                      Global.token = "";
+                      Global.user = {};
+                      await Storage.instance.erase();
+                      Get.offAllNamed(Routes.loginPage);
+                    }
                   },
                   icon: const Icon(
                     Icons.logout,
@@ -156,23 +191,36 @@ class ProfileFragment extends StatelessWidget {
                         actions: [
                           TextButton(
                             onPressed: () => Get.back(result: false),
-                            child: const Text("إلغاء"),
+                            child: const Text(
+                              "إلغاء",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'amarai',
+                              ),
+                            ),
                           ),
                           TextButton(
                             onPressed: () => Get.back(result: true),
                             child: const Text(
-                              "احذف الحساب",
-                              style: TextStyle(color: Color(0xFFF20A34)),
+                              "حذف",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                fontFamily: 'amarai',
+                              ),
                             ),
                           ),
                         ],
                       ),
                     );
                     if (confirm == true) {
-                      Global.token = "";
-                      Global.user = {};
-                      await Storage.instance.erase();
-                      Get.offAllNamed(Routes.splashPage);
+                      // Global.token = "";
+                      // Global.user = {};
+                      // await Storage.instance.erase();
+                      Get.offAllNamed(Routes.loginPage);
                     }
                   },
                   icon: const Icon(

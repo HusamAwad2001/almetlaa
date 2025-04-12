@@ -6,11 +6,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../widgets/text_field_widget.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  TextDirection textDirection = TextDirection.rtl;
+
+  @override
   Widget build(BuildContext context) {
+    Get.put(LoginController());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -32,6 +40,7 @@ class LoginPage extends StatelessWidget {
         builder: (controller) {
           return SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 24.ph,
                 Image.asset(
@@ -44,35 +53,29 @@ class LoginPage extends StatelessWidget {
                   label: "رقم الهاتف",
                   controller: controller.phoneTEC,
                   textInputType: TextInputType.phone,
+                  textDirection: textDirection,
+                  prefixIcon: const Icon(
+                    Icons.phone,
+                    size: 25,
+                    color: Constants.primaryColor,
+                  ),
+                  onChange: (value) {
+                    if (value.isNotEmpty) {
+                      setState(() {
+                        textDirection = TextDirection.ltr;
+                      });
+                    } else {
+                      setState(() {
+                        textDirection = TextDirection.rtl;
+                      });
+                    }
+                  },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
+                    LengthLimitingTextInputFormatter(9),
                   ],
                 ),
-                24.ph,
-                TextFieldWidget(
-                  label: "كلمة المرور",
-                  controller: controller.passTEC,
-                  textInputType: TextInputType.text,
-                  isPassword: true,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "نسيت كلمة المرور ؟",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF999797),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                24.ph,
+                50.ph,
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
