@@ -1,46 +1,69 @@
 import 'package:get/get.dart';
 
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
 
-class NewsController extends GetxController{
-
+class NewsController extends GetxController {
   @override
   void onInit() {
     getNews();
     super.onInit();
   }
 
-  List news=[];
-  bool loadingNews=true;
-  getNews(){
-    loadingNews=true;
+  List news = [];
+  bool loadingNews = false;
+  bool hasMore = true;
+  int currentPage = 1;
+  int limit = 20;
+  ApiErrorModel? errorModel;
+
+  Future<void> getNews({bool isRefresh = false}) async {
+    if (isRefresh) {
+      currentPage = 1;
+      hasMore = true;
+      news.clear();
+    }
+    if (!hasMore || loadingNews) return;
+    loadingNews = true;
     update();
-    API().get(
-        url: '/news?limit=100',
-        onResponse: (response) {
-          loadingNews=false;
-          if (response.statusCode == 200) {
-            if (response.data['success']) {
-              news = response.data['data'];
-            }
+    await API().get(
+      url: '/news?page=$currentPage&limit=$limit',
+      onResponse: (response) {
+        loadingNews = false;
+        if (response.statusCode == 200 && response.data['success']) {
+          List newItems = response.data['data'];
+          final pagination = response.data['pagination'];
+          if (newItems.isEmpty || pagination['next'] == null) {
+            hasMore = false;
+          } else {
+            currentPage = pagination['next']['page'];
           }
-          update();
-        });
+          news.addAll(newItems);
+        }
+        update();
+      },
+      onError: (error) => errorModel = error,
+    );
+    loadingNews = false;
+    update();
   }
 
-  searchNews(String search){
-    loadingNews=true;
+  Future<void> searchNews(String search) async {
+    loadingNews = true;
     update();
-    API().get(
-        url: '/news?limit=100&search=$search',
-        onResponse: (response) {
-          loadingNews=false;
-          if (response.statusCode == 200) {
-            if (response.data['success']) {
-              news = response.data['data'];
-            }
+    await API().get(
+      url: '/news?limit=100&search=$search',
+      onResponse: (response) {
+        loadingNews = false;
+        if (response.statusCode == 200) {
+          if (response.data['success']) {
+            news = response.data['data'];
           }
-          update();
-        });
+        }
+      },
+      onError: (error) {},
+    );
+    loadingNews = false;
+    update();
   }
 }
