@@ -1,4 +1,10 @@
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
 import '../../controller/home_controller.dart';
 import '../../core/global.dart';
@@ -6,17 +12,8 @@ import '../../routes/routes.dart';
 import '../../values/constants.dart';
 import '../../views/dialogs/call_dialog.dart';
 import '../../views/widgets/home_news_widget.dart';
-import '../../views/widgets/home_video_widget.dart';
 import '../../views/widgets/shimmer/slider_shimmer.dart';
 import '../../views/widgets/snack.dart';
-import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../widgets/app_image.dart';
 
 class HomeFragment extends GetView<HomeController> {
@@ -36,24 +33,18 @@ class HomeFragment extends GetView<HomeController> {
               return Future.wait([
                 controller.getSlider(),
                 controller.getNews(),
-                controller.getVideos(),
               ]);
             },
             child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 20.h),
               physics: const ClampingScrollPhysics(),
-              controller: controller.scrollController,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 22.h,
                 children: [
-                  20.ph,
                   const _SliderWidget(),
-                  30.ph,
                   const _ServicesWidget(),
-                  22.ph,
                   const _NewsWidget(),
-                  22.ph,
-                  // const _VideosWidget(),
-                  // 20.ph,
                 ],
               ),
             ),
@@ -64,7 +55,7 @@ class HomeFragment extends GetView<HomeController> {
   }
 }
 
-class _AppBarWidget extends StatelessWidget {
+class _AppBarWidget extends GetView<HomeController> {
   const _AppBarWidget();
 
   @override
@@ -94,7 +85,9 @@ class _AppBarWidget extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
-            CallDialog().dialog();
+            controller.checkWhenLoading(() {
+              CallDialog().dialog();
+            });
           },
           icon: const Icon(Icons.call_outlined),
           tooltip: 'اتصل بنا',
@@ -103,7 +96,9 @@ class _AppBarWidget extends StatelessWidget {
         if (Global.token != "")
           IconButton(
             onPressed: () {
-              Get.toNamed(Routes.notificationsPage);
+              controller.checkWhenLoading(() {
+                Get.toNamed(Routes.notificationsPage);
+              });
             },
             icon: const Icon(Icons.notifications_active_outlined),
             tooltip: 'الإشعارات',
@@ -318,7 +313,7 @@ class _ServicesWidget extends StatelessWidget {
   }
 }
 
-class _ServiceItem extends StatelessWidget {
+class _ServiceItem extends GetView<HomeController> {
   final IconData icon;
   final String title;
   final String route;
@@ -335,11 +330,13 @@ class _ServiceItem extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () {
-          if (Global.token == "") {
-            Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
-          } else {
-            Get.toNamed(route);
-          }
+          controller.checkWhenLoading(() {
+            if (Global.token == "") {
+              Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
+            } else {
+              Get.toNamed(route);
+            }
+          });
         },
         splashColor: Constants.primaryColor.withValues(alpha: 0.2),
         highlightColor: Constants.primaryColor.withValues(alpha: 0.1),
@@ -492,149 +489,6 @@ class _NewsShimmer extends StatelessWidget {
               );
             },
           ),
-        ),
-      ],
-    );
-  }
-}
-
-// ignore: unused_element
-class _VideosWidget extends StatelessWidget {
-  const _VideosWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (controller) {
-        return controller.loadingVideos
-            ? const _VideosShimmer()
-            : Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 8.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "الفيديو",
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                        // TextButton(
-                        //   onPressed: () {
-                        //     Get.toNamed(Routes.videosPage);
-                        //   },
-                        //   child: Text(
-                        //     "المزيد",
-                        //     style: TextStyle(
-                        //       fontSize: 12.sp,
-                        //       color: const Color(0xFF999797),
-                        //     ),
-                        //   ),
-                        // ).paddingOnly(
-                        //   top: 18.h,
-                        //   bottom: 10.h,
-                        // ),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 12.w),
-                            backgroundColor: const Color(0xFFF5F5F5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {
-                            Get.toNamed(Routes.videosPage);
-                          },
-                          child: Text(
-                            "المزيد",
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  AlignedGridView.count(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    shrinkWrap: true,
-                    itemCount: controller.videos.length,
-                    crossAxisCount: 2,
-                    itemBuilder: (_, index) {
-                      return HomeVideoWidget(
-                        item: controller.videos[index],
-                        fullWidth: false,
-                        onTap: () {
-                          Get.toNamed(
-                            Routes.videoDetailsPage,
-                            arguments: [
-                              controller.videos[index],
-                              controller.videos
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ).paddingOnly(left: 20, right: 20),
-                ],
-              );
-      },
-    );
-  }
-}
-
-class _VideosShimmer extends StatelessWidget {
-  const _VideosShimmer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          child: Shimmer.fromColors(
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade100,
-            child: Container(
-              width: 100.w,
-              height: 20.h,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        AlignedGridView.count(
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          shrinkWrap: true,
-          itemCount: 4,
-          crossAxisCount: 2,
-          itemBuilder: (_, __) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey.shade300,
-              highlightColor: Colors.grey.shade100,
-              child: Container(
-                height: 160.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            );
-          },
         ),
       ],
     );

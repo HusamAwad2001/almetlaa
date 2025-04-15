@@ -1,4 +1,4 @@
-import '../../views/widgets/error_widget.dart';
+import '../widgets/app_error_widget.dart';
 import '../../views/widgets/home_news_widget.dart';
 import '../../controller/news_controller.dart';
 import '../../values/constants.dart';

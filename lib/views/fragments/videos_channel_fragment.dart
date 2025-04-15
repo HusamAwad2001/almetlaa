@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/error_widget.dart';
+import 'package:almetlaa/views/widgets/app_error_widget.dart';
 
 import '../../views/pages/video_details_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
