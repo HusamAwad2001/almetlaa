@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class NewsDetailsPage extends StatelessWidget {
-  const NewsDetailsPage({Key? key}) : super(key: key);
+  const NewsDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

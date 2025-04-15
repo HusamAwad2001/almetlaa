@@ -440,13 +440,7 @@ class _NewsWidget extends GetView<HomeController> {
                 separatorBuilder: (_, __) => SizedBox(width: 12.w),
                 itemBuilder: (context, index) {
                   final news = controller.news[index];
-                  return GestureDetector(
-                    onTap: () => Get.toNamed(
-                      Routes.newsDetailsPage,
-                      arguments: news,
-                    ),
-                    child: HomeNewsWidget(item: news),
-                  );
+                  return HomeNewsWidget(item: news);
                 },
               ),
             ),

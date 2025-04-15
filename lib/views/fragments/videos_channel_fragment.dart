@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/widgets/error_widget.dart';
+
 import '../../views/pages/video_details_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -67,67 +69,13 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
         elevation: 0,
       ),
       body: _isError
-          ? Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '⚠️',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 50.sp,
-                      color: Constants.primaryColor,
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'حدث خطأ ما أثناء تحميل البيانات \nيرجى المحاولة مرة أخرى',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  20.ph,
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _isError = false;
-                      });
-                      _initChannel();
-                    },
-                    icon: const Icon(
-                      Icons.refresh,
-                      color: Constants.primaryColor,
-                      size: 24,
-                    ),
-                    label: const Text(
-                      "حاول مرة أخرى",
-                      style: TextStyle(
-                        color: Constants.primaryColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                        fontFamily: 'amarai',
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor:
-                          Constants.primaryColor.withValues(alpha: 0.2),
-                      side: const BorderSide(
-                        color: Constants.primaryColor,
-                      ),
-                      padding: EdgeInsets.symmetric(vertical: 15.h),
-                      textStyle: TextStyle(fontSize: 14.sp),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+          ? AppErrorWidget(
+              errorMessage:
+                  'حدث خطأ ما أثناء تحميل البيانات \nيرجى المحاولة مرة أخرى',
+              onRetry: () => setState(() {
+                _isError = false;
+                _initChannel();
+              }),
             )
           : _channel != null
               ? NotificationListener<ScrollNotification>(

@@ -36,8 +36,7 @@ class QuestionsFragment extends StatelessWidget {
                       child: Text('لا يوجد أسئلة'),
                     )
                   : ListView.separated(
-                      padding: EdgeInsets.only(
-                          left: 20.w, right: 20.w, top: 20.h, bottom: 200.h),
+                      padding: EdgeInsets.all(20.w),
                       itemCount: controller.questions.length,
                       separatorBuilder: (context, index) => 10.ph,
                       itemBuilder: (context, index) {
