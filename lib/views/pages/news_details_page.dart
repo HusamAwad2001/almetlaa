@@ -1,3 +1,5 @@
+import 'package:almetlaa/views/widgets/app_image.dart';
+
 import '../../controller/news_details_controller.dart';
 import '../../values/constants.dart';
 import 'package:flutter/material.dart';
@@ -16,36 +18,70 @@ class NewsDetailsPage extends StatelessWidget {
         builder: (controller) {
           return Column(
             children: [
-              Container(
-                width: double.infinity,
-                height: 317.h,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      controller.item['image'],
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                alignment: Alignment.topLeft,
-                child: InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(left: 28.w, top: 59.w),
-                    padding: EdgeInsets.all(10.w),
-                    decoration: const BoxDecoration(
-                      color: Colors.black45,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
+              Stack(
+                children: [
+                  Hero(
+                    tag: controller.item['_id'],
+                    child: AppImage(
+                      imageUrl: controller.item['image'],
+                      width: double.infinity,
+                      height: 317.h,
                     ),
                   ),
-                ),
+                  Positioned(
+                    left: 28.w,
+                    top: 59.w,
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Container(
+                        // margin: EdgeInsets.only(left: 28.w, top: 59.w),
+                        padding: EdgeInsets.all(10.w),
+                        decoration: const BoxDecoration(
+                          color: Colors.black45,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              // Hero(
+              //   tag: controller.item['_id'],
+              //   child: Container(
+              //     width: double.infinity,
+              //     height: 317.h,
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //         image: NetworkImage(
+              //           controller.item['image'],
+              //         ),
+              //         fit: BoxFit.cover,
+              //       ),
+              //     ),
+              //     alignment: Alignment.topLeft,
+              //     child: InkWell(
+              //       onTap: () {
+              //         Get.back();
+              //       },
+              //       child: Container(
+              //         margin: EdgeInsets.only(left: 28.w, top: 59.w),
+              //         padding: EdgeInsets.all(10.w),
+              //         decoration: const BoxDecoration(
+              //           color: Colors.black45,
+              //           shape: BoxShape.circle,
+              //         ),
+              //         child: const Icon(
+              //           Icons.close,
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Align(
                 alignment: Alignment.centerRight,
                 child: Text(

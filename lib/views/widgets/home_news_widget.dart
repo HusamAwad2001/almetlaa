@@ -33,19 +33,22 @@ class HomeNewsWidget extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-              child: AppImage(
-                imageUrl: item['image'],
-                width: double.infinity,
-                height: 110.h,
-                fit: BoxFit.cover,
-                errorWidget: (_, __, ___) => Container(
+              child: Hero(
+                tag: item['_id'],
+                child: AppImage(
+                  imageUrl: item['image'],
+                  width: double.infinity,
                   height: 110.h,
-                  color: Colors.grey[200],
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 30.sp,
-                    color: Colors.grey,
+                  fit: BoxFit.cover,
+                  errorWidget: (_, __, ___) => Container(
+                    height: 110.h,
+                    color: Colors.grey[200],
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.broken_image,
+                      size: 30.sp,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
               ),
