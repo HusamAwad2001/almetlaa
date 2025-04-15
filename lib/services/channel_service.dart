@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../models/channel_model.dart';
 
@@ -8,8 +9,8 @@ class APIService {
 
   static final APIService instance = APIService._instantiate();
 
-  String apiKey = 'AIzaSyDRl98VUYN7f6gQzIzRalAW-SK3KRVLfFE';
-  final String channelId = 'UCxQPt13KP_y4LKy7xuriDnA';
+  final String? apiKey = dotenv.env['API_KEY'];
+  final String? channelId = dotenv.env['CHANNEL_ID'];
 
   final String _baseUrl = 'www.googleapis.com';
   String _nextPageToken = '';
@@ -17,8 +18,8 @@ class APIService {
   Future<Channel> fetchChannel() async {
     Map<String, String> parameters = {
       'part': 'snippet, contentDetails, statistics',
-      'id': channelId,
-      'key': apiKey,
+      'id': channelId ?? '',
+      'key': apiKey ?? '',
     };
     Uri uri = Uri.https(
       _baseUrl,
@@ -52,7 +53,7 @@ class APIService {
       'playlistId': playlistId,
       'maxResults': '8',
       'pageToken': _nextPageToken,
-      'key': apiKey,
+      'key': apiKey ?? '',
     };
     Uri uri = Uri.https(
       _baseUrl,

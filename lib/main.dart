@@ -1,3 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../../core/storage.dart';
 import '../../routes/pages.dart';
 import '../../routes/routes.dart';
@@ -14,6 +16,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await GetStorage.init();
   Storage.getData();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
