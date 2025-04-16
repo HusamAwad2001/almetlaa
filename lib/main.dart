@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
               color: Constants.primaryColor,
             ),
             appBarTheme: AppBarTheme(
+              iconTheme: IconThemeData(color: Colors.white),
               titleTextStyle: TextStyle(
                 fontSize: 20.sp,
                 color: Colors.white,

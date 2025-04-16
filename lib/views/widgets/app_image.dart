@@ -8,6 +8,7 @@ class AppImage extends StatelessWidget {
   final BoxFit fit;
   final BorderRadius? borderRadius;
   final Color? color;
+  final Color? indicatorColor;
   final Widget Function(BuildContext, String, Object)? errorWidget;
 
   const AppImage({
@@ -19,6 +20,7 @@ class AppImage extends StatelessWidget {
     this.borderRadius,
     this.errorWidget,
     this.color,
+    this.indicatorColor,
   });
 
   @override
@@ -29,8 +31,10 @@ class AppImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      placeholder: (context, url) => const Center(
-        child: CircularProgressIndicator(),
+      placeholder: (context, url) => Center(
+        child: CircularProgressIndicator(
+          color: indicatorColor,
+        ),
       ),
       errorWidget:
           errorWidget ?? (context, url, error) => const Icon(Icons.error),

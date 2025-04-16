@@ -25,7 +25,7 @@ class AllowancePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () => Get.toNamed(Routes.createExchangePage),
-            icon: const Icon(Icons.add),
+            icon: Icon(Icons.add_circle, size: 24.w),
           ),
         ],
       ),
