@@ -3,6 +3,14 @@ import 'package:get/get.dart';
 import '../utils/api.dart';
 
 class QuestionsController extends GetxController {
+  int currentPage = 1;
+  final int limit = 30;
+  bool hasMore = true;
+  bool isPaginating = false;
+
+  List questions = [];
+  bool loadingQuestions = true;
+  bool isOpen = false;
 
   @override
   void onInit() {
@@ -10,26 +18,41 @@ class QuestionsController extends GetxController {
     super.onInit();
   }
 
-  bool isOpen = false;
   void checkOpened(bool value) {
     isOpen = value;
     update();
   }
 
-  List questions = [];
-  bool loadingQuestions = true;
+  void getQuestions({bool isFirstLoad = false}) {
+    if (isPaginating || !hasMore) return;
 
-  getQuestions() {
+    if (isFirstLoad) {
+      currentPage = 1;
+      questions.clear();
+      loadingQuestions = true;
+    } else {
+      isPaginating = true;
+    }
+
+    update();
+
     API().get(
-      url: '/questions?limit=1000',
+      url: '/questions?limit=$limit&page=$currentPage',
       onResponse: (response) {
-        log(response.data.toString());
-        loadingQuestions = false;
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            questions = response.data['data'];
+        if (isFirstLoad) loadingQuestions = false;
+        isPaginating = false;
+
+        if (response.statusCode == 200 && response.data['success']) {
+          List newQuestions = response.data['data'];
+          if (newQuestions.isEmpty || newQuestions.length < limit) {
+            hasMore = false;
+          } else {
+            currentPage++;
           }
+          questions.addAll(newQuestions);
         }
+
+        log('Fetched ${questions.length} questions');
         update();
       },
     );
