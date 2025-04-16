@@ -1,10 +1,9 @@
-import 'package:almetlaa/views/widgets/app_image.dart';
-
-import '../../controller/news_details_controller.dart';
-import '../../values/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../views/widgets/app_image.dart';
+import '../../controller/news_details_controller.dart';
+import '../../values/constants.dart';
 
 class NewsDetailsPage extends StatelessWidget {
   const NewsDetailsPage({super.key});
@@ -16,134 +15,136 @@ class NewsDetailsPage extends StatelessWidget {
       body: GetBuilder<NewsDetailsController>(
         init: NewsDetailsController(),
         builder: (controller) {
-          return Column(
-            children: [
-              Stack(
-                children: [
-                  Hero(
-                    tag: controller.item['_id'],
-                    child: AppImage(
-                      imageUrl: controller.item['image'],
-                      width: double.infinity,
-                      height: 317.h,
-                    ),
-                  ),
-                  Positioned(
-                    left: 28.w,
-                    top: 59.w,
-                    child: GestureDetector(
-                      onTap: () => Get.back(),
-                      child: Container(
-                        // margin: EdgeInsets.only(left: 28.w, top: 59.w),
-                        padding: EdgeInsets.all(10.w),
-                        decoration: const BoxDecoration(
-                          color: Colors.black45,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: Colors.white,
+                expandedHeight: 300.h,
+                pinned: true,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  onPressed: () => Get.back(),
+                ),
+                flexibleSpace: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isCollapsed = constraints.biggest.height <=
+                        kToolbarHeight + MediaQuery.of(context).padding.top;
+                    return FlexibleSpaceBar(
+                      centerTitle: true,
+                      title: isCollapsed
+                          ? Text(
+                              controller.item['title'],
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ).paddingOnly(right: 56, left: 20.w)
+                          : null,
+                      background: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Hero(
+                            tag: controller.item['_id'],
+                            child: AppImage(
+                              imageUrl: controller.item['image'],
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.black26, Colors.transparent],
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                ],
+                    );
+                  },
+                ),
               ),
-              // Hero(
-              //   tag: controller.item['_id'],
-              //   child: Container(
-              //     width: double.infinity,
-              //     height: 317.h,
-              //     decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //         image: NetworkImage(
-              //           controller.item['image'],
-              //         ),
-              //         fit: BoxFit.cover,
-              //       ),
-              //     ),
-              //     alignment: Alignment.topLeft,
-              //     child: InkWell(
-              //       onTap: () {
-              //         Get.back();
-              //       },
-              //       child: Container(
-              //         margin: EdgeInsets.only(left: 28.w, top: 59.w),
-              //         padding: EdgeInsets.all(10.w),
-              //         decoration: const BoxDecoration(
-              //           color: Colors.black45,
-              //           shape: BoxShape.circle,
-              //         ),
-              //         child: const Icon(
-              //           Icons.close,
-              //           color: Colors.white,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  controller.item['title'],
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ).paddingOnly(top: 30.h, bottom: 60.h, right: 20.w, left: 20.w),
-              ),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.remove_red_eye,
-                    color: Color(0xFF808080),
-                  ),
-                  10.pw,
-                  Text(
-                    controller.item['views'].toString(),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '   2:00 PM\n20-2-2023',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      color: const Color(0xFF808080),
+              SliverToBoxAdapter(
+                child: AnimatedOpacity(
+                  opacity: 1,
+                  duration: const Duration(milliseconds: 400),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        20.ph,
+                        Text(
+                          controller.item['title'],
+                          style: TextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        25.ph,
+                        Row(
+                          children: [
+                            const Icon(Icons.remove_red_eye,
+                                size: 20, color: Color(0xFF9A9A9A)),
+                            6.pw,
+                            Text(
+                              controller.item['views'].toString(),
+                              style: TextStyle(
+                                  fontSize: 14.sp, color: Colors.grey[600]),
+                            ),
+                            const Spacer(),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '2:00 PM',
+                                  style: TextStyle(
+                                      fontSize: 13.sp, color: Colors.grey[600]),
+                                ),
+                                Text(
+                                  '20-2-2023',
+                                  style: TextStyle(
+                                      fontSize: 13.sp, color: Colors.grey[600]),
+                                ),
+                              ],
+                            ),
+                            10.pw,
+                            Container(
+                              width: 45.w,
+                              height: 45.w,
+                              padding: EdgeInsets.all(6.w),
+                              decoration: const BoxDecoration(
+                                color: Constants.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Image.asset(
+                                'assets/images/baiti_logo.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ],
+                        ),
+                        20.ph,
+                        const Divider(thickness: 1, color: Color(0xFFC7C7C7)),
+                        20.ph,
+                        Text(
+                          controller.item['description'].toString().trim(),
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            color: const Color(0xFF5A5A5A),
+                            fontWeight: FontWeight.w400,
+                            height: 1.6.h,
+                          ),
+                        ),
+                        40.ph,
+                      ],
                     ),
                   ),
-                  SizedBox(width: 11.w),
-                  Container(
-                    width: 50.w,
-                    height: 50.h,
-                    padding: EdgeInsets.all(5.w),
-                    decoration: const BoxDecoration(
-                      color: Constants.primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Image.asset(
-                      'assets/images/baiti_logo.png',
-                    ).paddingOnly(bottom: 5.h),
-                  ),
-                ],
-              ).paddingSymmetric(horizontal: 20.w),
-              const Divider(
-                thickness: 1,
-                color: Color(0xFFC7C7C7),
-              ).paddingSymmetric(horizontal: 20.w),
-              20.ph,
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Text(
-                    controller.item['description'],
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      color: const Color(0xFF727070),
-                      fontWeight: FontWeight.w300,
-                      height: 1.6.h,
-                    ),
-                  ),
-                ).paddingSymmetric(horizontal: 20.w),
+                ),
               ),
             ],
           );
