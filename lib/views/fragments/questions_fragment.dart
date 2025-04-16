@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../controller/questions_controller.dart';
+import '../widgets/app_error_widget.dart';
 import '../widgets/shimmer/questions_shimmer.dart';
 
 class QuestionsFragment extends StatefulWidget {
@@ -25,7 +26,9 @@ class _QuestionsFragmentState extends State<QuestionsFragment> {
 
   void _scrollListener() {
     if (_scrollController.position.pixels >=
-        _scrollController.position.maxScrollExtent - 100) {
+            _scrollController.position.maxScrollExtent - 100 &&
+        !_controller.loadingQuestions &&
+        _controller.hasMore) {
       _controller.getQuestions();
     }
   }
@@ -59,24 +62,48 @@ class _QuestionsFragmentState extends State<QuestionsFragment> {
             return const QuestionsShimmer();
           }
 
+          if (controller.errorModel != null && controller.questions.isEmpty) {
+            return Center(
+              child: AppErrorWidget(
+                errorMessage: controller.errorModel?.message ?? "حدث خطأ ما",
+                onRetry: () => controller.getQuestions(),
+              ),
+            );
+          }
+
           if (controller.questions.isEmpty) {
-            return const Center(child: Text('لا يوجد أسئلة'));
+            return Center(
+              child: Text(
+                'لا يوجد أسئلة',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
           }
 
           return ListView.separated(
             controller: _scrollController,
             padding: EdgeInsets.all(20.w),
-            itemCount: controller.questions.length + 1,
+            itemCount: controller.questions.length,
             separatorBuilder: (context, index) => 10.ph,
             itemBuilder: (context, index) {
               if (index == controller.questions.length) {
-                return controller.hasMore
+                controller.hasMore
                     ? const Center(child: CircularProgressIndicator())
-                    : const SizedBox();
+                    : Center(
+                        child: Text(
+                          'تم عرض كل الأسئلة',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      );
               }
 
               final question = controller.questions[index];
-
               return ExpansionTile(
                 clipBehavior: Clip.antiAlias,
                 expandedAlignment: Alignment.centerRight,

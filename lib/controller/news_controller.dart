@@ -23,27 +23,41 @@ class NewsController extends GetxController {
       hasMore = true;
       news.clear();
     }
+
     if (!hasMore || loadingNews) return;
+
     loadingNews = true;
     update();
+
     await API().get(
       url: '/news?page=$currentPage&limit=$limit',
       onResponse: (response) {
         loadingNews = false;
+
         if (response.statusCode == 200 && response.data['success']) {
           List newItems = response.data['data'];
           final pagination = response.data['pagination'];
-          if (newItems.isEmpty || pagination['next'] == null) {
-            hasMore = false;
-          } else {
-            currentPage = pagination['next']['page'];
-          }
+
           news.addAll(newItems);
+
+          final int totalPages = pagination['pages'] ?? 1;
+
+          if (currentPage < totalPages) {
+            currentPage += 1;
+          } else {
+            hasMore = false;
+          }
         }
+
         update();
       },
-      onError: (error) => errorModel = error,
+      onError: (error) {
+        loadingNews = false;
+        errorModel = error;
+        update();
+      },
     );
+
     loadingNews = false;
     update();
   }

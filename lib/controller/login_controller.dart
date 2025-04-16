@@ -34,6 +34,10 @@ class LoginController extends GetxController {
           Snack().show(type: false, message: response.data['error']);
         }
       },
+      onError: (error) {
+        Get.back();
+        Snack().show(type: false, message: error.message ?? 'حدث خطأ ما');
+      },
     );
   }
 
@@ -66,6 +70,10 @@ class LoginController extends GetxController {
         } else {
           Snack().show(type: false, message: response.data['data']);
         }
+      },
+      onError: (error) {
+        Get.back();
+        Snack().show(type: false, message: error.message ?? 'حدث خطأ ما');
       },
     );
   }
