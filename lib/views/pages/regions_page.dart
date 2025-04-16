@@ -107,15 +107,16 @@ class RegionsPage extends StatelessWidget {
                               20.pw,
                               SvgPicture.asset(
                                 'assets/images/location.svg',
-                                width: 20.w,
+                                width: 22.w,
                                 color: Colors.white,
                               ),
                               10.pw,
                               Text(
                                 'المناطق',
                                 style: TextStyle(
-                                  fontSize: 15.sp,
+                                  fontSize: 18.sp,
                                   color: Colors.white,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
@@ -139,42 +140,7 @@ class RegionsPage extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 if (index < controller.listAllRegions.length) {
                                   final item = controller.listAllRegions[index];
-                                  return Column(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          Get.toNamed(
-                                            Routes.blocksPage,
-                                            arguments: item['_id'],
-                                          );
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              item['name'] ?? "",
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: TextStyle(
-                                                fontSize: 14.sp,
-                                                color: const Color(0xFF292D32),
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons.arrow_forward_ios,
-                                              size: 20.w,
-                                            )
-                                          ],
-                                        ).paddingAll(15),
-                                      ),
-                                      const Divider(
-                                        height: 1,
-                                        thickness: 1,
-                                        color: Color(0xFFE9E9E9),
-                                      ),
-                                    ],
-                                  );
+                                  return RegionItem(region: item);
                                 } else {
                                   return controller.hasMore
                                       ? Padding(
@@ -199,6 +165,45 @@ class RegionsPage extends StatelessWidget {
           ).paddingSymmetric(horizontal: 26.w);
         },
       ),
+    );
+  }
+}
+
+class RegionItem extends StatelessWidget {
+  final Map<String, dynamic> region;
+  const RegionItem({super.key, required this.region});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          onTap: () => Get.toNamed(
+            Routes.blocksPage,
+            arguments: region['_id'],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                region['name'] ?? "",
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(fontSize: 18.sp),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 20.w,
+              )
+            ],
+          ).paddingAll(15),
+        ),
+        const Divider(
+          height: 1,
+          thickness: 1,
+          color: Color(0xFFE9E9E9),
+        ),
+      ],
     );
   }
 }
