@@ -29,142 +29,154 @@ class ConstructionBillsPage extends StatelessWidget {
         builder: (controller) {
           return controller.loadingBills
               ? const Center(child: CircularProgressIndicator())
-              : SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        25.ph,
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.r),
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: 0.5,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 24.h, horizontal: 20.w),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.account_balance_wallet_rounded,
-                                        color: Constants.primaryColor,
-                                        size: 28.sp),
-                                    8.pw,
-                                    Text(
-                                      'إجمالي المدفوعات',
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey.shade800,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                16.ph,
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      controller.totalAmount.toString(),
-                                      style: TextStyle(
-                                        color: Constants.primaryColor,
-                                        fontSize: 26.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    4.pw,
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 2.h),
-                                      child: Text(
-                                        'د.ك',
-                                        style: TextStyle(
-                                          fontSize: 18.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+              : controller.listAllBills.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'لا يوجد فواتير',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
-                        30.ph,
-                        if (controller.listAllBills.isEmpty)
-                          const Center(child: Text('لا يوجد بنود'))
-                        else
-                          ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.listAllBills.length,
-                            separatorBuilder: (_, __) => 16.ph,
-                            itemBuilder: (context, index) {
-                              final item = controller.listAllBills[index];
-                              return _ItemBill(
-                                title: item['name'],
-                                price: item['total'].toString(),
-                                onTap: () {
-                                  Get.toNamed(
-                                    Routes.contractBillsPage,
-                                    arguments: item['name'],
-                                  );
-                                  controller.getMyBills(item['_id']);
-                                },
-                              );
-                            },
-                          ),
-                        40.ph,
-                        if (controller.listAllBills.isNotEmpty)
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              PdfGenerator.createGeneralPdf(
-                                total: "${controller.totalAmount} د.ك",
-                                listAllBills: controller.listAllBills,
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Constants.primaryColor,
-                              padding: EdgeInsets.symmetric(vertical: 14.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                            ),
-                            icon: Icon(
-                              Icons.picture_as_pdf_outlined,
-                              size: 24.w,
-                              color: Colors.white,
-                            ),
-                            label: Text(
-                              "تنزيل ملف PDF",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            25.ph,
+                            Container(
+                              decoration: BoxDecoration(
                                 color: Colors.white,
+                                borderRadius: BorderRadius.circular(16.r),
+                                border: Border.all(
+                                  color: Colors.grey,
+                                  width: 0.5,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 24.h, horizontal: 20.w),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                            Icons
+                                                .account_balance_wallet_rounded,
+                                            color: Constants.primaryColor,
+                                            size: 28.sp),
+                                        8.pw,
+                                        Text(
+                                          'إجمالي المدفوعات',
+                                          style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.grey.shade800,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    16.ph,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          controller.totalAmount.toString(),
+                                          style: TextStyle(
+                                            color: Constants.primaryColor,
+                                            fontSize: 26.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        4.pw,
+                                        Padding(
+                                          padding: EdgeInsets.only(bottom: 2.h),
+                                          child: Text(
+                                            'د.ك',
+                                            style: TextStyle(
+                                              fontSize: 18.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.grey.shade700,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        20.ph,
-                      ],
-                    ),
-                  ),
-                );
+                            30.ph,
+                            ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.listAllBills.length,
+                              separatorBuilder: (_, __) => 16.ph,
+                              itemBuilder: (context, index) {
+                                final item = controller.listAllBills[index];
+                                return _ItemBill(
+                                  title: item['name'],
+                                  price: item['total'].toString(),
+                                  onTap: () {
+                                    Get.toNamed(
+                                      Routes.contractBillsPage,
+                                      arguments: item['name'],
+                                    );
+                                    controller.getMyBills(item['_id']);
+                                  },
+                                );
+                              },
+                            ),
+                            40.ph,
+                            if (controller.listAllBills.isNotEmpty)
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  PdfGenerator.createGeneralPdf(
+                                    total: "${controller.totalAmount} د.ك",
+                                    listAllBills: controller.listAllBills,
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constants.primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                ),
+                                icon: Icon(
+                                  Icons.picture_as_pdf_outlined,
+                                  size: 24.w,
+                                  color: Colors.white,
+                                ),
+                                label: Text(
+                                  "تنزيل ملف PDF",
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            20.ph,
+                          ],
+                        ),
+                      ),
+                    );
         },
       ),
     );

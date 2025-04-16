@@ -41,6 +41,10 @@ class ConstructionBillsController extends GetxController {
         }
         update();
       },
+      onError: (errorModel) {
+        loadingBills = false;
+        update();
+      },
     );
   }
 
@@ -120,11 +124,11 @@ class ConstructionBillsController extends GetxController {
           Get.back();
           int s = object['amount'];
           totalAmount = totalAmount - s;
-          listAllBills.forEach((element) {
+          for (var element in listAllBills) {
             if (element['_id'] == itemId) {
               element['total'] -= s;
             }
-          });
+          }
           listMyBills.removeAt(index);
           if (response.data['success']) {
             Snack().show(type: true, message: 'تم حذف الفاتورة');

@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   bool loadingSlider = true;
   int sliderLimit = 10;
   Future<void> getSlider() async {
+    loadingSlider = true;
     sliderErrorModel = null;
     update();
     API().get(
@@ -49,6 +50,7 @@ class HomeController extends GetxController {
   int newsLimit = 20;
 
   Future<void> getNews() async {
+    loadingNews = true;
     newsErrorModel = null;
     update();
     API().get(
