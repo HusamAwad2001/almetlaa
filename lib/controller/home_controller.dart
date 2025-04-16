@@ -1,9 +1,16 @@
 import 'package:get/get.dart';
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
 import '../views/widgets/snack.dart';
 
 class HomeController extends GetxController {
   int selectedPage = 0;
+
+  ApiErrorModel? sliderErrorModel;
+  ApiErrorModel? newsErrorModel;
+
+  bool get isError => sliderErrorModel != null && newsErrorModel != null;
+
   @override
   void onInit() {
     getSlider();
@@ -16,6 +23,8 @@ class HomeController extends GetxController {
   bool loadingSlider = true;
   int sliderLimit = 10;
   Future<void> getSlider() async {
+    sliderErrorModel = null;
+    update();
     API().get(
       url: '/images?limit=$sliderLimit',
       onResponse: (response) {
@@ -29,6 +38,7 @@ class HomeController extends GetxController {
       },
       onError: (error) {
         loadingSlider = false;
+        sliderErrorModel = error;
         update();
       },
     );
@@ -37,7 +47,10 @@ class HomeController extends GetxController {
   List news = [];
   bool loadingNews = true;
   int newsLimit = 20;
+
   Future<void> getNews() async {
+    newsErrorModel = null;
+    update();
     API().get(
       url: '/news?limit=$newsLimit',
       onResponse: (response) {
@@ -51,6 +64,7 @@ class HomeController extends GetxController {
       },
       onError: (error) {
         loadingNews = false;
+        newsErrorModel = error;
         update();
       },
     );
@@ -67,5 +81,14 @@ class HomeController extends GetxController {
     if (onClick != null) {
       onClick();
     }
+  }
+
+  void onRetry() {
+    loadingNews = true;
+    loadingSlider = true;
+    update();
+    getSlider();
+    getNews();
+    update();
   }
 }

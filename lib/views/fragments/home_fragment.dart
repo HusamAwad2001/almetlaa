@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
+import '../../views/widgets/app_error_widget.dart';
 import '../../controller/home_controller.dart';
 import '../../core/global.dart';
 import '../../routes/routes.dart';
@@ -21,36 +22,46 @@ class HomeFragment extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (_) {
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(60),
-            child: const _AppBarWidget(),
-          ),
-          body: RefreshIndicator(
-            onRefresh: () {
-              return Future.wait([
-                controller.getSlider(),
-                controller.getNews(),
-              ]);
-            },
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 20.h),
-              physics: const ClampingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 22.h,
-                children: [
-                  const _SliderWidget(),
-                  const _ServicesWidget(),
-                  const _NewsWidget(),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: const _AppBarWidget(),
+      ),
+      body: GetBuilder<HomeController>(
+        init: HomeController(),
+        builder: (controller) {
+          return controller.isError
+              ? Center(
+                  child: AppErrorWidget(
+                    errorMessage: controller.newsErrorModel?.message ??
+                        controller.sliderErrorModel?.message ??
+                        "حدث خطأ ما",
+                    onRetry: controller.onRetry,
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: () {
+                    return Future.wait([
+                      controller.getSlider(),
+                      controller.getNews(),
+                    ]);
+                  },
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    physics: const ClampingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 22.h,
+                      children: [
+                        const _SliderWidget(),
+                        const _ServicesWidget(),
+                        const _NewsWidget(),
+                      ],
+                    ),
+                  ),
+                );
+        },
+      ),
     );
   }
 }
@@ -127,96 +138,99 @@ class _SliderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
-        return controller.sliderImages.isEmpty
+        return controller.loadingSlider
             ? const SliderShimmer()
-            : Column(
-                children: [
-                  carousel_slider.CarouselSlider(
-                    options: carousel_slider.CarouselOptions(
-                      height: 220.h,
-                      // viewportFraction: 0.92,
-                      autoPlay: controller.sliderImages.length > 1,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: controller.sliderImages.length > 1,
-                      scrollPhysics: controller.sliderImages.length == 1
-                          ? const NeverScrollableScrollPhysics()
-                          : const BouncingScrollPhysics(),
-                      onPageChanged: (index, reason) {
-                        controller.currentPos = index;
-                        controller.update();
-                      },
-                    ),
-                    items: controller.sliderImages.map((i) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (i['url'] != null) {
-                            launchUrl(Uri.parse(i['url']));
-                          }
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              )
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                AppImage(
-                                  imageUrl: i['image'],
-                                  fit: BoxFit.cover,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [
-                                        Colors.black.withOpacity(0.5),
-                                        Colors.transparent,
-                                      ],
+            : controller.sliderImages.isEmpty
+                ? const SizedBox.shrink()
+                : Column(
+                    children: [
+                      carousel_slider.CarouselSlider(
+                        options: carousel_slider.CarouselOptions(
+                          height: 220.h,
+                          // viewportFraction: 0.92,
+                          autoPlay: controller.sliderImages.length > 1,
+                          enlargeCenterPage: true,
+                          enableInfiniteScroll:
+                              controller.sliderImages.length > 1,
+                          scrollPhysics: controller.sliderImages.length == 1
+                              ? const NeverScrollableScrollPhysics()
+                              : const BouncingScrollPhysics(),
+                          onPageChanged: (index, reason) {
+                            controller.currentPos = index;
+                            controller.update();
+                          },
+                        ),
+                        items: controller.sliderImages.map((i) {
+                          return GestureDetector(
+                            onTap: () {
+                              if (i['url'] != null) {
+                                launchUrl(Uri.parse(i['url']));
+                              }
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 6),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
+                                  )
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    AppImage(
+                                      imageUrl: i['image'],
+                                      fit: BoxFit.cover,
                                     ),
-                                  ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.bottomCenter,
+                                          end: Alignment.topCenter,
+                                          colors: [
+                                            Colors.black.withOpacity(0.5),
+                                            Colors.transparent,
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 10),
+                      if (controller.sliderImages.length > 1)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(
+                            controller.sliderImages.length,
+                            (index) => AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
+                              height: 8,
+                              width: controller.currentPos == index ? 20 : 8,
+                              decoration: BoxDecoration(
+                                color: controller.currentPos == index
+                                    ? Constants.primaryColor
+                                    : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
                           ),
                         ),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 10),
-                  if (controller.sliderImages.length > 1)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        controller.sliderImages.length,
-                        (index) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 4,
-                          ),
-                          height: 8,
-                          width: controller.currentPos == index ? 20 : 8,
-                          decoration: BoxDecoration(
-                            color: controller.currentPos == index
-                                ? Constants.primaryColor
-                                : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              );
+                    ],
+                  );
       },
     );
   }
