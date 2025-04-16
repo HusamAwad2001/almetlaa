@@ -15,15 +15,12 @@ class RegionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text(
-          "التوزيعات",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("التوزيعات"),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
       ),
-      body: GetBuilder(
+      body: GetBuilder<RegionsController>(
         init: RegionsController(),
         builder: (controller) {
           return Column(
@@ -32,9 +29,9 @@ class RegionsPage extends StatelessWidget {
               TextField(
                 onSubmitted: (v) {
                   if (v.isEmpty) {
-                    controller.getAllRegions();
+                    controller.getAllRegions(isRefresh: true);
                   } else {
-                    controller.searchRegions(v);
+                    controller.searchRegions(v); // تأكد إنها معرفة
                   }
                 },
                 decoration: InputDecoration(
@@ -67,126 +64,141 @@ class RegionsPage extends StatelessWidget {
                 ),
               ),
               30.ph,
-              controller.loadingRegions
-                  ? const Expanded(
-                      child: Center(child: CircularProgressIndicator()),
-                    )
-                  : controller.listAllRegions.isEmpty
-                      ? const Expanded(
-                          child: Center(
-                            child: Text(
-                              'لا يوجد توزيعات',
-                              style: TextStyle(fontSize: 16),
+              if (controller.loadingRegions &&
+                  controller.listAllRegions.isEmpty)
+                const Expanded(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (controller.listAllRegions.isEmpty)
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'لا يوجد توزيعات',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                )
+              else
+                Expanded(
+                  child: Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15.r),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color(0xFFE9E9E9),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            color: Constants.primaryColor,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.r),
+                              topRight: Radius.circular(15.r),
                             ),
                           ),
-                        )
-                      : Expanded(
-                          child: controller.loadingRegions
-                              ? const Center(child: CircularProgressIndicator())
-                              : Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(15.r),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: const Color(0xFFE9E9E9),
-                                    ),
-                                  ),
-                                  child: Column(
+                          child: Row(
+                            children: [
+                              20.pw,
+                              SvgPicture.asset(
+                                'assets/images/location.svg',
+                                width: 20.w,
+                                color: Colors.white,
+                              ),
+                              10.pw,
+                              Text(
+                                'المناطق',
+                                style: TextStyle(
+                                  fontSize: 15.sp,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: NotificationListener<ScrollNotification>(
+                            onNotification: (scrollNotification) {
+                              if (scrollNotification.metrics.pixels >=
+                                      scrollNotification
+                                              .metrics.maxScrollExtent -
+                                          100 &&
+                                  !controller.loadingRegions &&
+                                  controller.hasMore) {
+                                controller.getAllRegions();
+                              }
+                              return true;
+                            },
+                            child: ListView.builder(
+                              itemCount: controller.listAllRegions.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index < controller.listAllRegions.length) {
+                                  final item = controller.listAllRegions[index];
+                                  return Column(
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 14.h),
-                                        clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          color: Constants.primaryColor,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15.r),
-                                            topRight: Radius.circular(15.r),
-                                          ),
-                                        ),
+                                      InkWell(
+                                        onTap: () {
+                                          Get.toNamed(
+                                            Routes.blocksPage,
+                                            arguments: item['_id'],
+                                          );
+                                        },
                                         child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            20.pw,
-                                            SvgPicture.asset(
-                                              'assets/images/location.svg',
-                                              width: 20.w,
-                                              color: Colors.white,
-                                            ),
-                                            10.pw,
                                             Text(
-                                              'المناطق',
+                                              item['name'] ?? "",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                               style: TextStyle(
-                                                fontSize: 15.sp,
-                                                color: Colors.white,
+                                                fontSize: 14.sp,
+                                                color: const Color(0xFF292D32),
                                               ),
                                             ),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              size: 20.w,
+                                            )
                                           ],
-                                        ),
+                                        ).paddingAll(15),
                                       ),
-                                      Expanded(
-                                        child: _RegionListView(controller),
+                                      const Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: Color(0xFFE9E9E9),
                                       ),
                                     ],
-                                  ),
-                                ),
+                                  );
+                                } else {
+                                  return controller.hasMore
+                                      ? Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 20.h),
+                                          child: const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
+                                        )
+                                      : const SizedBox.shrink();
+                                }
+                              },
+                            ),
+                          ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
               30.ph,
             ],
           ).paddingSymmetric(horizontal: 26.w);
         },
       ),
-    );
-  }
-}
-
-class _RegionListView extends StatelessWidget {
-  final RegionsController controller;
-  const _RegionListView(this.controller);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.listAllRegions.length,
-      itemBuilder: (context, index) {
-        final item = controller.listAllRegions[index];
-        return Column(
-          children: [
-            InkWell(
-              onTap: () {
-                Get.toNamed(
-                  Routes.blocksPage,
-                  arguments: item['_id'],
-                );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    item['name'] ?? "",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: const Color(0xFF292D32),
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 20.w,
-                  )
-                ],
-              ).paddingAll(15),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 1,
-              color: Color(0xFFE9E9E9),
-            ),
-          ],
-        );
-      },
     );
   }
 }

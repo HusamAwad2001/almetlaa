@@ -21,10 +21,7 @@ class CategoriesPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text(
-          "الشركات",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("الشركات"),
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
