@@ -19,28 +19,88 @@ class AllowanceDetailsPage extends StatelessWidget {
           backgroundColor: Colors.white,
           body: CustomScrollView(
             slivers: [
-              SliverAppBar(
-                pinned: true,
-                expandedHeight: 280.h,
-                backgroundColor: Constants.primaryColor,
-                flexibleSpace: FlexibleSpaceBar(
-                  titlePadding: EdgeInsets.only(left: 16.w, bottom: 16.h),
-                  title: Text(
-                    item['title'],
-                    style: Theme.of(context).appBarTheme.titleTextStyle,
-                  ),
-                  background: Hero(
-                    tag: item['image'],
-                    child: AppImage(
-                      imageUrl: item['image'],
-                      width: Get.width,
-                      height: 280.h,
-                      fit: BoxFit.cover,
-                      indicatorColor: Colors.white,
+              Builder(
+                builder: (context) {
+                  return SliverAppBar(
+                    backgroundColor: Constants.primaryColor,
+                    expandedHeight: 300.h,
+                    pinned: true,
+                    flexibleSpace: LayoutBuilder(
+                      builder: (context, constraints) {
+                        bool isCollapsed = constraints.biggest.height <=
+                            kToolbarHeight + MediaQuery.of(context).padding.top;
+                        return FlexibleSpaceBar(
+                          centerTitle: false,
+                          title: isCollapsed
+                              ? Text(
+                                  item['title'],
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ).paddingOnly(left: 10.w)
+                              : null,
+                          background: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Hero(
+                                tag: item['_id'],
+                                child: AppImage(
+                                  imageUrl: item['image'],
+                                  fit: BoxFit.cover,
+                                  indicatorColor: Colors.white,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.black26,
+                                      Colors.transparent
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
+              // SliverAppBar(
+              //   pinned: true,
+              //   expandedHeight: 280.h,
+              //   backgroundColor: Constants.primaryColor,
+              //   flexibleSpace: FlexibleSpaceBar(
+              //     titlePadding: EdgeInsets.only(left: 16.w, bottom: 16.h),
+              //     title: Text(
+              //       item['title'],
+              //       maxLines: 1,
+              //       overflow: TextOverflow.ellipsis,
+              //       style:
+              //           Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+              //                 fontSize: 14.sp,
+              //               ),
+              //     ).paddingOnly(right: 56.w),
+              //     background: Hero(
+              //       tag: item['image'],
+              //       child: AppImage(
+              //         imageUrl: item['image'],
+              //         width: Get.width,
+              //         height: 280.h,
+              //         fit: BoxFit.cover,
+              //         indicatorColor: Colors.white,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -50,6 +110,14 @@ class AllowanceDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        item['title'],
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      20.ph,
                       Row(
                         children: [
                           Icon(

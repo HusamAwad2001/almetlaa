@@ -18,30 +18,30 @@ class NewsDetailsPage extends StatelessWidget {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
-                backgroundColor: Colors.white,
+                backgroundColor: Constants.primaryColor,
                 expandedHeight: 300.h,
                 pinned: true,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  onPressed: () => Get.back(),
-                ),
+                // leading: IconButton(
+                //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+                //   onPressed: () => Get.back(),
+                // ),
                 flexibleSpace: LayoutBuilder(
                   builder: (context, constraints) {
                     final isCollapsed = constraints.biggest.height <=
                         kToolbarHeight + MediaQuery.of(context).padding.top;
                     return FlexibleSpaceBar(
-                      centerTitle: true,
+                      centerTitle: false,
                       title: isCollapsed
                           ? Text(
                               controller.item['title'],
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                            ).paddingOnly(right: 56, left: 20.w)
+                            ).paddingOnly(left: 10.w)
                           : null,
                       background: Stack(
                         fit: StackFit.expand,
@@ -51,6 +51,7 @@ class NewsDetailsPage extends StatelessWidget {
                             child: AppImage(
                               imageUrl: controller.item['image'],
                               fit: BoxFit.cover,
+                              indicatorColor: Colors.white,
                             ),
                           ),
                           Container(

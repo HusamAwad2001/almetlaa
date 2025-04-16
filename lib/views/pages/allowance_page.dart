@@ -35,8 +35,9 @@ class AllowancePage extends StatelessWidget {
           return Column(
             children: [
               Visibility(
-                visible: !(controller.errorModel != null &&
-                    controller.listAllExchange.isEmpty),
+                visible: controller.errorModel == null &&
+                    controller.listAllExchange.isNotEmpty &&
+                    !controller.loadingExchange,
                 child: Row(
                   children: [
                     Expanded(
