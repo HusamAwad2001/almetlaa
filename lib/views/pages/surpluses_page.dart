@@ -26,7 +26,7 @@ class SurplusesPage extends GetView<SurplusesController> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add),
+            icon: Icon(Icons.add_circle, size: 24.w),
             onPressed: () => Get.toNamed(Routes.createSurplusesPage),
           ),
         ],

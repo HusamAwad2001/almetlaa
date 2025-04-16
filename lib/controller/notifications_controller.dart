@@ -1,65 +1,106 @@
-import 'dart:developer';
-
-import '../../views/widgets/loading_dialog.dart';
 import 'package:get/get.dart';
 
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
+import '../../views/widgets/loading_dialog.dart';
 
 class NotificationsController extends GetxController {
+  List notifications = [];
+  bool loadingNotifications = false;
+  bool hasMore = true;
+  int currentPage = 1;
+  final int limit = 20;
+  ApiErrorModel? errorModel;
+
   @override
   void onInit() {
     getAllNotifications();
     super.onInit();
   }
 
-  List notifications = [];
-  bool loadingNotifications = true;
-  getAllNotifications() {
+  Future<void> getAllNotifications({bool isRefresh = false}) async {
+    if (loadingNotifications) return;
+
+    if (isRefresh) {
+      currentPage = 1;
+      hasMore = true;
+      notifications.clear();
+    }
+
+    if (!hasMore) return;
+
     loadingNotifications = true;
-    API().get(
-      url: '/alerts/user?limit=100',
+    update();
+
+    await API().get(
+      url: '/alerts/user?page=$currentPage&limit=$limit',
       onResponse: (response) {
-        loadingNotifications = false;
-        log(response.data.toString());
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            notifications = response.data['data'];
+        if (response.statusCode == 200 && response.data['success']) {
+          List newItems = response.data['data'];
+          final pagination = response.data['pagination'];
+
+          notifications.addAll(newItems);
+
+          final int totalPages = pagination['pages'] ?? 1;
+          currentPage++;
+
+          if (currentPage > totalPages || newItems.length < limit) {
+            hasMore = false;
           }
+        } else {
+          hasMore = false;
         }
+
+        loadingNotifications = false;
+        update();
+      },
+      onError: (error) {
+        errorModel = error;
+        loadingNotifications = false;
         update();
       },
     );
   }
 
-  deleteNotification(String id, int index) async {
+  Future<void> deleteNotification(String id, int index) async {
     LoadingDialog().dialog();
-    API().post(
+
+    await API().post(
       url: '/alerts/$id',
       body: {},
       onResponse: (response) {
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            notifications.removeAt(index);
-          }
-        }
         Get.back();
+
+        if (response.statusCode == 200 && response.data['success']) {
+          notifications.removeAt(index);
+          update();
+        }
+      },
+      onError: (error) {
+        Get.back();
+        errorModel = error;
         update();
       },
     );
   }
 
-  deleteAll() async {
+  Future<void> deleteAll() async {
     LoadingDialog().dialog();
-    API().put(
+
+    await API().put(
       url: '/alerts/user',
       body: {},
       onResponse: (response) {
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            notifications.clear();
-          }
-        }
         Get.back();
+
+        if (response.statusCode == 200 && response.data['success']) {
+          notifications.clear();
+          update();
+        }
+      },
+      onError: (error) {
+        Get.back();
+        errorModel = error;
         update();
       },
     );
