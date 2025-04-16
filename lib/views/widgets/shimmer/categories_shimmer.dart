@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoriesShimmer extends StatelessWidget {
-  const CategoriesShimmer({Key? key}) : super(key: key);
+  const CategoriesShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,9 @@ class CategoriesShimmer extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
           children: [
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 10.h,
+            ),
             AlignedGridView.count(
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
@@ -24,7 +26,7 @@ class CategoriesShimmer extends StatelessWidget {
               crossAxisSpacing: 10.w,
               shrinkWrap: true,
               itemCount: 40,
-              crossAxisCount: 4,
+              crossAxisCount: 3,
               itemBuilder: (_, index) {
                 return Container(
                   decoration: BoxDecoration(
@@ -38,22 +40,35 @@ class CategoriesShimmer extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 15.h,),
-                      Container(height: 40.h,width: 40.h,color: Colors.grey,),
-                      SizedBox(height: 10.h,),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Container(
+                        height: 40.h,
+                        width: 40.h,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
                       Text(
                         "━━━",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 10.sp, color: const Color(0xFF01367C)),
+                        style: TextStyle(
+                            fontSize: 10.sp, color: const Color(0xFF01367C)),
                       ),
-                      SizedBox(height: 15.h,),
+                      SizedBox(
+                        height: 15.h,
+                      ),
                     ],
                   ),
                 );
               },
             ).paddingOnly(left: 10.w, right: 10.w),
-            SizedBox(height: 10.h,),
+            SizedBox(
+              height: 10.h,
+            ),
           ],
         ),
       ),

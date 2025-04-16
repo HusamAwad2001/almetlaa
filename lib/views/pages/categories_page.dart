@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 
 import '../../routes/routes.dart';
 import '../../values/constants.dart';
+import '../widgets/app_error_widget.dart';
 import '../widgets/shimmer/categories_shimmer.dart';
 
 class CategoriesPage extends StatelessWidget {
@@ -14,6 +15,8 @@ class CategoriesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -29,42 +32,76 @@ class CategoriesPage extends StatelessWidget {
       body: GetBuilder<CategoriesController>(
         init: CategoriesController(),
         builder: (controller) {
-          return controller.loadingCategories
-              ? const CategoriesShimmer()
-              : controller.categories.isEmpty
-                  ? const Center(
-                      child: Text("لا يوجد"),
-                    )
-                  : SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          AlignedGridView.count(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            mainAxisSpacing: 10.h,
-                            crossAxisSpacing: 10.w,
-                            shrinkWrap: true,
-                            itemCount: controller.categories.length,
-                            crossAxisCount: 4,
-                            itemBuilder: (_, index) {
-                              return CategoryWidget(
-                                item: controller.categories[index],
-                                onTap: () {
-                                  Get.toNamed(Routes.companiesPage,
-                                      arguments: controller.categories[index]);
-                                },
-                              );
-                            },
-                          ).paddingOnly(left: 10.w, right: 10.w),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      ),
+          scrollController.addListener(() {
+            if (scrollController.position.pixels >=
+                    scrollController.position.maxScrollExtent - 100 &&
+                controller.hasMore &&
+                !controller.loadingCategories) {
+              controller.getCategories();
+            }
+          });
+
+          if (controller.loadingCategories && controller.categories.isEmpty) {
+            return const CategoriesShimmer();
+          }
+
+          if (controller.errorModel != null && controller.categories.isEmpty) {
+            return AppErrorWidget(
+              errorMessage: controller.errorModel?.message ?? "حدث خطأ ما",
+              onRetry: controller.getCategories,
+            );
+          }
+
+          if (controller.categories.isEmpty) {
+            return Center(
+              child: Text(
+                "لا توجد شركات",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: Column(
+              children: [
+                AlignedGridView.count(
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.only(
+                    top: 16.h,
+                    left: 16.w,
+                    right: 16.w,
+                  ),
+                  mainAxisSpacing: 10.h,
+                  crossAxisSpacing: 10.w,
+                  shrinkWrap: true,
+                  itemCount: controller.categories.length,
+                  crossAxisCount: 3,
+                  itemBuilder: (_, index) {
+                    return CategoryWidget(
+                      item: controller.categories[index],
+                      onTap: () {
+                        Get.toNamed(
+                          Routes.companiesPage,
+                          arguments: controller.categories[index],
+                        );
+                      },
                     );
+                  },
+                ),
+                if (controller.loadingCategories)
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20.h),
+                    child: const CircularProgressIndicator(),
+                  )
+                else
+                  50.ph,
+              ],
+            ),
+          );
         },
       ),
     );
