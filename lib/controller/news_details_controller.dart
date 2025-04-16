@@ -1,7 +1,13 @@
 import 'package:get/get.dart';
 
 class NewsDetailsController extends GetxController {
-  Map item = Get.arguments;
+  late Map<String, dynamic> item;
+
+  @override
+  void onInit() {
+    super.onInit();
+    item = Get.arguments;
+  }
 
   // bool loading = true;
   // addView() {
