@@ -60,6 +60,9 @@ class _LoginPageState extends State<LoginPage> {
                     color: Constants.primaryColor,
                   ),
                   onChange: (value) {
+                    if (value.length == 9) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
                     if (value.isNotEmpty) {
                       setState(() {
                         textDirection = TextDirection.ltr;
@@ -79,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => controller.validate(),
+                    onPressed: controller.validate,
                     style: ButtonStyle(
                       shape: WidgetStateProperty.all(
                         const RoundedRectangleBorder(

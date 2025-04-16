@@ -6,8 +6,8 @@ class ApiErrorModel {
 
   factory ApiErrorModel.fromJson(Map<String, dynamic> json) {
     return ApiErrorModel(
-      status: json['status'],
-      message: json['message'],
+      status: json['success'],
+      message: json['error'],
     );
   }
 }

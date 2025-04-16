@@ -56,10 +56,10 @@ class ApiErrorHandler {
             ),
           );
         case DioExceptionType.badResponse:
-          _handleError(error);
-          break;
+          return _handleError(error);
       }
     }
+    print('Error is not DioException: $error');
     return ServerException(
       apiErrorModel: ApiErrorModel(
         message: 'حدث خطأ غير متوقع، يرجى المحاولة لاحقًا.',
@@ -70,8 +70,8 @@ class ApiErrorHandler {
 
 ServerException _handleError(DioException error) {
   if (error.response != null) {
-    final data = error.response!.data;
-    if (data is Map<String, dynamic> && (data.containsKey('message'))) {
+    final data = error.response?.data;
+    if (data != null && data is Map<String, dynamic>) {
       final apiErrorModel = ApiErrorModel.fromJson(data);
       return ServerException(apiErrorModel: apiErrorModel);
     } else {
