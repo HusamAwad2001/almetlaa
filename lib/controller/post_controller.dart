@@ -5,31 +5,72 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
 import '../views/widgets/loading_dialog.dart';
 import '../views/widgets/snack.dart';
 
 class PostController extends GetxController {
+  // List posts = [];
+  // bool loadingPosts = false;
+  // ApiErrorModel? errorModel;
+
+  // String type = "-createdAt";
+
   @override
   void onInit() {
-    getPosts(type);
+    getPosts();
     super.onInit();
   }
 
-  String type = "-createdAt";
   List posts = [];
-  bool loadingPosts = true;
-  getPosts(String type) {
-    API().get(
-        url: '/posts?limit=100&sort=$type',
-        onResponse: (response) {
-          loadingPosts = false;
-          if (response.statusCode == 200) {
-            if (response.data['success']) {
-              posts = response.data['data'];
-            }
+  bool loadingPosts = false;
+  bool hasMore = true;
+  int currentPage = 1;
+  final int limit = 20;
+  ApiErrorModel? errorModel;
+
+  Future<void> getPosts({bool isRefresh = false}) async {
+    if (loadingPosts) return;
+
+    if (isRefresh) {
+      currentPage = 1;
+      hasMore = true;
+      posts.clear();
+    }
+
+    if (!hasMore) return;
+
+    loadingPosts = true;
+    update();
+
+    await API().get(
+      url: '/posts?page=$currentPage&limit=$limit',
+      onResponse: (response) {
+        if (response.statusCode == 200 && response.data['success']) {
+          List newItems = response.data['data'];
+          final pagination = response.data['pagination'];
+
+          posts.addAll(newItems);
+
+          final int totalPages = pagination['pages'] ?? 1;
+          currentPage++;
+
+          if (currentPage > totalPages || newItems.length < limit) {
+            hasMore = false;
           }
-          update();
-        });
+        } else {
+          hasMore = false;
+        }
+
+        loadingPosts = false;
+        update();
+      },
+      onError: (error) {
+        errorModel = error;
+        loadingPosts = false;
+        update();
+      },
+    );
   }
 
   final imageController = TextEditingController();
