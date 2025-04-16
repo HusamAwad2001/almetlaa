@@ -1,4 +1,5 @@
-import '../../views/widgets/app_image.dart';
+import 'package:almetlaa/values/constants.dart';
+import 'package:almetlaa/views/widgets/snack.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -8,105 +9,119 @@ class CallDialog {
     Get.bottomSheet(
       Material(
         color: Colors.white,
-        borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 20),
-            InkWell(
-              onTap: () => launchUrl(
-                  Uri.parse("https://api.whatsapp.com/send?phone=96550000488")),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    imageUrl:
-                        "https://cdn-icons-png.flaticon.com/512/124/124034.png?w=360",
-                    height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 100, child: Text("50000488"))
-                ],
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              10.ph,
+              Container(
+                width: 50,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-            ),
-            const Divider().marginOnly(left: 50, right: 50),
-            InkWell(
-              onTap: () => launchUrl(
-                  Uri.parse('https://www.instagram.com/almutlacity/')),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    imageUrl:
-                        "https://cdn-icons-png.flaticon.com/512/87/87390.png?w=360",
-                    height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 100, child: Text("almutlacity"))
-                ],
+              10.ph,
+              const Text(
+                "تواصل معنا",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const Divider().marginOnly(left: 50, right: 50),
-            InkWell(
-              onTap: () => launchUrl(Uri.parse('https://t.me/almutlacity')),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    imageUrl:
-                        "https://cdn-icons-png.flaticon.com/512/2111/2111646.png?w=360",
-                    height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 100, child: Text("almutlacity"))
-                ],
+              const SizedBox(height: 20),
+              _buildContactTile(
+                  imageUrl: "assets/icons/whats_app.jpeg",
+                  label: "50000488",
+                  url: 'http://wa.me/96550000488'),
+              _buildContactTile(
+                  imageUrl: "assets/icons/telegram.png",
+                  label: "baitiexpo",
+                  url: 'https://t.me/baitiexpo'),
+              _buildContactTile(
+                  imageUrl: "assets/icons/instagram.png",
+                  label: "baitiexpo",
+                  url: 'https://www.instagram.com/baitiexpo'),
+              _buildContactTile(
+                imageUrl: "assets/icons/tiktok.png",
+                label: "baitiexpo",
+                url: 'https://www.tiktok.com/@baitiexpo',
               ),
-            ),
-            const Divider().marginOnly(left: 50, right: 50),
-            InkWell(
-              onTap: () =>
-                  launchUrl(Uri.parse('https://www.twitter.com/al_mutlacity/')),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    imageUrl:
-                        "https://cdn-icons-png.flaticon.com/512/124/124021.png?w=360",
-                    height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 100, child: Text("al_mutlacity"))
-                ],
-              ),
-            ),
-            const Divider().marginOnly(left: 50, right: 50),
-            InkWell(
-              onTap: () =>
-                  launchUrl(Uri.parse('https://www.youtube.com/@almutlaacity')),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppImage(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    imageUrl:
-                        "https://cdn-icons-png.flaticon.com/512/1384/1384060.png?w=360",
-                    height: 30,
-                  ),
-                  const SizedBox(width: 10),
-                  const SizedBox(width: 100, child: Text("almutlaacity"))
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ).paddingOnly(right: 30),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
       ),
       isScrollControlled: true,
+    );
+  }
+
+  Widget _buildContactTile({
+    required String imageUrl,
+    required String label,
+    required String url,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () async {
+            if (await canLaunchUrl(Uri.parse(url))) {
+              await launchUrl(Uri.parse(url));
+            } else {
+              Snack().show(message: 'لا يمكن فتح الرابط', type: false);
+            }
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.grey[300]!,
+                width: 1,
+              ),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    imageUrl,
+                    height: 40,
+                    width: 40,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    label,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 20,
+                  color: Colors.grey[400],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
