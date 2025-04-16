@@ -135,13 +135,13 @@ class API {
 class ApiResponse {
   late int statusCode;
   late bool success;
-  late PaginationModel pagination;
+  PaginationModel? pagination;
   late Map data;
 
   ApiResponse({
     required this.statusCode,
     required this.success,
-    required this.pagination,
+    this.pagination,
     required this.data,
   });
 
@@ -149,7 +149,9 @@ class ApiResponse {
     return ApiResponse(
       statusCode: 0,
       success: json['success'],
-      pagination: json['pagination'],
+      pagination: json['pagination'] != null
+          ? PaginationModel.fromJson(json['pagination'])
+          : null,
       data: json['data'],
     );
   }

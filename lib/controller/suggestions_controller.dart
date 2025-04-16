@@ -20,15 +20,24 @@ class SuggestionsController extends GetxController {
         "topic": topicController.text,
       },
       onResponse: (response) {
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            Get.back();
-            Snack().show(type: true, message: 'تم إرسال الإقتراح بنجاح');
-            suggestionController.clear();
-            topicController.clear();
-          }
-        }
+        Get.back();
         update();
+        if (response.success) {
+          Snack().show(
+            type: true,
+            message: 'تم إرسال الإقتراح بنجاح',
+          );
+          suggestionController.clear();
+          topicController.clear();
+          update();
+        }
+      },
+      onError: (errorModel) {
+        Get.back();
+        Snack().show(
+          message: errorModel.message ?? 'حدث خطأ ما',
+          type: false,
+        );
       },
     );
   }
