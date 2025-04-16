@@ -15,24 +15,28 @@ class AllowancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Constants.primaryColor,
-        title: Text("البدل"),
-        iconTheme: IconThemeData(color: Colors.white),
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () => Get.toNamed(Routes.createExchangePage),
-            icon: Icon(Icons.add_circle, size: 24.w),
+    return GetBuilder<AllowanceController>(
+      init: AllowanceController(),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Constants.primaryColor,
+            title: Text("البدل"),
+            iconTheme: IconThemeData(color: Colors.white),
+            centerTitle: true,
+            elevation: 0,
+            actions: [
+              Visibility(
+                visible: controller.errorModel == null &&
+                    !controller.loadingExchange,
+                child: IconButton(
+                  onPressed: () => Get.toNamed(Routes.createExchangePage),
+                  icon: Icon(Icons.add_circle, size: 24.w),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      body: GetBuilder<AllowanceController>(
-        init: AllowanceController(),
-        builder: (controller) {
-          return Column(
+          body: Column(
             children: [
               Visibility(
                 visible: controller.errorModel == null &&
@@ -117,9 +121,9 @@ class AllowancePage extends StatelessWidget {
                     : const ListViewItem(),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
