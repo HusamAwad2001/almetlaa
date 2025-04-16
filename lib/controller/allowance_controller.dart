@@ -7,6 +7,7 @@ import 'package:dio/dio.dart' as dio;
 import 'package:image_picker/image_picker.dart';
 import '../routes/routes.dart';
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
 import '../views/widgets/loading_dialog.dart';
 import '../views/widgets/snack.dart';
 
@@ -15,13 +16,22 @@ class AllowanceController extends GetxController {
   final descriptionController = TextEditingController();
   final viewController = TextEditingController();
   final imageController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   @override
   void onInit() {
     getAllExchange();
-    print('listAllExchange');
-    print(listAllExchange);
+    scrollController.addListener(_scrollListener);
     super.onInit();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels >=
+            scrollController.position.maxScrollExtent - 100 &&
+        !loadingExchange &&
+        hasMoreExchange) {
+      getAllExchange();
+    }
   }
 
   bool isGrid = false;
@@ -32,21 +42,51 @@ class AllowanceController extends GetxController {
   }
 
   List listAllExchange = [];
-  bool loadingExchange = true;
-  getAllExchange() {
+  bool loadingExchange = false;
+  bool hasMoreExchange = true;
+  int exchangeCurrentPage = 1;
+  final int exchangeLimit = 8;
+  ApiErrorModel? errorModel;
+
+  Future<void> getAllExchange({bool isRefresh = false}) async {
+    if (isRefresh) {
+      exchangeCurrentPage = 1;
+      hasMoreExchange = true;
+      listAllExchange.clear();
+    }
+
+    if (!hasMoreExchange || loadingExchange) return;
+
     loadingExchange = true;
     update();
-    API().get(
-        url: '/exchange?limit=100',
-        onResponse: (response) {
-          loadingExchange = false;
-          if (response.statusCode == 200) {
-            if (response.data['success']) {
-              listAllExchange = response.data['data'];
-            }
+
+    await API().get(
+      url: '/exchange?limit=$exchangeLimit&page=$exchangeCurrentPage',
+      onResponse: (response) {
+        loadingExchange = false;
+
+        if (response.statusCode == 200 && response.data['success']) {
+          List newData = response.data['data'];
+          final pagination = response.data['pagination'];
+          listAllExchange.addAll(newData);
+
+          final int totalPages = pagination['pages'] ?? 1;
+
+          if (exchangeCurrentPage < totalPages) {
+            exchangeCurrentPage += 1;
+          } else {
+            hasMoreExchange = false;
           }
-          update();
-        });
+        }
+
+        update();
+      },
+      onError: (error) {
+        loadingExchange = false;
+        errorModel = error;
+        update();
+      },
+    );
   }
 
   searchExchange(String search) {
