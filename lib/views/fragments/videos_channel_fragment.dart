@@ -41,14 +41,18 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
   }
 
   _loadMoreVideos() async {
-    _isLoading = true;
+    setState(() {
+      _isLoading = true;
+    });
+
     List<Video> moreVideos = await APIService.instance
         .fetchVideosFromPlaylist(playlistId: _channel!.uploadPlaylistId!);
     List<Video> allVideos = _channel!.videos!..addAll(moreVideos);
+
     setState(() {
       _channel?.videos = allVideos;
+      _isLoading = false;
     });
-    _isLoading = false;
   }
 
   @override
@@ -80,18 +84,25 @@ class _VideosChannelFragmentState extends State<VideosChannelFragment> {
           : _channel != null
               ? NotificationListener<ScrollNotification>(
                   onNotification: (ScrollNotification scrollDetails) {
-                    if (!_isLoading &&
+                    if (scrollDetails.metrics.pixels >=
+                            scrollDetails.metrics.maxScrollExtent - 100 &&
                         _channel!.videos!.length !=
                             int.parse(_channel!.videoCount!) &&
-                        scrollDetails.metrics.pixels ==
-                            scrollDetails.metrics.maxScrollExtent) {
+                        !_isLoading) {
                       _loadMoreVideos();
                     }
                     return false;
                   },
                   child: ListView.builder(
-                    itemCount: _channel!.videos!.length,
+                    itemCount: _channel!.videos!.length + (_isLoading ? 1 : 0),
                     itemBuilder: (BuildContext context, int index) {
+                      if (index == _channel!.videos!.length) {
+                        return const Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+
                       Video video = _channel!.videos![index];
                       return _VideoWidget(
                         video: video,

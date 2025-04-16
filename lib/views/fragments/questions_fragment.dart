@@ -26,7 +26,7 @@ class _QuestionsFragmentState extends State<QuestionsFragment> {
   void _scrollListener() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 100) {
-      _controller.getQuestions(); // بنجيب الصفحة التالية
+      _controller.getQuestions();
     }
   }
 
@@ -72,7 +72,7 @@ class _QuestionsFragmentState extends State<QuestionsFragment> {
               if (index == controller.questions.length) {
                 return controller.hasMore
                     ? const Center(child: CircularProgressIndicator())
-                    : const SizedBox(); // ما في بيانات أكثر
+                    : const SizedBox();
               }
 
               final question = controller.questions[index];
