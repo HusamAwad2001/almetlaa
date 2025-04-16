@@ -16,10 +16,7 @@ class AllowancePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: const Text(
-          "البدل",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: Text("البدل"),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
@@ -79,6 +76,7 @@ class AllowancePage extends StatelessWidget {
                   32.pw,
                   InkWell(
                     onTap: () => controller.switchGridStyle(),
+                    borderRadius: BorderRadius.circular(10.r),
                     child: Container(
                       width: 45.w,
                       height: 45.h,
@@ -126,7 +124,6 @@ class ListViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<AllowanceController>(
       builder: (controller) {
-        // return const AllowanceShimmer();
         return controller.loadingExchange
             ? const AllowanceShimmer()
             : controller.listAllExchange.isEmpty
@@ -136,80 +133,12 @@ class ListViewItem extends StatelessWidget {
                     separatorBuilder: (context, index) => 25.ph,
                     itemBuilder: (context, index) {
                       final item = controller.listAllExchange[index];
-                      return InkWell(
-                        onTap: () {
-                          // controller.getOneExchangeById(item['_id']);
-                          Get.toNamed(
-                            Routes.allowanceDetailsPage,
-                            arguments: item,
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(14.r),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(0, 1),
-                                color:
-                                    const Color(0xFF585858).withOpacity(0.25),
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/transfer.png',
-                                width: 60.w,
-                                height: 60.h,
-                                color: Constants.darkPrimaryColor,
-                              ).paddingAll(30.w),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      item['title'],
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 18.sp,
-                                        letterSpacing: -0.24,
-                                      ),
-                                    ),
-                                    9.ph,
-                                    Text(
-                                      item['description'],
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        letterSpacing: -0.24,
-                                        color: const Color(0xFF989898),
-                                      ),
-                                    ),
-                                    6.ph,
-                                    Text(
-                                      controller.extractDate(item['createdAt']),
-                                      maxLines: 1,
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        letterSpacing: -0.24,
-                                        color: const Color(0xFF989898),
-                                      ),
-                                    ),
-                                  ],
-                                ).paddingOnly(left: 20.w),
-                              ),
-                            ],
-                          ),
+                      return ExchangeItem(
+                        data: item,
+                        isGrid: false,
+                        onTap: () => Get.toNamed(
+                          Routes.allowanceDetailsPage,
+                          arguments: item,
                         ),
                       );
                     },
@@ -240,79 +169,134 @@ class GridViewItem extends StatelessWidget {
                     crossAxisCount: 2,
                     itemBuilder: (_, index) {
                       final item = controller.listAllExchange[index];
-                      return InkWell(
-                        onTap: () {
-                          // controller.getOneExchangeById(item['_id']);
-                          Get.toNamed(
-                            Routes.allowanceDetailsPage,
-                            arguments: item,
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(14.r),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: const Offset(0, 1),
-                                color:
-                                    const Color(0xFF585858).withOpacity(0.25),
-                                blurRadius: 5,
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Image.asset(
-                                'assets/images/transfer.png',
-                                width: 60.w,
-                                height: 60.h,
-                                color: Constants.darkPrimaryColor,
-                              ).paddingOnly(
-                                  top: 16.h,
-                                  bottom: 8.h,
-                                  right: 55.w,
-                                  left: 55.w),
-                              Text(
-                                item['title'],
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 16.sp,
-                                  letterSpacing: -0.24,
-                                ),
-                              ).paddingSymmetric(horizontal: 16.w),
-                              6.ph,
-                              Text(
-                                item['description'],
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  letterSpacing: -0.24,
-                                  color: const Color(0xFF989898),
-                                ),
-                              ).paddingSymmetric(horizontal: 16.w),
-                              8.ph,
-                              Text(
-                                controller.extractDate(item['createdAt']),
-                                maxLines: 1,
-                                textAlign: TextAlign.left,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  letterSpacing: -0.24,
-                                  color: const Color(0xFF989898),
-                                ),
-                              ).paddingOnly(left: 16.w, bottom: 16.h),
-                            ],
-                          ),
+                      return ExchangeItem(
+                        data: item,
+                        isGrid: true,
+                        onTap: () => Get.toNamed(
+                          Routes.allowanceDetailsPage,
+                          arguments: item,
                         ),
                       );
                     },
                   );
       },
     ).paddingSymmetric(horizontal: 20.w);
+  }
+}
+
+class ExchangeItem extends StatelessWidget {
+  final Map<String, dynamic> data;
+  final VoidCallback onTap;
+  final bool isGrid;
+
+  const ExchangeItem({
+    super.key,
+    required this.data,
+    required this.onTap,
+    required this.isGrid,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 1),
+              color: const Color(0xFF585858).withOpacity(0.25),
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        padding: EdgeInsets.all(isGrid ? 0 : 20.w),
+        child: isGrid
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.asset(
+                    'assets/images/transfer.png',
+                    width: 60.w,
+                    height: 60.h,
+                    color: Constants.darkPrimaryColor,
+                  ).paddingOnly(
+                      top: 16.h, bottom: 8.h, right: 55.w, left: 55.w),
+                  Text(
+                    data['title'],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16.sp),
+                  ).paddingSymmetric(horizontal: 16.w),
+                  6.ph,
+                  Text(
+                    data['description'],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: const Color(0xFF989898),
+                    ),
+                  ).paddingSymmetric(horizontal: 16.w),
+                  8.ph,
+                  Text(
+                    data['createdAt'], // عادي غيرها بـ extractDate
+                    maxLines: 1,
+                    textAlign: TextAlign.left,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0xFF989898),
+                    ),
+                  ).paddingOnly(left: 16.w, bottom: 16.h),
+                ],
+              )
+            : Row(
+                children: [
+                  Image.asset(
+                    'assets/images/transfer.png',
+                    width: 60.w,
+                    height: 60.h,
+                    color: Constants.darkPrimaryColor,
+                  ).paddingAll(10.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          data['title'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontSize: 18.sp),
+                        ),
+                        9.ph,
+                        Text(
+                          data['description'],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: const Color(0xFF989898),
+                          ),
+                        ),
+                        6.ph,
+                        Text(
+                          data['createdAt'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: const Color(0xFF989898),
+                          ),
+                        ),
+                      ],
+                    ).paddingOnly(left: 20.w),
+                  ),
+                ],
+              ),
+      ),
+    );
   }
 }

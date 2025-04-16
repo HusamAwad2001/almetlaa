@@ -42,6 +42,14 @@ class MyApp extends StatelessWidget {
             progressIndicatorTheme: const ProgressIndicatorThemeData(
               color: Constants.primaryColor,
             ),
+            appBarTheme: AppBarTheme(
+              titleTextStyle: TextStyle(
+                fontSize: 20.sp,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontFamily: GoogleFonts.almarai().fontFamily,
+              ),
+            ),
           ),
           initialRoute: Routes.splashPage,
           getPages: Pages.getPages(),
