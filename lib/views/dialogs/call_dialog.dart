@@ -51,7 +51,7 @@ class CallDialog {
                 url: 'https://www.instagram.com/baitiexpo',
               ),
               _buildContactTile(
-                imageUrl: "assets/icons/snapchat.png",
+                imageUrl: "assets/images/snapchat.png",
                 label: "snapchat",
                 url: 'https://snapchat.com/t/uFQJl3VC',
               ),
