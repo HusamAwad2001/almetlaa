@@ -18,7 +18,7 @@ class InternetPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: Image.asset(
-          'assets/images/baiti_logo.png',
+          'assets/images/playstore.png',
           height: 30,
         ),
       ),
@@ -31,7 +31,7 @@ class InternetPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(
-                    'assets/images/baiti_logo.png',
+                    'assets/images/playstore.png',
                     // color: Constants.primaryColor,
                     width: 200,
                   ),

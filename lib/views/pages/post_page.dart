@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/pages/blocks_page.dart';
+import 'package:baiti/views/pages/blocks_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../controller/post_controller.dart';

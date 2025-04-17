@@ -309,9 +309,8 @@ class SurplusesDetailsPage extends StatelessWidget {
                               ? CircleAvatar(
                                   radius: 33.r,
                                   backgroundColor: const Color(0xFFbdc3c7),
-                                  child: const Icon(
-                                    Icons.perm_identity,
-                                    color: Colors.white,
+                                  backgroundImage: AssetImage(
+                                    'assets/images/playstore.png',
                                   ),
                                 )
                               : AppImage(
@@ -323,7 +322,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                                     return CircleAvatar(
                                       radius: 33.r,
                                       backgroundImage: const AssetImage(
-                                        'assets/images/baiti_logo2.png',
+                                        'assets/images/playstore.png',
                                       ),
                                     );
                                   },

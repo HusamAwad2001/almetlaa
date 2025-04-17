@@ -37,7 +37,7 @@ class ProfileFragment extends StatelessWidget {
             const CircleAvatar(
               backgroundColor: Colors.black12,
               radius: 50,
-              backgroundImage: AssetImage("assets/images/baiti_logo.png"),
+              backgroundImage: AssetImage("assets/images/playstore.png"),
             ),
             16.ph,
             Text(

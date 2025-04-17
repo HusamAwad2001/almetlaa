@@ -71,7 +71,7 @@ class VerificationScreen extends GetView<LoginController> {
                   style: TextStyle(fontSize: 18),
                   children: <TextSpan>[
                     TextSpan(
-                      text: "966${controller.phoneTEC.text}+",
+                      text: "965${controller.phoneTEC.text}+",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Constants.primaryColor,

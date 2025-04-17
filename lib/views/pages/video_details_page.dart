@@ -76,7 +76,7 @@ class VideoDetailsPage extends GetView<HomeController> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
-                      'assets/images/baiti_logo.png',
+                      'assets/images/playstore.png',
                     ).paddingOnly(bottom: 5.h),
                   ),
                 ],

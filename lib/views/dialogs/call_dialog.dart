@@ -1,5 +1,5 @@
-import 'package:almetlaa/values/constants.dart';
-import 'package:almetlaa/views/widgets/snack.dart';
+import 'package:baiti/values/constants.dart';
+import 'package:baiti/views/widgets/snack.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';

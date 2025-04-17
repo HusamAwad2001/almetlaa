@@ -1,7 +1,7 @@
-import 'package:almetlaa/core/global.dart';
-import 'package:almetlaa/core/storage.dart';
-import 'package:almetlaa/routes/routes.dart';
-import 'package:almetlaa/views/pages/verification_screen.dart';
+import 'package:baiti/core/global.dart';
+import 'package:baiti/core/storage.dart';
+import 'package:baiti/routes/routes.dart';
+import 'package:baiti/views/pages/verification_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../utils/api.dart';

@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/widgets/app_error_widget.dart';
+import 'package:baiti/views/widgets/app_error_widget.dart';
 
 import '../../values/constants.dart';
 import 'package:flutter/material.dart';

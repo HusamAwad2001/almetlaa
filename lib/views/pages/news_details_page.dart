@@ -1,4 +1,4 @@
-import 'package:almetlaa/views/pages/blocks_page.dart';
+import 'package:baiti/views/pages/blocks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -92,15 +92,15 @@ class NewsDetailsPage extends StatelessWidget {
                         25.ph,
                         Row(
                           children: [
-                            const Icon(Icons.remove_red_eye,
-                                size: 20, color: Color(0xFF9A9A9A)),
-                            6.pw,
-                            Text(
-                              controller.item['views'].toString(),
-                              style: TextStyle(
-                                  fontSize: 14.sp, color: Colors.grey[600]),
+                            ClipOval(
+                              child: Image.asset(
+                                'assets/images/playstore.png',
+                                width: 55.w,
+                                height: 55.h,
+                                fit: BoxFit.contain,
+                              ),
                             ),
-                            const Spacer(),
+                            10.pw,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
@@ -116,19 +116,17 @@ class NewsDetailsPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            10.pw,
-                            Container(
-                              width: 45.w,
-                              height: 45.w,
-                              padding: EdgeInsets.all(6.w),
-                              decoration: const BoxDecoration(
-                                color: Constants.primaryColor,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Image.asset(
-                                'assets/images/baiti_logo.png',
-                                fit: BoxFit.contain,
-                              ),
+                            const Spacer(),
+                            Text(
+                              controller.item['views'].toString(),
+                              style: TextStyle(
+                                  fontSize: 14.sp, color: Colors.grey[600]),
+                            ),
+                            6.pw,
+                            const Icon(
+                              Icons.remove_red_eye,
+                              size: 20,
+                              color: Color(0xFF9A9A9A),
                             ),
                           ],
                         ),

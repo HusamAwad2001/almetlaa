@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:almetlaa/views/widgets/loading_dialog.dart';
+import 'package:baiti/views/widgets/loading_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:open_file/open_file.dart';

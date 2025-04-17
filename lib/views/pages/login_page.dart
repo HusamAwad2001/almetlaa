@@ -43,10 +43,12 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 24.ph,
-                Image.asset(
-                  "assets/images/baiti_logo.png",
-                  width: 150,
-                  height: 150,
+                ClipOval(
+                  child: Image.asset(
+                    "assets/images/playstore.png",
+                    width: 150,
+                    height: 150,
+                  ),
                 ),
                 24.ph,
                 TextFieldWidget(

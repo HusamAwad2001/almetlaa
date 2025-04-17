@@ -9,7 +9,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.white,
             primaryColor: Constants.primaryColor,
             // primarySwatch: Colors.blue,
-            fontFamily: GoogleFonts.almarai().fontFamily,
+            fontFamily: 'amarai',
             progressIndicatorTheme: const ProgressIndicatorThemeData(
               color: Constants.primaryColor,
             ),
@@ -48,7 +47,8 @@ class MyApp extends StatelessWidget {
                 fontSize: 20.sp,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontFamily: GoogleFonts.almarai().fontFamily,
+                // fontFamily: GoogleFonts.almarai().fontFamily,
+                fontFamily: 'amarai',
               ),
             ),
           ),
