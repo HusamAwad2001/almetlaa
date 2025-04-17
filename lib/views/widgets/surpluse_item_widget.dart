@@ -182,7 +182,6 @@ class SurplusItemWidget extends GetView<SurplusesController> {
                                     duration.inDays == 0
                                         ? '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}'
                                         : '${duration.inDays + 1} أيام',
-                                    textDirection: TextDirection.ltr,
                                     style: TextStyle(
                                       color: Constants.primaryColor,
                                       fontSize: 12.sp,
