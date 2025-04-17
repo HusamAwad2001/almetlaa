@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import '../../controller/surpluses_controller.dart';
 import '../../values/constants.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,7 @@ import 'package:get/get.dart';
 
 import '../widgets/text_field_widget.dart';
 
-class CreateSurplusesPage extends StatelessWidget {
+class CreateSurplusesPage extends GetView<SurplusesController> {
   const CreateSurplusesPage({super.key});
 
   @override
@@ -20,6 +22,13 @@ class CreateSurplusesPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Get.back();
+            controller.clear();
+          },
+        ).paddingOnly(right: 10.w),
       ),
       body: GetBuilder<SurplusesController>(
         init: SurplusesController(),
@@ -40,6 +49,7 @@ class CreateSurplusesPage extends StatelessWidget {
                 radius: 10.r,
                 labelColor: const Color(0xFFB0B0B0),
                 hintFontWeight: FontWeight.bold,
+                maxLines: 3,
               ),
               15.ph,
               TextFieldWidget(
@@ -49,6 +59,9 @@ class CreateSurplusesPage extends StatelessWidget {
                 radius: 10.r,
                 labelColor: const Color(0xFFB0B0B0),
                 hintFontWeight: FontWeight.bold,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+                ],
               ),
               15.ph,
               TextFieldWidget(
@@ -58,13 +71,13 @@ class CreateSurplusesPage extends StatelessWidget {
                 radius: 10.r,
                 labelColor: const Color(0xFFB0B0B0),
                 hintFontWeight: FontWeight.bold,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}$')),
+                ],
               ),
               15.ph,
-              InkWell(
-                onTap: () {
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  controller.pickImage();
-                },
+              GestureDetector(
+                onTap: controller.pickImage,
                 child: TextFieldWidget(
                   controller: controller.imageController,
                   label: 'ارفاق صورة',
@@ -73,9 +86,18 @@ class CreateSurplusesPage extends StatelessWidget {
                   labelColor: const Color(0xFFB0B0B0),
                   hintFontWeight: FontWeight.bold,
                   suffixIcon: Container(
-                    padding: EdgeInsets.all(15.w),
-                    child: SvgPicture.asset('assets/images/select_image.svg'),
-                  ),
+                    padding: EdgeInsets.all(10.r),
+                    decoration: BoxDecoration(
+                      color: Constants.primaryColor,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: SvgPicture.asset(
+                      'assets/images/select_image.svg',
+                      width: 24.w,
+                      height: 24.h,
+                      color: Colors.white,
+                    ),
+                  ).paddingOnly(left: 10.w),
                 ),
               ),
               const Spacer(),

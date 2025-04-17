@@ -2,36 +2,43 @@ import '../../controller/surpluses_controller.dart';
 import '../../values/constants.dart';
 import '../../views/widgets/app_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../routes/routes.dart';
 
 class SurplusItemWidget extends GetView<SurplusesController> {
-  const SurplusItemWidget({super.key, required this.item});
-
   final Map item;
+  const SurplusItemWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: ValueKey(item['_id']),
       onTap: () {
+        final controller = Get.find<SurplusesController>();
+        final id = item['_id'];
+        final remainingTime = controller.remainingTimeMap[id] ?? Duration.zero;
+
         Get.toNamed(
           Routes.surplusesDetailsPage,
-          arguments: item,
+          arguments: {
+            'item': item,
+            'remainingTime': remainingTime,
+          },
         );
       },
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.r),
+          borderRadius: BorderRadius.circular(16.r),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              offset: const Offset(0, 1),
-              blurRadius: 5,
-              color: Colors.black.withOpacity(0.25),
+              offset: const Offset(0, 4),
+              blurRadius: 12,
+              spreadRadius: 0,
+              color: Colors.black.withOpacity(0.08),
             ),
           ],
         ),
@@ -41,64 +48,94 @@ class SurplusItemWidget extends GetView<SurplusesController> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                AppImage(
-                  imageUrl: item['image'],
-                  width: Get.width,
-                  height: 143.h,
+                Stack(
+                  children: [
+                    Hero(
+                      tag: item['_id'],
+                      child: AppImage(
+                        imageUrl: item['image'],
+                        width: Get.width,
+                        height: 160.h,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withOpacity(0.25),
+                            ],
+                            stops: const [0.6, 1],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 Positioned(
-                  left: 9.w,
-                  bottom: -13.h,
+                  left: 12.w,
+                  bottom: -16.h,
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 6.h,
+                      horizontal: 12.w,
+                      vertical: 8.h,
                     ),
                     decoration: BoxDecoration(
                       color: Constants.primaryColor,
-                      borderRadius: BorderRadius.circular(5.r),
+                      borderRadius: BorderRadius.circular(8.r),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(0, 2),
+                          blurRadius: 6,
+                          color: Colors.black.withOpacity(0.16),
+                        ),
+                      ],
                     ),
                     child: Text(
                       '${item['price']} دينار',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 13.sp,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: -0.24,
                       ),
                     ),
                   ),
                 ),
                 Positioned(
-                  left: 100.w,
-                  bottom: -13.h,
+                  right: 12.w,
+                  bottom: -16.h,
                   child: Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: 10.w,
-                      vertical: 5.h,
+                      horizontal: 12.w,
+                      vertical: 8.h,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(5.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       boxShadow: [
                         BoxShadow(
-                          offset: const Offset(0, 1),
-                          blurRadius: 2,
-                          color: const Color(0xFFA8A8A8).withOpacity(0.25),
+                          offset: const Offset(0, 2),
+                          blurRadius: 6,
+                          color: Colors.black.withOpacity(0.1),
                         ),
                       ],
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        CountdownTimer(
-                          endTime: DateTime.now().millisecondsSinceEpoch +
-                              1000 *
-                                  int.parse(item['remainingTime'].toString()),
-                          textStyle: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black,
-                          ),
-                          widgetBuilder: (_, time) {
-                            if (time == null) {
+                        GetBuilder<SurplusesController>(
+                          id: 'countdown-${item['_id']}',
+                          builder: (controller) {
+                            final duration =
+                                controller.remainingTimeMap[item['_id']] ??
+                                    Duration.zero;
+
+                            if (duration.inSeconds <= 0) {
                               return Text(
                                 'انتهت المزايدة',
                                 maxLines: 1,
@@ -106,72 +143,56 @@ class SurplusItemWidget extends GetView<SurplusesController> {
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: const Color(0xFF8E8E8E),
+                                  fontWeight: FontWeight.w500,
                                 ),
                               );
                             }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+
+                            final hours = duration.inHours;
+                            final minutes = duration.inMinutes % 60;
+                            final seconds = duration.inSeconds % 60;
+
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Row(
-                                  children: [
-                                    time.days == 0
-                                        ? Text(
-                                            '${time.hours == null ? "00" : time.hours.toString().padLeft(2, '0')}:${time.min == null ? "00" : time.min.toString().padLeft(2, '0')}:${time.sec == null ? "00" : time.sec.toString().padLeft(2, '0')}',
-                                            style: TextStyle(
-                                              color: Constants.primaryColor,
-                                              fontSize: 15.sp,
-                                              letterSpacing: -0.24,
-                                            ),
-                                          )
-                                        : Text(
-                                            '${time.days! + 1} أيام',
-                                            style: TextStyle(
-                                              color: Constants.primaryColor,
-                                              fontSize: 15.sp,
-                                              letterSpacing: -0.24,
-                                            ),
-                                          ),
-                                    6.pw,
-                                    Icon(
-                                      Icons.timer_sharp,
-                                      size: 18.w,
-                                      color: Constants.primaryColor,
-                                    ),
-                                  ],
+                                Icon(
+                                  Icons.timer_rounded,
+                                  size: 18.w,
+                                  color: Constants.primaryColor,
                                 ),
-                                5.ph,
+                                8.pw,
                                 Text(
-                                  'تنتهي المناقصة خلال',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  'تنتهي خلال',
                                   style: TextStyle(
-                                    fontSize: 10.sp,
+                                    fontSize: 13.sp,
                                     color: const Color(0xFF8E8E8E),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                8.pw,
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 10.w, vertical: 4.h),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Constants.primaryColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    duration.inDays == 0
+                                        ? '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}'
+                                        : '${duration.inDays + 1} أيام',
+                                    textDirection: TextDirection.ltr,
+                                    style: TextStyle(
+                                      color: Constants.primaryColor,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                               ],
                             );
                           },
-                          endWidget: const Text(
-                            "",
-                            style: TextStyle(fontSize: 16, color: Colors.black),
-                          ),
-                        ),
-                        // Text(
-                        //   item['remainingTime']
-                        //       .toString(),
-                        //   style: TextStyle(
-                        //     color: const Color(
-                        //         0xFFA5A5A5),
-                        //     fontSize: 13.sp,
-                        //     letterSpacing: -0.24,
-                        //   ),
-                        // ),
-                        10.pw,
-                        Icon(
-                          Icons.timer_sharp,
-                          size: 19.w,
-                          color: const Color(0xFFA5A5A5),
                         ),
                       ],
                     ),
@@ -179,13 +200,19 @@ class SurplusItemWidget extends GetView<SurplusesController> {
                 ),
               ],
             ),
-            30.ph,
-            Text(
-              item['name'],
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 16.sp),
-            ).paddingOnly(right: 17.w, left: 10.w, bottom: 10.w),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.w, 24.h, 16.w, 16.h),
+              child: Text(
+                item['name'],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey[800],
+                ),
+              ),
+            ),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -20,11 +22,40 @@ class SurplusesController extends GetxController {
 
   final searchController = TextEditingController();
 
+  Map<String, Duration> remainingTimeMap = {};
+  final Map<String, Timer> _timers = {};
+  void startCountdownForItem(String id, int initialSeconds) {
+    _timers[id]?.cancel();
+
+    remainingTimeMap[id] = Duration(seconds: initialSeconds);
+
+    _timers[id] = Timer.periodic(const Duration(seconds: 1), (timer) {
+      final current = remainingTimeMap[id];
+      if (current == null || current.inSeconds <= 1) {
+        timer.cancel();
+        remainingTimeMap[id] = Duration.zero;
+      } else {
+        remainingTimeMap[id] = current - const Duration(seconds: 1);
+      }
+      update(['countdown-$id']);
+    });
+  }
+
+  void initCountdowns(List items) {
+    for (final item in items) {
+      final id = item['_id'];
+      final seconds = int.tryParse(item['remainingTime'].toString()) ?? 0;
+      if (id != null && seconds > 0) {
+        startCountdownForItem(id, seconds);
+      }
+    }
+  }
+
   List surpluses = [];
   bool loadingSurpluses = false;
   bool hasMore = true;
   int currentPage = 1;
-  final int limit = 20;
+  final int limit = 3;
   ApiErrorModel? errorModel;
 
   Future<void> getAllSurpluses({bool isRefresh = false}) async {
@@ -49,6 +80,7 @@ class SurplusesController extends GetxController {
           final pagination = response.data['pagination'];
 
           surpluses.addAll(newItems);
+          initCountdowns(surpluses);
 
           final int totalPages = pagination['pages'] ?? 1;
           currentPage++;
@@ -61,6 +93,7 @@ class SurplusesController extends GetxController {
         }
 
         loadingSurpluses = false;
+        errorModel = null;
         update();
       },
       onError: (error) {
@@ -110,17 +143,15 @@ class SurplusesController extends GetxController {
       url: '/surplusGoods',
       body: formData,
       onResponse: (response) {
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            print('response.data');
-            print(response.data['data']);
-            surpluses = [response.data['data'], ...surpluses];
-            Get.back();
-            Get.back();
-            Snack().show(type: true, message: 'تمت الإضافة');
-            clear();
-          }
-        }
+        surpluses = [response.data['data'], ...surpluses];
+        Get.back();
+        Snack().show(type: true, message: 'تمت الإضافة');
+        clear();
+        update();
+      },
+      onError: (error) {
+        Get.back();
+        Snack().show(type: false, message: error.message ?? 'حدث خطأ ما');
         update();
       },
     );
@@ -160,11 +191,35 @@ class SurplusesController extends GetxController {
   File? imageFile;
 
   Future<void> pickImage() async {
+    LoadingDialog().dialog();
     _pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
-      imageFile = File(_pickedFile!.path);
+      final originalFile = File(_pickedFile!.path);
+      final originalSizeBytes = await originalFile.length();
+      final originalSizeMB = originalSizeBytes / (1024 * 1024);
+      debugPrint('📷 Original size: ${originalSizeMB.toStringAsFixed(2)} MB');
+
+      final compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _pickedFile!.path,
+        '${_pickedFile!.path}_compressed.jpg',
+        quality: 70,
+      );
+
+      if (compressedImage != null) {
+        final compressedSizeBytes = await compressedImage.length();
+        final compressedSizeMB = compressedSizeBytes / (1024 * 1024);
+        debugPrint(
+            '🗜️ Compressed size: ${compressedSizeMB.toStringAsFixed(2)} MB');
+
+        imageFile = File(compressedImage.path);
+      } else {
+        debugPrint('⚠️ Compression failed, using original image');
+        imageFile = originalFile;
+      }
+
       imageController.text = extractImageName(_pickedFile!.name);
     }
+    Get.back();
     update();
   }
 
@@ -181,5 +236,8 @@ class SurplusesController extends GetxController {
     priceController.clear();
     biddingPeriodController.clear();
     imageController.clear();
+    imageFile = null;
+    _pickedFile = null;
+    update();
   }
 }
