@@ -173,7 +173,8 @@ class BlockItem extends GetView<BlocksController> {
 
 class FullImagePage extends StatefulWidget {
   final String imageUrl;
-  const FullImagePage({super.key, required this.imageUrl});
+  final String? heroTag;
+  const FullImagePage({super.key, required this.imageUrl, this.heroTag});
 
   @override
   State<FullImagePage> createState() => _FullImagePageState();
@@ -212,7 +213,7 @@ class _FullImagePageState extends State<FullImagePage>
                 child: Transform.translate(
                   offset: offset,
                   child: Hero(
-                    tag: widget.imageUrl,
+                    tag: widget.heroTag ?? widget.imageUrl,
                     child: InteractiveViewer(
                       child: AppImage(
                         imageUrl: widget.imageUrl,

@@ -62,6 +62,9 @@ class TextFieldWidget extends StatelessWidget {
         maxLines: maxLines ?? 1,
         onChanged: onChange,
         inputFormatters: inputFormatters,
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         decoration: InputDecoration(
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon ?? const SizedBox(),
