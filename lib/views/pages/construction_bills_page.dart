@@ -157,7 +157,7 @@ class ConstructionBillsPage extends StatelessWidget {
                                   ElevatedButton.icon(
                                     onPressed: () {
                                       PdfGenerator.createGeneralPdf(
-                                        total: "${controller.totalAmount} د.ك",
+                                        total: "${controller.totalAmount}",
                                         listAllBills: controller.listAllBills,
                                       );
                                     },

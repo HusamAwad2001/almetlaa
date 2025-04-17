@@ -305,7 +305,7 @@ class _ServicesWidget extends StatelessWidget {
                   _ServiceItem(
                     icon: Icons.chair_outlined,
                     title: "الأثاث",
-                    route: Routes.aRPage,
+                    // route: Routes.aRPage,
                   ),
                   _ServiceItem(
                     icon: Icons.event_outlined,
@@ -330,11 +330,11 @@ class _ServicesWidget extends StatelessWidget {
 class _ServiceItem extends GetView<HomeController> {
   final IconData icon;
   final String title;
-  final String route;
+  final String? route;
   const _ServiceItem({
     required this.icon,
     required this.title,
-    required this.route,
+    this.route,
   });
 
   @override
@@ -347,8 +347,14 @@ class _ServiceItem extends GetView<HomeController> {
           controller.checkWhenLoading(() {
             if (Global.token == "") {
               Snack().show(type: false, message: "الرجاء تسجيل الدخول اولا");
+              Get.offAllNamed(Routes.loginPage);
             } else {
-              Get.toNamed(route);
+              route != null
+                  ? Get.toNamed(route!)
+                  : Snack().show(
+                      type: true,
+                      message: "جاري العمل على هذه الخدمة",
+                    );
             }
           });
         },
