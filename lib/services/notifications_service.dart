@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../firebase_options.dart';
+
 late AndroidNotificationChannel channel;
 late FlutterLocalNotificationsPlugin localNotificationsPlugin;
 
@@ -13,8 +15,8 @@ late FlutterLocalNotificationsPlugin localNotificationsPlugin;
 Future<void> firebaseMessagingBackgroundHandler(
     RemoteMessage remoteMessage) async {
   await Firebase.initializeApp(
-      // options: DefaultFirebaseOptions.currentPlatform,
-      );
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 mixin NotificationsService {

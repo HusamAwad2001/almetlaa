@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "776416733081",
+    "project_id": "baiti-3c6cc",
+    "storage_bucket": "baiti-3c6cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776416733081:android:1d4240a3bf23f811a15508",
+        "android_client_info": {
+          "package_name": "com.baiti"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSofQYwsU4px0VEb3KZdJBT9oZ8qLoBz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
