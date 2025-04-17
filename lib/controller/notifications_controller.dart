@@ -56,6 +56,7 @@ class NotificationsController extends GetxController {
         }
 
         loadingNotifications = false;
+        errorModel = null;
         update();
       },
       onError: (error) {

@@ -1,3 +1,5 @@
+import 'package:baiti/views/pages/blocks_page.dart';
+
 import '../../controller/allowance_controller.dart';
 import '../../values/constants.dart';
 import '../../views/widgets/app_image.dart';
@@ -43,30 +45,36 @@ class AllowanceDetailsPage extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ).paddingOnly(left: 10.w)
                               : null,
-                          background: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              Hero(
-                                tag: item['_id'],
-                                child: AppImage(
+                          background: GestureDetector(
+                            onTap: () => Get.to(() => FullImagePage(
                                   imageUrl: item['image'],
-                                  fit: BoxFit.cover,
-                                  indicatorColor: Colors.white,
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.black26,
-                                      Colors.transparent
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
+                                  heroTag: item['_id'],
+                                )),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Hero(
+                                  tag: item['_id'],
+                                  child: AppImage(
+                                    imageUrl: item['image'],
+                                    fit: BoxFit.cover,
+                                    indicatorColor: Colors.white,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.black26,
+                                        Colors.transparent
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -155,42 +163,6 @@ class AllowanceDetailsPage extends StatelessWidget {
                         ),
                       ),
                       32.ph,
-                      // Center(
-                      //   child: Column(
-                      //     children: [
-                      //       Text(
-                      //         'للتواصل عبر الهاتف:',
-                      //         style: TextStyle(
-                      //           fontSize: 14.sp,
-                      //           fontWeight: FontWeight.bold,
-                      //           color: Constants.primaryColor,
-                      //         ),
-                      //       ),
-                      //       12.ph,
-                      //       InkWell(
-                      //         onTap: () {
-                      //           launchUrl(Uri.parse(
-                      //               "tel:${item['user']['phoneNumber']}"));
-                      //         },
-                      //         borderRadius: BorderRadius.circular(40.r),
-                      //         child: Container(
-                      //           padding: EdgeInsets.all(12.r),
-                      //           decoration: BoxDecoration(
-                      //             color:
-                      //                 Constants.primaryColor.withOpacity(0.1),
-                      //             shape: BoxShape.circle,
-                      //           ),
-                      //           child: Image.asset(
-                      //             'assets/images/call.png',
-                      //             width: 50.w,
-                      //             height: 50.h,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                      // 30.ph,
                     ],
                   ),
                 ),
@@ -205,13 +177,14 @@ class AllowanceDetailsPage extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(12.r),
               decoration: BoxDecoration(
-                color: Constants.primaryColor.withOpacity(0.1),
+                color: Constants.primaryColor.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Image.asset(
                 'assets/images/call.png',
                 width: 50.w,
                 height: 50.h,
+                color: Constants.primaryColor,
               ),
             ),
           ),
