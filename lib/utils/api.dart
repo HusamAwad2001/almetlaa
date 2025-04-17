@@ -47,7 +47,9 @@ class API {
       ApiResponse apiResponse = ApiResponse(
         statusCode: response.statusCode ?? 0,
         success: response.data['success'],
-        pagination: PaginationModel.fromJson(response.data['pagination']),
+        pagination: response.data['pagination'] != null
+            ? PaginationModel.fromJson(response.data['pagination'])
+            : null,
         data: response.data,
       );
       onResponse(apiResponse);
@@ -71,7 +73,9 @@ class API {
       ApiResponse apiResponse = ApiResponse(
         statusCode: response.statusCode ?? 0,
         success: response.data['success'],
-        pagination: response.data['pagination'],
+        pagination: response.data['pagination'] != null
+            ? PaginationModel.fromJson(response.data['pagination'])
+            : null,
         data: response.data,
       );
       onResponse(apiResponse);
@@ -95,7 +99,9 @@ class API {
       ApiResponse apiResponse = ApiResponse(
         statusCode: response.statusCode ?? 0,
         success: response.data['success'],
-        pagination: response.data['pagination'],
+        pagination: response.data['pagination'] != null
+            ? PaginationModel.fromJson(response.data['pagination'])
+            : null,
         data: response.data,
       );
       onResponse(apiResponse);
@@ -119,7 +125,9 @@ class API {
       ApiResponse apiResponse = ApiResponse(
         statusCode: response.statusCode ?? 0,
         success: response.data['success'],
-        pagination: response.data['pagination'],
+        pagination: response.data['pagination'] != null
+            ? PaginationModel.fromJson(response.data['pagination'])
+            : null,
         data: response.data,
       );
       onResponse(apiResponse);

@@ -41,10 +41,14 @@ class NotificationsController extends GetxController {
 
           notifications.addAll(newItems);
 
-          final int totalPages = pagination['pages'] ?? 1;
-          currentPage++;
+          if (pagination != null) {
+            final int totalPages = pagination['pages'] ?? 1;
+            currentPage++;
 
-          if (currentPage > totalPages || newItems.length < limit) {
+            if (currentPage > totalPages || newItems.length < limit) {
+              hasMore = false;
+            }
+          } else {
             hasMore = false;
           }
         } else {
