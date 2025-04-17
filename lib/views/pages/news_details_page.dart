@@ -41,10 +41,10 @@ class NewsDetailsPage extends StatelessWidget {
                             ).paddingOnly(left: 10.w)
                           : null,
                       background: GestureDetector(
-                        onTap: () => Get.to(FullImagePage(
-                          imageUrl: controller.item['image'],
-                          heroTag: controller.item['_id'],
-                        )),
+                        onTap: () => Get.to(() => FullImagePage(
+                              imageUrl: controller.item['image'],
+                              heroTag: controller.item['_id'],
+                            )),
                         child: Stack(
                           fit: StackFit.expand,
                           children: [
