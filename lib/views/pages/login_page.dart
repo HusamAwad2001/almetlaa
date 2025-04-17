@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                     color: Constants.primaryColor,
                   ),
                   onChange: (value) {
-                    if (value.length == 9) {
+                    if (value.length == 10) {
                       FocusManager.instance.primaryFocus?.unfocus();
                     }
                     if (value.isNotEmpty) {
@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(9),
+                    LengthLimitingTextInputFormatter(10),
                   ],
                 ),
                 50.ph,
