@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import '../../core/global.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -133,10 +135,30 @@ class AllowanceController extends GetxController {
   Future<void> pickImage() async {
     _pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
-      imageFile = File(_pickedFile!.path);
+      final originalFile = File(_pickedFile!.path);
+      final originalSizeBytes = await originalFile.length();
+      final originalSizeMB = originalSizeBytes / (1024 * 1024);
+      debugPrint('📷 Original size: ${originalSizeMB.toStringAsFixed(2)} MB');
+
+      final compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _pickedFile!.path,
+        '${_pickedFile!.path}_compressed.jpg',
+        quality: 70,
+      );
+
+      if (compressedImage != null) {
+        final compressedSizeBytes = await compressedImage.length();
+        final compressedSizeMB = compressedSizeBytes / (1024 * 1024);
+        debugPrint(
+            '🗜️ Compressed size: ${compressedSizeMB.toStringAsFixed(2)} MB');
+
+        imageFile = File(compressedImage.path);
+      } else {
+        debugPrint('⚠️ Compression failed, using original image');
+        imageFile = originalFile;
+      }
+
       imageController.text = extractImageName(_pickedFile!.name);
-    } else {
-      Snack().show(type: false, message: 'يجب اختيار الصورة');
     }
     update();
   }
