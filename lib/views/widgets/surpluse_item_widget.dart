@@ -8,12 +8,10 @@ import 'package:get/get.dart';
 
 import '../../routes/routes.dart';
 
-class SurplusItemWidget extends StatelessWidget {
-  const SurplusItemWidget(
-      {super.key, required this.item, required this.controller});
+class SurplusItemWidget extends GetView<SurplusesController> {
+  const SurplusItemWidget({super.key, required this.item});
 
   final Map item;
-  final SurplusesController controller;
 
   @override
   Widget build(BuildContext context) {
