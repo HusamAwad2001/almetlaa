@@ -1,3 +1,4 @@
+import 'package:almetlaa/views/pages/blocks_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -21,10 +22,6 @@ class NewsDetailsPage extends StatelessWidget {
                 backgroundColor: Constants.primaryColor,
                 expandedHeight: 300.h,
                 pinned: true,
-                // leading: IconButton(
-                //   icon: const Icon(Icons.arrow_back, color: Colors.black),
-                //   onPressed: () => Get.back(),
-                // ),
                 flexibleSpace: LayoutBuilder(
                   builder: (context, constraints) {
                     final isCollapsed = constraints.biggest.height <=
@@ -43,27 +40,33 @@ class NewsDetailsPage extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ).paddingOnly(left: 10.w)
                           : null,
-                      background: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Hero(
-                            tag: controller.item['_id'],
-                            child: AppImage(
-                              imageUrl: controller.item['image'],
-                              fit: BoxFit.cover,
-                              indicatorColor: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.black26, Colors.transparent],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
+                      background: GestureDetector(
+                        onTap: () => Get.to(FullImagePage(
+                          imageUrl: controller.item['image'],
+                          heroTag: controller.item['_id'],
+                        )),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Hero(
+                              tag: controller.item['_id'],
+                              child: AppImage(
+                                imageUrl: controller.item['image'],
+                                fit: BoxFit.cover,
+                                indicatorColor: Colors.white,
                               ),
                             ),
-                          ),
-                        ],
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Colors.black26, Colors.transparent],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
