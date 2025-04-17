@@ -36,17 +36,25 @@ class CallDialog {
               ),
               const SizedBox(height: 20),
               _buildContactTile(
-                  imageUrl: "assets/icons/whats_app.jpeg",
-                  label: "50000488",
-                  url: 'http://wa.me/96550000488'),
+                imageUrl: "assets/icons/whats_app.jpeg",
+                label: "50000488",
+                url: 'http://wa.me/96550000488',
+              ),
               _buildContactTile(
-                  imageUrl: "assets/icons/telegram.png",
-                  label: "baitiexpo",
-                  url: 'https://t.me/baitiexpo'),
+                imageUrl: "assets/icons/telegram.png",
+                label: "baitiexpo",
+                url: 'https://t.me/baitiexpo',
+              ),
               _buildContactTile(
-                  imageUrl: "assets/icons/instagram.png",
-                  label: "baitiexpo",
-                  url: 'https://www.instagram.com/baitiexpo'),
+                imageUrl: "assets/icons/instagram.png",
+                label: "baitiexpo",
+                url: 'https://www.instagram.com/baitiexpo',
+              ),
+              _buildContactTile(
+                imageUrl: "assets/icons/snapchat.png",
+                label: "snapchat",
+                url: 'https://snapchat.com/t/uFQJl3VC',
+              ),
               _buildContactTile(
                 imageUrl: "assets/icons/tiktok.png",
                 label: "baitiexpo",
@@ -99,6 +107,8 @@ class CallDialog {
                     height: 40,
                     width: 40,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Icon(Icons.error),
                   ),
                 ),
                 const SizedBox(width: 16),

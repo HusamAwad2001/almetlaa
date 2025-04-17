@@ -1,4 +1,7 @@
 import 'dart:io';
+import '../../utils/api_error_model.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+
 import '../../views/widgets/loading_dialog.dart';
 import '../../views/widgets/snack.dart';
 import 'package:dio/dio.dart' as dio;
@@ -27,22 +30,25 @@ class ConstructionBillsController extends GetxController {
   List listAllBills = [];
   int totalAmount = 0;
   bool loadingBills = true;
+  ApiErrorModel? errorModel;
 
   getAllBills() {
+    loadingBills = true;
+    update();
     API().get(
       url: '/bills/total',
       onResponse: (response) {
         loadingBills = false;
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            listAllBills = response.data['data'];
-            totalAmount = response.data['totalAmount'];
-          }
+        if (response.statusCode == 200 && response.data['success']) {
+          listAllBills = response.data['data'];
+          totalAmount = response.data['totalAmount'];
         }
+        errorModel = null;
         update();
       },
       onError: (errorModel) {
         loadingBills = false;
+        this.errorModel = errorModel;
         update();
       },
     );
@@ -50,6 +56,7 @@ class ConstructionBillsController extends GetxController {
 
   List listMyBills = [];
   bool loadingMyBills = true;
+  ApiErrorModel? errorModelMyBills;
 
   getMyBills(String id) {
     loadingMyBills = true;
@@ -58,18 +65,20 @@ class ConstructionBillsController extends GetxController {
       url: '/bills/mybills?item=$id',
       onResponse: (response) {
         loadingMyBills = false;
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            listMyBills = response.data['data'];
-            itemId = id;
-          }
+        errorModelMyBills = null;
+        if (response.statusCode == 200 && response.data['success']) {
+          listMyBills = response.data['data'];
+          itemId = id;
         }
+        update();
+      },
+      onError: (errorModel) {
+        loadingMyBills = false;
+        errorModelMyBills = errorModel;
         update();
       },
     );
   }
-
-  bool loadingCreateBill = true;
 
   createBill() async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -88,27 +97,26 @@ class ConstructionBillsController extends GetxController {
       url: '/bills',
       body: formData,
       onResponse: (response) {
-        loadingCreateBill = false;
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            Get.back();
-            Get.back();
-            Snack().show(type: true, message: 'تم إنشاء الفاتورة');
-            batchTypeController.clear();
-            amountController.clear();
-            dateController.clear();
-            imageController.clear();
-            listMyBills.add(response.data['data']);
-            int s = response.data['data']['amount'];
-            totalAmount = totalAmount + s;
-            for (var element in listAllBills) {
-              if (element['_id'] == itemId) {
-                element['total'] += s;
-              }
+        if (response.statusCode == 200 && response.data['success']) {
+          Get.back();
+          Get.back();
+          Snack().show(type: true, message: 'تم إنشاء الفاتورة');
+          listMyBills.add(response.data['data']);
+          int s = response.data['data']['amount'];
+          totalAmount = totalAmount + s;
+          for (var element in listAllBills) {
+            if (element['_id'] == itemId) {
+              element['total'] += s;
             }
           }
         }
+        clearData();
         update();
+      },
+      onError: (errorModel) {
+        Get.back();
+        update();
+        Snack().show(type: false, message: errorModel.message ?? 'حدث خطأ ما');
       },
     );
   }
@@ -136,6 +144,11 @@ class ConstructionBillsController extends GetxController {
         }
         update();
       },
+      onError: (errorModel) {
+        Get.back();
+        update();
+        Snack().show(type: false, message: errorModel.message ?? 'حدث خطأ ما');
+      },
     );
   }
 
@@ -146,7 +159,7 @@ class ConstructionBillsController extends GetxController {
       return;
     }
     if (batchTypeController.text.trim().isEmpty) {
-      Snack().show(type: false, message: 'يرجى كتابة نوع الدفعة');
+      Snack().show(type: false, message: 'يرجى كتابة اسم الدفعة');
       return;
     }
 
@@ -172,13 +185,35 @@ class ConstructionBillsController extends GetxController {
   File? imageFile;
 
   Future<void> pickImage() async {
+    LoadingDialog().dialog();
     _pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (_pickedFile != null) {
-      imageFile = File(_pickedFile!.path);
+      final originalFile = File(_pickedFile!.path);
+      final originalSizeBytes = await originalFile.length();
+      final originalSizeMB = originalSizeBytes / (1024 * 1024);
+      debugPrint('📷 Original size: ${originalSizeMB.toStringAsFixed(2)} MB');
+
+      final compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _pickedFile!.path,
+        '${_pickedFile!.path}_compressed.jpg',
+        quality: 70,
+      );
+
+      if (compressedImage != null) {
+        final compressedSizeBytes = await compressedImage.length();
+        final compressedSizeMB = compressedSizeBytes / (1024 * 1024);
+        debugPrint(
+            '🗜️ Compressed size: ${compressedSizeMB.toStringAsFixed(2)} MB');
+
+        imageFile = File(compressedImage.path);
+      } else {
+        debugPrint('⚠️ Compression failed, using original image');
+        imageFile = originalFile;
+      }
+
       imageController.text = extractImageName(_pickedFile!.name);
-    } else {
-      Snack().show(type: false, message: 'يجب اختيار الصورة');
     }
+    Get.back();
     update();
   }
 
@@ -206,9 +241,16 @@ class ConstructionBillsController extends GetxController {
     );
     if (picked != null) {
       dateController.text = DateFormat('yyyy-MM-dd').format(picked);
-    } else {
-      Snack().show(type: false, message: 'يجب اختيار التاريخ');
     }
+    update();
+  }
+
+  clearData() {
+    imageFile = null;
+    batchTypeController.clear();
+    amountController.clear();
+    dateController.clear();
+    imageController.clear();
     update();
   }
 }

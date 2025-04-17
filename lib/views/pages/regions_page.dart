@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../controller/regions_controller.dart';
+import '../widgets/app_error_widget.dart';
 
 class RegionsPage extends StatelessWidget {
   const RegionsPage({super.key});
@@ -23,146 +24,106 @@ class RegionsPage extends StatelessWidget {
       body: GetBuilder<RegionsController>(
         init: RegionsController(),
         builder: (controller) {
-          return Column(
-            children: [
-              30.ph,
-              TextField(
-                onSubmitted: (v) {
-                  if (v.isEmpty) {
-                    controller.getAllRegions(isRefresh: true);
-                  } else {
-                    controller.searchRegions(v); // تأكد إنها معرفة
-                  }
-                },
-                decoration: InputDecoration(
-                  hintText: 'البحث',
-                  prefixIcon: Container(
-                    width: 22.w,
-                    height: 22.h,
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/images/search.png',
-                      width: 22.w,
-                      height: 22.h,
-                      color: Constants.primaryColor,
-                    ),
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(9.r),
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(9.r),
-                    borderSide:
-                        const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-                  ),
-                  filled: true,
-                  fillColor: const Color(0xFFF5F5F5),
+          if (controller.loadingRegions && controller.listAllRegions.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (controller.errorModel != null &&
+              controller.listAllRegions.isEmpty) {
+            return AppErrorWidget(
+              errorMessage: controller.errorModel?.message ?? "حدث خطأ ما",
+              onRetry: () => controller.getAllRegions(),
+            );
+          }
+
+          if (controller.listAllRegions.isEmpty) {
+            return Center(
+              child: Text(
+                'لا يوجد توزيعات',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              30.ph,
-              if (controller.loadingRegions &&
-                  controller.listAllRegions.isEmpty)
-                const Expanded(
-                  child: Center(child: CircularProgressIndicator()),
-                )
-              else if (controller.listAllRegions.isEmpty)
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      'لا يوجد توزيعات',
-                      style: TextStyle(fontSize: 16),
+            );
+          }
+
+          return Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.r),
+              border: Border.all(
+                width: 1,
+                color: const Color(0xFFE9E9E9),
+              ),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    color: Constants.primaryColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.r),
+                      topRight: Radius.circular(15.r),
                     ),
                   ),
-                )
-              else
-                Expanded(
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15.r),
-                      border: Border.all(
-                        width: 1,
-                        color: const Color(0xFFE9E9E9),
+                  child: Row(
+                    children: [
+                      20.pw,
+                      SvgPicture.asset(
+                        'assets/images/location.svg',
+                        width: 22.w,
+                        color: Colors.white,
                       ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 14.h),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            color: Constants.primaryColor,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.r),
-                              topRight: Radius.circular(15.r),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              20.pw,
-                              SvgPicture.asset(
-                                'assets/images/location.svg',
-                                width: 22.w,
-                                color: Colors.white,
-                              ),
-                              10.pw,
-                              Text(
-                                'المناطق',
-                                style: TextStyle(
-                                  fontSize: 18.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
+                      10.pw,
+                      Text(
+                        'المناطق',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Expanded(
-                          child: NotificationListener<ScrollNotification>(
-                            onNotification: (scrollNotification) {
-                              if (scrollNotification.metrics.pixels >=
-                                      scrollNotification
-                                              .metrics.maxScrollExtent -
-                                          100 &&
-                                  !controller.loadingRegions &&
-                                  controller.hasMore) {
-                                controller.getAllRegions();
-                              }
-                              return true;
-                            },
-                            child: ListView.builder(
-                              itemCount: controller.listAllRegions.length + 1,
-                              itemBuilder: (context, index) {
-                                if (index < controller.listAllRegions.length) {
-                                  final item = controller.listAllRegions[index];
-                                  return RegionItem(region: item);
-                                } else {
-                                  return controller.hasMore
-                                      ? Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 20.h),
-                                          child: const Center(
-                                              child:
-                                                  CircularProgressIndicator()),
-                                        )
-                                      : const SizedBox.shrink();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (scrollNotification) {
+                      if (scrollNotification.metrics.pixels >=
+                              scrollNotification.metrics.maxScrollExtent -
+                                  100 &&
+                          !controller.loadingRegions &&
+                          controller.hasMore) {
+                        controller.getAllRegions();
+                      }
+                      return true;
+                    },
+                    child: ListView.builder(
+                      itemCount: controller.listAllRegions.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index < controller.listAllRegions.length) {
+                          final item = controller.listAllRegions[index];
+                          return RegionItem(region: item);
+                        } else {
+                          return controller.hasMore
+                              ? Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                                  child: const Center(
+                                      child: CircularProgressIndicator()),
+                                )
+                              : const SizedBox.shrink();
+                        }
+                      },
                     ),
                   ),
                 ),
-              30.ph,
-            ],
-          ).paddingSymmetric(horizontal: 26.w);
+              ],
+            ),
+          ).paddingAll(26.w);
         },
       ),
     );

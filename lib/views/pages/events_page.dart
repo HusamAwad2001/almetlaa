@@ -66,69 +66,25 @@ class EventsPage extends GetView<EventsController> {
             onRefresh: () => controller.getEvents(
               isRefresh: true,
             ),
-            child: Column(
-              children: [
-                30.ph,
-                TextField(
-                  onSubmitted: (v) {
-                    if (v.isEmpty) {
-                      controller.getEvents();
-                    } else {
-                      controller.searchEvents(v);
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'البحث',
-                    prefixIcon: Container(
-                      width: 22.w,
-                      height: 22.h,
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        'assets/images/search.png',
-                        width: 22.w,
-                        height: 22.h,
-                        color: Constants.primaryColor,
-                      ),
+            child: ListView.separated(
+              padding: EdgeInsets.all(20.w),
+              controller: scrollController,
+              itemCount:
+                  controller.events.length + (controller.hasMore ? 1 : 0),
+              separatorBuilder: (context, index) => 15.ph,
+              itemBuilder: (context, index) {
+                if (index == controller.events.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: CircularProgressIndicator(),
                     ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9.r),
-                      borderSide:
-                          const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9.r),
-                      borderSide:
-                          const BorderSide(width: 1, color: Color(0xFFF0F0F0)),
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xFFF5F5F5),
-                  ),
-                ),
-                30.ph,
-                Expanded(
-                  child: ListView.separated(
-                    controller: scrollController,
-                    itemCount:
-                        controller.events.length + (controller.hasMore ? 1 : 0),
-                    separatorBuilder: (context, index) => 15.ph,
-                    itemBuilder: (context, index) {
-                      if (index == controller.events.length) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      final item = controller.events[index];
-                      return EventItem(item: item);
-                    },
-                  ),
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
+                  );
+                }
+                final item = controller.events[index];
+                return EventItem(item: item);
+              },
+            ),
           );
         },
       ),

@@ -1,16 +1,16 @@
-import '../../values/constants.dart';
-import '../../views/widgets/dialogs/create_batch_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../values/constants.dart';
+import '../../views/widgets/dialogs/create_batch_dialog.dart';
 import '../../controller/construction_bills_controller.dart';
-import '../../routes/routes.dart';
+import '../widgets/app_error_widget.dart';
 import '../widgets/pdf/pdf_creator.dart';
 
 class ContractBillsPage extends GetView<ConstructionBillsController> {
-  const ContractBillsPage({Key? key}) : super(key: key);
+  const ContractBillsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
         title: Text(
-          Get.arguments.toString(),
+          Get.arguments['name'],
           style: const TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -27,229 +27,246 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
       ),
       body: GetBuilder<ConstructionBillsController>(
         init: ConstructionBillsController(),
-        builder: (_) {
+        builder: (context) {
           return controller.loadingMyBills
               ? const Center(child: CircularProgressIndicator())
-              : controller.listMyBills.isNotEmpty
-                  ? SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            clipBehavior: Clip.antiAlias,
-                            margin: EdgeInsets.only(
-                                left: 20.w, right: 20.w, top: 53.h),
-                            padding: EdgeInsets.only(bottom: 00.h, top: 10.h),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.r)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF000000).withOpacity(0.25),
-                                  spreadRadius: 0,
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Table(
-                              children: [
-                                TableRow(
-                                  children: [
-                                    Center(
-                                      child: Text(
-                                        'نوع الدفعة',
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ).paddingOnly(top: 14.h, bottom: 14.h),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        'المبلغ',
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ).paddingOnly(top: 14.h, bottom: 14.h),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        'التاريخ',
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ).paddingOnly(top: 14.h, bottom: 14.h),
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        'حذف',
-                                        style: TextStyle(
-                                          fontSize: 15.sp,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ).paddingOnly(top: 14.h, bottom: 14.h),
+              : controller.errorModelMyBills != null
+                  ? AppErrorWidget(
+                      errorMessage:
+                          controller.errorModel?.message ?? 'حدث خطأ ما',
+                      onRetry: () => controller.getMyBills(
+                        Get.arguments['_id'],
+                      ),
+                    )
+                  : controller.listMyBills.isNotEmpty
+                      ? SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                clipBehavior: Clip.antiAlias,
+                                margin: EdgeInsets.only(
+                                    left: 20.w, right: 20.w, top: 53.h),
+                                padding:
+                                    EdgeInsets.only(bottom: 00.h, top: 10.h),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.r)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF000000)
+                                          .withOpacity(0.25),
+                                      spreadRadius: 0,
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
-                                ...controller.listMyBills
-                                    .asMap()
-                                    .entries
-                                    .map((e) {
-                                  int index = e.key;
-                                  var item = e.value;
-                                  return TableRow(
-                                    decoration: BoxDecoration(
-                                      color: index.isEven
-                                          ? const Color(0xFFC2DDFF)
-                                          : null,
+                                child: Table(
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        Center(
+                                          child: Text(
+                                            'نوع الدفعة',
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ).paddingOnly(
+                                              top: 14.h, bottom: 14.h),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            'المبلغ',
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ).paddingOnly(
+                                              top: 14.h, bottom: 14.h),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            'التاريخ',
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ).paddingOnly(
+                                              top: 14.h, bottom: 14.h),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            'حذف',
+                                            style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ).paddingOnly(
+                                              top: 14.h, bottom: 14.h),
+                                        ),
+                                      ],
                                     ),
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          displayBottomInfoSheet(item);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          alignment: Alignment.center,
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            item['batchType'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontSize: 13.sp),
-                                          ).paddingOnly(
-                                              top: 14.h, bottom: 14.h),
+                                    ...controller.listMyBills
+                                        .asMap()
+                                        .entries
+                                        .map((e) {
+                                      int index = e.key;
+                                      var item = e.value;
+                                      return TableRow(
+                                        decoration: BoxDecoration(
+                                          color: index.isEven
+                                              ? const Color(0xFFC2DDFF)
+                                              : null,
                                         ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          displayBottomInfoSheet(item);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          alignment: Alignment.center,
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            '${item['amount'].toString()} د.ك',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 13.sp),
-                                          ).paddingOnly(
-                                              top: 14.h, bottom: 14.h),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          displayBottomInfoSheet(item);
-                                        },
-                                        child: Container(
-                                          width: double.infinity,
-                                          alignment: Alignment.center,
-                                          color: Colors.transparent,
-                                          child: Text(
-                                            item['date'],
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(fontSize: 13.sp),
-                                          ).paddingOnly(
-                                              top: 14.h, bottom: 14.h),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          displayBottomSheetRemoveItem(
+                                        children: [
+                                          InkWell(
                                             onTap: () {
-                                              controller.deleteBill(
-                                                item,
-                                                index,
+                                              displayBottomInfoSheet(item);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              alignment: Alignment.center,
+                                              color: Colors.transparent,
+                                              child: Text(
+                                                item['batchType'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                textAlign: TextAlign.center,
+                                                style:
+                                                    TextStyle(fontSize: 13.sp),
+                                              ).paddingOnly(
+                                                  top: 14.h, bottom: 14.h),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              displayBottomInfoSheet(item);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              alignment: Alignment.center,
+                                              color: Colors.transparent,
+                                              child: Text(
+                                                '${item['amount'].toString()} د.ك',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style:
+                                                    TextStyle(fontSize: 13.sp),
+                                              ).paddingOnly(
+                                                  top: 14.h, bottom: 14.h),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              displayBottomInfoSheet(item);
+                                            },
+                                            child: Container(
+                                              width: double.infinity,
+                                              alignment: Alignment.center,
+                                              color: Colors.transparent,
+                                              child: Text(
+                                                item['date'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style:
+                                                    TextStyle(fontSize: 13.sp),
+                                              ).paddingOnly(
+                                                  top: 14.h, bottom: 14.h),
+                                            ),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              displayBottomSheetRemoveItem(
+                                                onTap: () {
+                                                  controller.deleteBill(
+                                                    item,
+                                                    index,
+                                                  );
+                                                },
                                               );
                                             },
-                                          );
-                                        },
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
-                                            size: 20.w,
-                                          ).paddingOnly(
-                                              top: 14.h, bottom: 14.h),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                                size: 20.w,
+                                              ).paddingOnly(
+                                                  top: 14.h, bottom: 14.h),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              ),
+                              20.ph,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: CreateBatchDialog.show,
+                                      style: ButtonStyle(
+                                        shape: WidgetStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                          Constants.primaryColor,
                                         ),
                                       ),
-                                    ],
-                                  );
-                                }),
-                              ],
-                            ),
-                          ),
-                          20.ph,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    CreateBatchDialog.show();
-                                  },
-                                  style: ButtonStyle(
-                                    shape: WidgetStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
-                                      ),
-                                    ),
-                                    backgroundColor: WidgetStateProperty.all(
-                                      Constants.primaryColor,
+                                      child: Text(
+                                        "إنشاء دفعة جديدة",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ).paddingOnly(top: 15.h, bottom: 15.h),
                                     ),
                                   ),
-                                  child: Text(
-                                    "إنشاء دفعة جديدة",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14.sp),
-                                  ).paddingOnly(top: 15.h, bottom: 15.h),
-                                ),
-                              ),
-                              20.pw,
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    PdfGenerator.createPdf(
-                                        controller.listMyBills);
-                                  },
-                                  style: ButtonStyle(
-                                    shape: WidgetStateProperty.all(
-                                      RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
+                                  20.pw,
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () => PdfGenerator.createPdf(
+                                        controller.listMyBills,
                                       ),
-                                    ),
-                                    backgroundColor: WidgetStateProperty.all(
-                                      Constants.primaryColor,
+                                      style: ButtonStyle(
+                                        shape: WidgetStateProperty.all(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.r),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateProperty.all(
+                                          Constants.primaryColor,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        "تنزيل ملف PDF",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ).paddingOnly(top: 15.h, bottom: 15.h),
                                     ),
                                   ),
-                                  child: Text(
-                                    "تنزيل ملف PDF",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14.sp),
-                                  ).paddingOnly(top: 15.h, bottom: 15.h),
-                                ),
-                              ),
+                                ],
+                              ).paddingSymmetric(horizontal: 20.w),
+                              60.ph,
                             ],
-                          ).paddingSymmetric(horizontal: 20.w),
-                          60.ph,
-                        ],
-                      ),
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        Center(
+                          ),
+                        )
+                      : Center(
                           child: Text(
                             'لا يوجد فواتير',
                             style: TextStyle(
@@ -257,31 +274,27 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                        const Spacer(),
-                        ElevatedButton(
-                          onPressed: () {
-                            Get.toNamed(Routes.createBatchPage);
-                          },
-                          style: ButtonStyle(
-                            shape: WidgetStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.r),
-                              ),
-                            ),
-                            backgroundColor: WidgetStateProperty.all(
-                              Constants.primaryColor,
-                            ),
-                          ),
-                          child: Text(
-                            "إنشاء دفعة جديدة",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14.sp),
-                          ).paddingOnly(top: 15.h, bottom: 15.h),
-                        ),
-                        60.ph,
-                      ],
-                    );
+                        );
+        },
+      ),
+      floatingActionButton: GetBuilder<ConstructionBillsController>(
+        builder: (_) {
+          return Visibility(
+            visible: !controller.loadingMyBills &&
+                controller.errorModelMyBills == null,
+            child: FloatingActionButton(
+              onPressed: CreateBatchDialog.show,
+              backgroundColor: Constants.primaryColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100.r),
+              ),
+              child: const Icon(
+                Icons.add,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          );
         },
       ),
     );
@@ -432,11 +445,10 @@ class ContractBillsPage extends GetView<ConstructionBillsController> {
                 ),
               ],
             ),
-            20.ph,
+            40.ph,
           ],
         ),
       ),
-      // backgroundColor: Colors.white,
     );
   }
 

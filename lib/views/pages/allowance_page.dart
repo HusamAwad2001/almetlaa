@@ -34,94 +34,21 @@ class AllowancePage extends StatelessWidget {
                   icon: Icon(Icons.add_circle, size: 24.w),
                 ),
               ),
-            ],
-          ),
-          body: Column(
-            children: [
               Visibility(
                 visible: controller.errorModel == null &&
-                    controller.listAllExchange.isNotEmpty &&
-                    !controller.loadingExchange,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        onSubmitted: (v) {
-                          if (v.isEmpty) {
-                            controller.getAllExchange();
-                          } else {
-                            controller.searchExchange(v);
-                          }
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'البحث',
-                          prefixIcon: Container(
-                            width: 22.w,
-                            height: 22.h,
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              'assets/images/search.png',
-                              width: 22.w,
-                              height: 22.h,
-                              color: Constants.primaryColor,
-                            ),
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.r),
-                            borderSide: const BorderSide(
-                                width: 1, color: Color(0xFFF0F0F0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9.r),
-                            borderSide: const BorderSide(
-                                width: 1, color: Color(0xFFF0F0F0)),
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xFFF5F5F5),
-                        ),
-                      ),
-                    ),
-                    32.pw,
-                    InkWell(
-                      onTap: () => controller.switchGridStyle(),
-                      borderRadius: BorderRadius.circular(10.r),
-                      child: Container(
-                        width: 45.w,
-                        height: 45.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(
-                            color: const Color(0xFFF0F0F0),
-                            width: 2,
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          'assets/images/${controller.isGrid ? 'list' : 'grid'}.png',
-                          width: 25.w,
-                          height: 25.h,
-                          color: Constants.darkPrimaryColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ).paddingOnly(
-                  right: 31.w,
-                  left: 21.w,
-                  top: 30.h,
+                    !controller.loadingExchange &&
+                    controller.listAllExchange.isNotEmpty,
+                child: IconButton(
+                  onPressed: controller.switchGridStyle,
+                  icon: Icon(
+                    controller.isGrid ? Icons.grid_view : Icons.menu,
+                    size: 24.w,
+                  ),
                 ),
-              ),
-              31.ph,
-              Expanded(
-                child: controller.isGrid
-                    ? const GridViewItem()
-                    : const ListViewItem(),
               ),
             ],
           ),
+          body: controller.isGrid ? const GridViewItem() : const ListViewItem(),
         );
       },
     );
@@ -155,6 +82,12 @@ class ListViewItem extends StatelessWidget {
                         ),
                       )
                     : ListView.separated(
+                        padding: EdgeInsets.only(
+                          left: 20.w,
+                          right: 20.w,
+                          top: 20.h,
+                          bottom: 50.h,
+                        ),
                         controller: controller.scrollController,
                         itemCount: controller.listAllExchange.length +
                             (controller.hasMoreExchange ? 1 : 0),
@@ -179,7 +112,7 @@ class ListViewItem extends StatelessWidget {
                         },
                       );
       },
-    ).paddingSymmetric(horizontal: 20.w);
+    );
   }
 }
 
@@ -204,6 +137,12 @@ class GridViewItem extends StatelessWidget {
                   )
                 : SingleChildScrollView(
                     controller: controller.scrollController,
+                    padding: EdgeInsets.only(
+                      left: 20.w,
+                      right: 20.w,
+                      top: 20.h,
+                      bottom: 50.h,
+                    ),
                     child: Column(
                       children: [
                         AlignedGridView.count(
@@ -236,7 +175,7 @@ class GridViewItem extends StatelessWidget {
                     ),
                   );
       },
-    ).paddingSymmetric(horizontal: 20.w);
+    );
   }
 }
 
