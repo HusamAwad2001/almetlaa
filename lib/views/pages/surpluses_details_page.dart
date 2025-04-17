@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../values/constants.dart';
 import '../../views/widgets/app_image.dart';
 import '../../controller/surpluses_details_controller.dart';
+import '../widgets/app_error_widget.dart';
 import '../widgets/shimmer/offers_shimmer.dart';
 import '../widgets/text_field_widget.dart';
 
@@ -16,8 +18,23 @@ class SurplusesDetailsPage extends StatelessWidget {
     return GetBuilder<SurplusesDetailsController>(
       init: SurplusesDetailsController(),
       builder: (controller) {
+        final ScrollController scrollController = ScrollController();
+
+        scrollController.addListener(() {
+          if (scrollController.position.pixels >=
+                  scrollController.position.maxScrollExtent - 100 &&
+              controller.hasMore &&
+              !controller.loadingProposals) {
+            controller.getProposals();
+          }
+        });
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           body: CustomScrollView(
+            controller: scrollController,
+            physics: controller.loadingProposals && controller.proposals.isEmpty
+                ? NeverScrollableScrollPhysics()
+                : null,
             slivers: [
               SliverAppBar(
                 pinned: true,
@@ -115,7 +132,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                         ),
                       ),
                       child: Row(
-                        mainAxisAlignment: controller.listProposals.isEmpty
+                        mainAxisAlignment: controller.proposals.isEmpty
                             ? MainAxisAlignment.center
                             : MainAxisAlignment.spaceAround,
                         children: [
@@ -159,7 +176,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                               );
                             },
                           ),
-                          if (controller.listProposals.isNotEmpty) ...[
+                          if (controller.proposals.isNotEmpty) ...[
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -172,7 +189,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                                 ),
                                 5.ph,
                                 Text(
-                                  '${controller.listProposals.last['price']} دينار',
+                                  '${controller.proposals.last['price']} دينار',
                                   style: TextStyle(
                                     color: Constants.primaryColor,
                                     fontSize: 15.sp,
@@ -232,105 +249,126 @@ class SurplusesDetailsPage extends StatelessWidget {
                   ],
                 ),
               ),
-              controller.loadingProposals
-                  ? SliverToBoxAdapter(child: OffersShimmer())
-                  : controller.listProposals.isEmpty
-                      ? SliverFillRemaining(
-                          child: Center(
-                            child: Text(
-                              'لا يوجد عروض',
-                              style: TextStyle(
-                                  fontSize: 16.sp, color: Colors.black),
-                            ),
-                          ),
-                        )
-                      : SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              controller.listProposals.sort(
-                                (a, b) => b['price'].compareTo(a['price']),
-                              );
-                              final item = controller.listProposals[index];
-                              return Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  border: Border.all(color: Colors.grey[300]!),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(0, 1),
-                                      blurRadius: 4,
-                                      color: const Color(0xFF737373)
-                                          .withOpacity(0.25),
-                                    ),
-                                  ],
-                                ),
-                                child: ListTile(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 10.h),
-                                  leading: item['user']['image'] == null
-                                      ? CircleAvatar(
-                                          radius: 33.r,
-                                          backgroundColor:
-                                              const Color(0xFFbdc3c7),
-                                          child: const Icon(
-                                            Icons.perm_identity,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                      : AppImage(
-                                          imageUrl: item['user']['image'],
-                                          width: 66.w,
-                                          height: 66.h,
-                                          borderRadius:
-                                              BorderRadius.circular(200.r),
-                                          errorWidget: (_, __, ___) {
-                                            return CircleAvatar(
-                                              radius: 33.r,
-                                              backgroundImage: const AssetImage(
-                                                'assets/images/baiti_logo2.png',
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                  title: Text(
-                                    item['user']['phoneNumber'],
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  trailing: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w,
-                                      vertical: 6.h,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Constants.primaryColor,
-                                      borderRadius: BorderRadius.circular(5.r),
-                                    ),
-                                    child: Text(
-                                      '${item['price']} دينار',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.sp,
-                                      ),
-                                    ),
-                                  ),
-                                ).paddingSymmetric(horizontal: 15.w),
-                              ).paddingOnly(top: index == 0 ? 15.h : 0);
-                            },
-                            childCount: controller.listProposals.length,
+              Builder(
+                builder: (_) {
+                  if (controller.loadingProposals &&
+                      controller.proposals.isEmpty) {
+                    return const SliverToBoxAdapter(child: OffersShimmer());
+                  }
+
+                  if (controller.errorModel != null &&
+                      controller.proposals.isEmpty) {
+                    return SliverFillRemaining(
+                      child: AppErrorWidget(
+                        errorMessage:
+                            controller.errorModel?.message ?? "حدث خطأ ما",
+                        onRetry: () => controller.getProposals(),
+                      ),
+                    );
+                  }
+
+                  if (controller.proposals.isEmpty) {
+                    return SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          "لا يوجد عروض",
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-              SliverToBoxAdapter(child: 50.ph),
+                      ),
+                    );
+                  }
+
+                  return SliverList.separated(
+                    itemCount: controller.proposals.length,
+                    separatorBuilder: (context, index) => 10.ph,
+                    itemBuilder: (context, index) {
+                      controller.proposals.sort(
+                        (a, b) => b['price'].compareTo(a['price']),
+                      );
+                      final item = controller.proposals[index];
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(color: Colors.grey[300]!),
+                          boxShadow: [
+                            BoxShadow(
+                              offset: const Offset(0, 1),
+                              blurRadius: 4,
+                              color: const Color(0xFF737373).withOpacity(0.25),
+                            ),
+                          ],
+                        ),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                          leading: item['user']['image'] == null
+                              ? CircleAvatar(
+                                  radius: 33.r,
+                                  backgroundColor: const Color(0xFFbdc3c7),
+                                  child: const Icon(
+                                    Icons.perm_identity,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : AppImage(
+                                  imageUrl: item['user']['image'],
+                                  width: 66.w,
+                                  height: 66.h,
+                                  borderRadius: BorderRadius.circular(200.r),
+                                  errorWidget: (_, __, ___) {
+                                    return CircleAvatar(
+                                      radius: 33.r,
+                                      backgroundImage: const AssetImage(
+                                        'assets/images/baiti_logo2.png',
+                                      ),
+                                    );
+                                  },
+                                ),
+                          title: Text(
+                            item['user']['phoneNumber'],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          trailing: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Constants.primaryColor,
+                              borderRadius: BorderRadius.circular(5.r),
+                            ),
+                            child: Text(
+                              '${item['price']} دينار',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                          ),
+                        ).paddingSymmetric(horizontal: 15.w),
+                      ).paddingOnly(
+                        top: index == 0 ? 15.h : 0,
+                        bottom:
+                            index == controller.proposals.length - 1 ? 50.h : 0,
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
           floatingActionButton: !controller.loadingProposals &&
-                  controller.remainingTime.inSeconds > 0
+                  controller.remainingTime.inSeconds > 0 &&
+                  controller.errorModel == null
               ? FloatingActionButton(
                   onPressed: buildDefaultDialog,
                   backgroundColor: context.theme.primaryColor,
@@ -355,6 +393,7 @@ class SurplusesDetailsPage extends StatelessWidget {
   Future<dynamic> buildDefaultDialog() {
     final controller = Get.find<SurplusesDetailsController>();
     return Get.defaultDialog(
+      backgroundColor: Colors.white,
       contentPadding: EdgeInsets.symmetric(
         vertical: 20.h,
         horizontal: 16.w,
@@ -366,6 +405,9 @@ class SurplusesDetailsPage extends StatelessWidget {
         radius: 5.r,
         labelColor: const Color(0xFFAFAFAF),
         controller: controller.priceController,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'^[0-9]+')),
+        ],
       ),
       actions: [
         ElevatedButton(

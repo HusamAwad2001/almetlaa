@@ -8,6 +8,7 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../core/global.dart';
 import '../routes/routes.dart';
 import '../utils/api.dart';
+import '../utils/api_error_model.dart';
 import '../views/widgets/loading_dialog.dart';
 
 class SurplusesDetailsController extends GetxController {
@@ -35,7 +36,7 @@ class SurplusesDetailsController extends GetxController {
     socket.connect();
     getProposals();
     generalPrice = Get.arguments['item']['price'];
-    maxOfferPrice = listProposals.isEmpty ? 0 : listProposals.last['price'];
+    maxOfferPrice = proposals.isEmpty ? 0 : proposals.last['price'];
   }
 
   @override
@@ -49,9 +50,6 @@ class SurplusesDetailsController extends GetxController {
   late int generalPrice;
   late int maxOfferPrice;
 
-  List listProposals = [];
-  bool loadingProposals = true;
-
   io.Socket socket = io.io(
     'https://dolphin-app-792st.ondigitalocean.app',
     <String, dynamic>{
@@ -59,35 +57,60 @@ class SurplusesDetailsController extends GetxController {
     },
   );
 
-  getProposals() {
-    API().get(
-      url: '/proposals/${Get.arguments['item']['_id']}',
-      onResponse: (response) async {
-        loadingProposals = false;
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            listProposals = response.data['data'];
-            log("connected======>${socket.connected}");
-            socket.on('${Get.arguments['item']['_id']}', (data) {
-              print('-----------------------------');
-              log(data.toString());
-              print(Get.arguments['item']['_id'] +
-                  "socket======>" +
-                  data['data'].toString());
-              listProposals.add(data['data']);
-              update();
-            });
+  List proposals = [];
+  bool loadingProposals = false;
+  bool hasMore = true;
+  int currentPage = 1;
+  final int limit = 5;
+  ApiErrorModel? errorModel;
+
+  Future<void> getProposals({bool isRefresh = false}) async {
+    if (loadingProposals) return;
+
+    if (isRefresh) {
+      currentPage = 1;
+      hasMore = true;
+      proposals.clear();
+    }
+
+    if (!hasMore) return;
+
+    loadingProposals = true;
+    update();
+
+    await API().get(
+      url: '/proposals/${arguments['_id']}?page=$currentPage&limit=$limit',
+      onResponse: (response) {
+        if (response.statusCode == 200 && response.data['success']) {
+          List newItems = response.data['data'];
+          proposals.addAll(newItems);
+
+          final pagination = response.data['pagination'];
+          if (pagination != null) {
+            final int totalPages = pagination['pages'] ?? 1;
+            currentPage++;
+
+            if (currentPage > totalPages || newItems.length < limit) {
+              hasMore = false;
+            }
+          } else {
+            hasMore = false;
           }
-          // listProposals.add({
-          //   'price': 1000,
-          //   'user': {
-          //     'name': 'اسم المستخدم',
-          //     'image': 'https://example.com/image.jpg',
-          //     'phoneNumber': '838027468',
-          //   },
-          //   'createdAt': DateTime.now().toString(),
-          // });
+          socket.on('${Get.arguments['item']['_id']}', (data) {
+            proposals.add(data['data']);
+            update();
+          });
+        } else {
+          hasMore = false;
         }
+
+        errorModel = null;
+        loadingProposals = false;
+        update();
+      },
+      onError: (error) {
+        errorModel = error;
+        loadingProposals = false;
         update();
       },
     );
@@ -102,20 +125,18 @@ class SurplusesDetailsController extends GetxController {
         'surplus': arguments['_id'],
       },
       onResponse: (response) {
-        if (response.statusCode == 200) {
-          if (response.data['success']) {
-            Get.back();
-            Snack().show(type: true, message: 'تم إضافة العرض');
-            priceController.clear();
-          }
-          update();
+        if (response.statusCode == 200 && response.data['success']) {
+          Get.back();
+          Get.back();
+          Snack().show(type: true, message: 'تم إضافة العرض');
+          priceController.clear();
         }
-        if (response.statusCode == 409) {
-          if (!response.data['success']) {
-            Get.back();
-            Snack().show(type: false, message: response.data['error']);
-          }
-        }
+        update();
+      },
+      onError: (errorModel) {
+        Get.back();
+        Snack().show(type: false, message: errorModel.message ?? 'حدث خطأ ما');
+        update();
       },
     );
   }
