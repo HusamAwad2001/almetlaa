@@ -89,76 +89,28 @@ class _SurplusesPageState extends State<SurplusesPage>
 
           return RefreshIndicator(
             onRefresh: () => controller.getAllSurpluses(isRefresh: true),
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: TextField(
-                    onSubmitted: (v) {
-                      if (v.isEmpty) {
-                        controller.getAllSurpluses();
-                      } else {
-                        controller.searchSurpluses(v);
-                      }
-                    },
-                    decoration: InputDecoration(
-                      hintText: 'البحث',
-                      prefixIcon: Container(
-                        width: 22.w,
-                        height: 22.h,
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          'assets/images/search.png',
-                          width: 22.w,
-                          height: 22.h,
-                          color: Constants.primaryColor,
-                        ),
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.zero,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(9.r),
-                        borderSide: const BorderSide(
-                            width: 1, color: Color(0xFFF0F0F0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(9.r),
-                        borderSide: const BorderSide(
-                            width: 1, color: Color(0xFFF0F0F0)),
-                      ),
-                      filled: true,
-                      fillColor: const Color(0xFFF5F5F5),
+            child: ListView.separated(
+              padding: EdgeInsets.only(
+                top: 40.h,
+                right: 22.w,
+                left: 22.w,
+                bottom: 80.h,
+              ),
+              itemCount:
+                  controller.surpluses.length + (controller.hasMore ? 1 : 0),
+              separatorBuilder: (context, index) => 15.ph,
+              itemBuilder: (context, index) {
+                if (index == controller.surpluses.length) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: CircularProgressIndicator(),
                     ),
-                  ).paddingOnly(right: 31.w, left: 31.w, top: 30.h),
-                ),
-                SliverPadding(
-                  padding: EdgeInsets.only(
-                    top: 40.h,
-                    right: 22.w,
-                    left: 22.w,
-                    bottom: 80.h,
-                  ),
-                  sliver: SliverList.separated(
-                    addRepaintBoundaries: true,
-                    itemCount: controller.surpluses.length +
-                        (controller.hasMore ? 1 : 0),
-                    separatorBuilder: (context, index) => 15.ph,
-                    itemBuilder: (context, index) {
-                      print('build: $index');
-                      if (index == controller.surpluses.length) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      final item = controller.surpluses[index];
-                      return SurplusItemWidget(item: item);
-                    },
-                  ),
-                ),
-              ],
+                  );
+                }
+                final item = controller.surpluses[index];
+                return SurplusItemWidget(item: item);
+              },
             ),
           );
         },

@@ -61,7 +61,7 @@ class SurplusesDetailsController extends GetxController {
   bool loadingProposals = false;
   bool hasMore = true;
   int currentPage = 1;
-  final int limit = 5;
+  final int limit = 20;
   ApiErrorModel? errorModel;
 
   Future<void> getProposals({bool isRefresh = false}) async {
