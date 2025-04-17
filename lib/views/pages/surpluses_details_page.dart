@@ -189,7 +189,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                                 ),
                                 5.ph,
                                 Text(
-                                  '${controller.proposals.last['price']} دينار',
+                                  '${controller.proposals.first['price']} دينار',
                                   style: TextStyle(
                                     color: Constants.primaryColor,
                                     fontSize: 15.sp,
@@ -307,25 +307,28 @@ class SurplusesDetailsPage extends StatelessWidget {
                           contentPadding: EdgeInsets.symmetric(vertical: 10.h),
                           leading: item['user']['image'] == null
                               ? CircleAvatar(
-                                  radius: 33.r,
+                                  radius: 25.r,
                                   backgroundColor: const Color(0xFFbdc3c7),
                                   backgroundImage: AssetImage(
                                     'assets/images/playstore.png',
                                   ),
                                 )
-                              : AppImage(
-                                  imageUrl: item['user']['image'],
-                                  width: 66.w,
-                                  height: 66.h,
-                                  borderRadius: BorderRadius.circular(200.r),
-                                  errorWidget: (_, __, ___) {
-                                    return CircleAvatar(
-                                      radius: 33.r,
-                                      backgroundImage: const AssetImage(
-                                        'assets/images/playstore.png',
-                                      ),
-                                    );
-                                  },
+                              : ClipOval(
+                                  child: AppImage(
+                                    imageUrl: item['user']['image'],
+                                    borderRadius: BorderRadius.circular(300.r),
+                                    width: 50.w,
+                                    height: 50.h,
+                                    fit: BoxFit.cover,
+                                    errorWidget: (_, __, ___) {
+                                      return CircleAvatar(
+                                        radius: 33.r,
+                                        backgroundImage: const AssetImage(
+                                          'assets/images/playstore.png',
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                           title: Text(
                             item['user']['phoneNumber'],

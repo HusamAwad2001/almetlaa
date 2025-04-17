@@ -55,7 +55,7 @@ class SurplusesController extends GetxController {
   bool loadingSurpluses = false;
   bool hasMore = true;
   int currentPage = 1;
-  final int limit = 3;
+  final int limit = 20;
   ApiErrorModel? errorModel;
 
   Future<void> getAllSurpluses({bool isRefresh = false}) async {
