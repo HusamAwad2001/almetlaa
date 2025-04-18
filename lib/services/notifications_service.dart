@@ -20,7 +20,7 @@ Future<void> firebaseMessagingBackgroundHandler(
 }
 
 mixin NotificationsService {
-  static Future<void> initNotifications() async {
+  static Future<void> init() async {
     //CONNECT THE PREVIOUS CREATED FUNCTION WITH [onBackgroundMessage] TO ENABLE
     //RECEIVING NOTIFICATION WHEN APP IN Background.
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -118,6 +118,7 @@ mixin NotificationsService {
     if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.authorized) {
       log('GRANT PERMISSION');
+      initializeForegroundNotificationForAndroid();
     } else if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.denied) {
       log('PERMISSION DENIED');

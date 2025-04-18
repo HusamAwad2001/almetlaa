@@ -525,6 +525,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.15.2"
+  gallery_saver_plus:
+    dependency: "direct main"
+    description:
+      name: gallery_saver_plus
+      sha256: "179a2cf0a8d5d61957724e39cf5664a336d5ef28a4222543462dd9fc4c1a6af9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.4"
   get:
     dependency: "direct main"
     description:
@@ -581,15 +589,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.3"
-  image_gallery_saver:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "71b4c9072d5e299b7ea3d2c3622db4ecaacdc4c1"
-      url: "https://github.com/HusamAwad2001/image_gallery_saver"
-    source: git
-    version: "2.0.3"
   image_picker:
     dependency: "direct main"
     description:

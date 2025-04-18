@@ -73,7 +73,6 @@ class _AppBarWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Constants.primaryColor,
-      elevation: 4,
       leadingWidth: 0,
       title: Row(
         children: [

@@ -80,7 +80,7 @@ class AllowanceController extends GetxController {
             hasMoreExchange = false;
           }
         }
-
+        errorModel = null;
         update();
       },
       onError: (error) {

@@ -62,7 +62,7 @@ class PostController extends GetxController {
         } else {
           hasMore = false;
         }
-
+        errorModel = null;
         loadingPosts = false;
         update();
       },
@@ -123,20 +123,26 @@ class PostController extends GetxController {
     if (!loadingLike) {
       loadingLike = true;
       API().put(
-          body: {},
-          url: '/posts/$id/likePost',
-          onResponse: (response) {
-            if (response.statusCode == 200) {
-              if (response.data['success']) {
-                posts[index]['isLiked'] = state;
-                posts[index]['countLikes'] =
-                    response.data['data']['countLikes'];
-                update();
-              }
+        body: {},
+        url: '/posts/$id/likePost',
+        onResponse: (response) {
+          if (response.statusCode == 200) {
+            if (response.data['success']) {
+              posts[index]['isLiked'] = state;
+              posts[index]['countLikes'] = response.data['data']['countLikes'];
+              update();
             }
-            loadingLike = false;
-            update();
-          });
+          }
+          loadingLike = false;
+          update();
+        },
+        onError: (errorModel) {
+          log(errorModel.toString());
+          Get.back();
+          Snack().show(type: false, message: errorModel.message ?? 'حدث خطأ');
+          update();
+        },
+      );
     }
   }
 
@@ -153,28 +159,35 @@ class PostController extends GetxController {
     });
     LoadingDialog().dialog();
     API().post(
-        body: formData,
-        url: '/posts',
-        onResponse: (response) {
-          log(response.data.toString());
-          loadingPosts = false;
-          if (response.statusCode == 200) {
-            if (response.data['success']) {
-              response.data['data']['isLiked'] = false;
-              List list = [];
-              list.add(response.data['data']);
-              list.addAll(posts);
-              posts = list;
-              Get.back();
-              Get.back();
-              Snack().show(type: true, message: 'تمت الإضافة');
-            } else {
-              Get.back();
-            }
+      body: formData,
+      url: '/posts',
+      onResponse: (response) {
+        log(response.data.toString());
+        loadingPosts = false;
+        if (response.statusCode == 200) {
+          if (response.data['success']) {
+            response.data['data']['isLiked'] = false;
+            List list = [];
+            list.add(response.data['data']);
+            list.addAll(posts);
+            posts = list;
+            Get.back();
+            Get.back();
+            Snack().show(type: true, message: 'تمت الإضافة');
           } else {
             Get.back();
           }
-          update();
-        });
+        } else {
+          Get.back();
+        }
+        update();
+      },
+      onError: (errorModel) {
+        log(errorModel.toString());
+        Get.back();
+        Snack().show(type: false, message: errorModel.message ?? 'حدث خطأ');
+        update();
+      },
+    );
   }
 }
