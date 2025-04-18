@@ -17,6 +17,7 @@ class _SplashPageState extends State<SplashPage> with NotificationsService {
   void initState() {
     super.initState();
     requestNotificationPermissions();
+    initializeForegroundNotificationForAndroid();
     manageNotificationAction();
     Future.delayed(2.5.seconds, () {
       Get.offNamed(Global.token == "" ? Routes.loginPage : Routes.homePage);
