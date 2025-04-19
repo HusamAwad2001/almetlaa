@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 
 import '../../controller/suggestions_controller.dart';
 
-class SuggestionsFragment extends GetView<SuggestionsController> {
-  const SuggestionsFragment({Key? key}) : super(key: key);
+class SuggestionsPage extends GetView<SuggestionsController> {
+  const SuggestionsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

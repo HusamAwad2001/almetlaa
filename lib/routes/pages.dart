@@ -1,3 +1,5 @@
+import 'package:baiti/views/fragments/suggestions_fragment.dart';
+
 import '../../views/pages/ar_page.dart';
 import '../../views/pages/blocks_page.dart';
 import '../../views/pages/regions_page.dart';
@@ -18,6 +20,7 @@ import '../views/pages/allowance_page.dart';
 import '../views/pages/company_profile_page.dart';
 import '../views/pages/construction_bills_page.dart';
 import '../views/pages/construction_material_prices_page.dart';
+import '../views/pages/consultation_page.dart';
 import '../views/pages/contract_bills_page.dart';
 import '../views/pages/create_exchange_page.dart';
 import '../views/pages/create_surpluses_page.dart';
@@ -86,6 +89,14 @@ class Pages {
       GetPage(
         name: Routes.aRPage,
         page: () => const ARPage(),
+      ),
+      GetPage(
+        name: Routes.suggestionsPage,
+        page: () => const SuggestionsPage(),
+      ),
+      GetPage(
+        name: Routes.consultationPage,
+        page: () => const ConsultationPage(),
       ),
       // GetPage(
       //   name: Routes.panoramaPage,

@@ -77,9 +77,18 @@ class _AppBarWidget extends GetView<HomeController> {
       leadingWidth: 0,
       title: Row(
         children: [
-          Image.asset(
-            "assets/images/baiti_logo.png",
-            height: 40,
+          Container(
+            height: 40.h,
+            width: 40.w,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white),
+              image: DecorationImage(
+                image: const AssetImage("assets/images/logo_en.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
           const SizedBox(width: 8),
           Text(
@@ -265,14 +274,14 @@ class _ServicesWidget extends StatelessWidget {
                 crossAxisSpacing: 12,
                 children: [
                   _ServiceItem(
-                    icon: Icons.receipt_long_outlined,
-                    title: "فواتيري",
-                    route: Routes.constructionBillsPage,
+                    icon: Icons.engineering_outlined,
+                    title: "استشارة",
+                    route: Routes.consultationPage,
                   ),
                   _ServiceItem(
-                    icon: Icons.swap_horiz_outlined,
-                    title: "البدل",
-                    route: Routes.allowancePage,
+                    icon: Icons.attach_money_outlined,
+                    title: "الفوائض",
+                    route: Routes.surplusesPage,
                   ),
                   _ServiceItem(
                     icon: Icons.business_outlined,
@@ -280,9 +289,9 @@ class _ServicesWidget extends StatelessWidget {
                     route: Routes.categoriesPage,
                   ),
                   _ServiceItem(
-                    icon: Icons.location_city_outlined,
-                    title: "التوزيعات",
-                    route: Routes.regionsPage,
+                    icon: Icons.article_outlined,
+                    title: "الواجهات",
+                    route: Routes.postPage,
                   ),
                 ],
               ),
@@ -298,24 +307,24 @@ class _ServicesWidget extends StatelessWidget {
                 crossAxisSpacing: 12,
                 children: [
                   _ServiceItem(
-                    icon: Icons.attach_money_outlined,
-                    title: "الفوائض",
-                    route: Routes.surplusesPage,
+                    icon: Icons.receipt_long_outlined,
+                    title: "فواتيري",
+                    route: Routes.constructionBillsPage,
                   ),
                   _ServiceItem(
-                    icon: Icons.chair_outlined,
-                    title: "الأثاث",
-                    // route: Routes.aRPage,
+                    icon: Icons.health_and_safety_outlined,
+                    title: "اقتراحاتي",
+                    route: Routes.suggestionsPage,
                   ),
                   _ServiceItem(
-                    icon: Icons.event_outlined,
-                    title: "الفعاليات",
-                    route: Routes.eventsPage,
+                    icon: Icons.location_city_outlined,
+                    title: "التوزيعات",
+                    route: Routes.regionsPage,
                   ),
                   _ServiceItem(
-                    icon: Icons.article_outlined,
-                    title: "الواجهات",
-                    route: Routes.postPage,
+                    icon: Icons.swap_horiz_outlined,
+                    title: "البدل",
+                    route: Routes.allowancePage,
                   ),
                 ],
               ),

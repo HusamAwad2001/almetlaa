@@ -12,12 +12,14 @@ class Routes {
   static const String companyProfilePage = '/CompanyProfilePage';
   static const String internetPage = '/InternetPage';
   static const String aRPage = '/ARPage';
+  static const String suggestionsPage = '/SuggestionsPage';
   static const String panoramaPage = '/PanoramaPage';
   static const String constructionMaterialPricesPage =
       '/ConstructionMaterialPricesPage';
   static const String allowancePage = '/AllowancePage';
   static const String allowanceDetailsPage = '/AllowanceDetailsPage';
   static const String surplusesPage = '/SurplusesPage';
+  static const String consultationPage = '/ConsultationPage';
   static const String surplusesDetailsPage = '/SurplusesDetailsPage';
   static const String constructionBillsPage = '/ConstructionBillsPage';
   static const String contractBillsPage = '/ContractBillsPage';

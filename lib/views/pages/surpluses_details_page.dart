@@ -73,9 +73,9 @@ class SurplusesDetailsPage extends StatelessWidget {
                                   return Text(
                                     'انتهت المزايدة',
                                     style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: const Color(0xFF8E8E8E),
-                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   );
                                 }
@@ -143,7 +143,7 @@ class SurplusesDetailsPage extends StatelessWidget {
                                 return Text(
                                   'انتهت المزايدة',
                                   style: TextStyle(
-                                    fontSize: 12.sp,
+                                    fontSize: 16.sp,
                                     color: const Color(0xFF8E8E8E),
                                     fontWeight: FontWeight.w500,
                                   ),

@@ -5,7 +5,6 @@ import '../../values/constants.dart';
 import '../../views/fragments/home_fragment.dart';
 import '../../views/fragments/profile_fragment.dart';
 import '../../views/fragments/questions_fragment.dart';
-import '../../views/fragments/suggestions_fragment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ class HomePage extends StatelessWidget {
             children: [
               const HomeFragment(),
               const VideosChannelFragment(),
-              const SuggestionsFragment(),
+              // const SuggestionsPage(),
               const QuestionsFragment(),
               const ProfileFragment(),
             ],
@@ -87,14 +86,6 @@ class HomePage extends StatelessWidget {
                         color: Colors.white,
                       ),
                       label: 'الفيديوهات',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(Icons.health_and_safety_outlined),
-                      selectedIcon: Icon(
-                        Icons.health_and_safety,
-                        color: Colors.white,
-                      ),
-                      label: 'اقتراحاتي',
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.question_answer_outlined),
