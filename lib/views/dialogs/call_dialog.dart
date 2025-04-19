@@ -37,8 +37,13 @@ class CallDialog {
               const SizedBox(height: 20),
               _buildContactTile(
                 imageUrl: "assets/icons/whats_app.jpeg",
-                label: "50000488",
-                url: 'http://wa.me/96550000488',
+                label: "55512322",
+                url: 'http://wa.me/96555512322',
+              ),
+              _buildContactTile(
+                imageUrl: "assets/icons/x.png",
+                label: "baitiexpo",
+                url: 'https://x.com/baitiexpo',
               ),
               _buildContactTile(
                 imageUrl: "assets/icons/telegram.png",
