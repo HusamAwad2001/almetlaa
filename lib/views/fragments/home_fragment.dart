@@ -44,6 +44,7 @@ class HomeFragment extends GetView<HomeController> {
                     return Future.wait([
                       controller.getSlider(),
                       controller.getNews(),
+                      controller.plant(),
                     ]);
                   },
                   child: SingleChildScrollView(
