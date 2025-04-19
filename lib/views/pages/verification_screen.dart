@@ -14,7 +14,6 @@ class VerificationScreen extends GetView<LoginController> {
   Widget build(BuildContext context) {
     final pinController = TextEditingController();
     final focusNode = FocusNode();
-    final formKey = GlobalKey<FormState>();
     const focusedBorderColor = Constants.primaryColor;
     final fillColor = Colors.transparent;
     const borderColor = Constants.primaryColor;
@@ -53,11 +52,12 @@ class VerificationScreen extends GetView<LoginController> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
             children: [
-              SizedBox(width: Get.width),
+              20.ph,
               Image.asset(
-                "assets/images/otp.jpg",
-                width: 250.w,
-                height: 250.h,
+                "assets/images/otp.png",
+                width: 100.w,
+                height: 100.h,
+                color: Constants.primaryColor,
               ),
               30.ph,
               Text(
@@ -83,50 +83,42 @@ class VerificationScreen extends GetView<LoginController> {
                 ),
               ),
               35.ph,
-              Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              Pinput(
+                controller: pinController,
+                focusNode: focusNode,
+                defaultPinTheme: defaultPinTheme,
+                separatorBuilder: (index) => const SizedBox(width: 8),
+                hapticFeedbackType: HapticFeedbackType.lightImpact,
+                length: 6,
+                onCompleted: (pin) async {
+                  controller.otpController.text = pin;
+                },
+                cursor: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Pinput(
-                      controller: pinController,
-                      focusNode: focusNode,
-                      defaultPinTheme: defaultPinTheme,
-                      separatorBuilder: (index) => const SizedBox(width: 8),
-                      hapticFeedbackType: HapticFeedbackType.lightImpact,
-                      length: 6,
-                      onCompleted: (pin) async {
-                        controller.otpController.text = pin;
-                      },
-                      cursor: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(bottom: 9),
-                            width: 22,
-                            height: 2,
-                            color: Constants.primaryColor,
-                          ),
-                        ],
-                      ),
-                      focusedPinTheme: defaultPinTheme.copyWith(
-                        decoration: defaultPinTheme.decoration!.copyWith(
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: focusedBorderColor),
-                        ),
-                      ),
-                      submittedPinTheme: defaultPinTheme.copyWith(
-                        decoration: defaultPinTheme.decoration!.copyWith(
-                          color: fillColor,
-                          borderRadius: BorderRadius.circular(10.r),
-                          border: Border.all(color: focusedBorderColor),
-                        ),
-                      ),
-                      errorPinTheme: defaultPinTheme.copyBorderWith(
-                        border: Border.all(color: Colors.redAccent),
-                      ),
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 9),
+                      width: 22,
+                      height: 2,
+                      color: Constants.primaryColor,
                     ),
                   ],
+                ),
+                focusedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: focusedBorderColor),
+                  ),
+                ),
+                submittedPinTheme: defaultPinTheme.copyWith(
+                  decoration: defaultPinTheme.decoration!.copyWith(
+                    color: fillColor,
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: focusedBorderColor),
+                  ),
+                ),
+                errorPinTheme: defaultPinTheme.copyBorderWith(
+                  border: Border.all(color: Colors.redAccent),
                 ),
               ),
               50.ph,
