@@ -74,45 +74,54 @@ class _AppBarWidget extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Constants.primaryColor,
-      leadingWidth: 0,
-      title: Row(
-        children: [
-          Container(
-            height: 40.h,
-            width: 40.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white),
-              image: DecorationImage(
-                image: const AssetImage("assets/images/logo_en.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            'بيتي',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.sp,
-            ),
-          ),
-        ],
+      // title: Row(
+      //   children: [
+      //     Container(
+      //       height: 40.h,
+      //       width: 40.w,
+      //       decoration: BoxDecoration(
+      //         color: Colors.white,
+      //         shape: BoxShape.circle,
+      //         border: Border.all(color: Colors.white),
+      //         image: DecorationImage(
+      //           image: const AssetImage("assets/images/logo_en.png"),
+      //           fit: BoxFit.cover,
+      //         ),
+      //       ),
+      //     ),
+      //     const SizedBox(width: 8),
+      //     Text(
+      //       'بيتي',
+      //       style: TextStyle(
+      //         color: Colors.white,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 20.sp,
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      leadingWidth: 65,
+      leading: IconButton(
+        onPressed: () {
+          controller.checkWhenLoading(() {
+            CallDialog().dialog();
+          });
+        },
+        icon: const Icon(Icons.call_outlined),
+        tooltip: 'اتصل بنا',
+        color: Colors.white,
       ),
-      centerTitle: false,
-      actions: [
-        IconButton(
-          onPressed: () {
-            controller.checkWhenLoading(() {
-              CallDialog().dialog();
-            });
-          },
-          icon: const Icon(Icons.call_outlined),
-          tooltip: 'اتصل بنا',
+      title: Text(
+        'BAITI',
+        style: TextStyle(
           color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 24.sp,
+          letterSpacing: 1.8,
         ),
+      ),
+      centerTitle: true,
+      actions: [
         if (Global.token != "")
           IconButton(
             onPressed: () {
