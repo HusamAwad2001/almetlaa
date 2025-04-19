@@ -30,7 +30,26 @@ class ConsultationPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "رقم الهاتف",
+                  "الموضوع",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                20.ph,
+                TextFieldWidget(
+                  controller: controller.topicController,
+                  label: 'الموضوع',
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
+                  radius: 10.r,
+                  labelColor: Colors.grey,
+                  maxLines: 4,
+                ),
+                30.ph,
+                Text(
+                  "رقم التواصل",
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
@@ -44,46 +63,9 @@ class ConsultationPage extends StatelessWidget {
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(8),
                   ],
-                  label: 'رقم الهاتف',
+                  label: 'رقم التواصل',
                   radius: 10.r,
                   labelColor: Colors.grey,
-                ),
-                30.ph,
-                Text(
-                  "عنوان الاستشارة",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                20.ph,
-                TextFieldWidget(
-                  controller: controller.topicController,
-                  label: 'عنوان الاستشارة',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(50),
-                  ],
-                  radius: 10.r,
-                  labelColor: Colors.grey,
-                ),
-                30.ph,
-                Text(
-                  "وصف الاستشارة",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                20.ph,
-                TextFieldWidget(
-                  controller: controller.descriptionController,
-                  label: 'وصف مختصر عن الاستشارة',
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(200),
-                  ],
-                  radius: 10.r,
-                  labelColor: Colors.grey,
-                  maxLines: 4,
                 ),
                 50.ph,
                 SizedBox(
