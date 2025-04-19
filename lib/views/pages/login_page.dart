@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10),
+                    LengthLimitingTextInputFormatter(8),
                   ],
                 ),
                 50.ph,

@@ -17,7 +17,7 @@ class LoginController extends GetxController {
       Snack().show(type: false, message: "الرجاء إدخال رقم الهاتف");
       return;
     }
-    if (phoneTEC.text.length < 10) {
+    if (phoneTEC.text.length < 8) {
       Snack().show(type: false, message: "يرجى إدخال رقم هاتف صحيح");
       return;
     }
