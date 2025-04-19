@@ -1,0 +1,2 @@
+/Users/husam/Documents/Flutter Docs/Freelancer Projects/almetlaa/android/app/.cxx/RelWithDebInfo/3e2u274j/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/husam/Documents/Flutter Docs/Freelancer Projects/almetlaa/android/app/.cxx/RelWithDebInfo/3e2u274j/armeabi-v7a/CMakeFiles/rebuild_cache.dir
